@@ -15,6 +15,7 @@ WordPress implementation of the picture gallery ImageFlow. Uses either the built
 With WP-ImageFlow2 you can display nice looking ImageFlow galleries within posts and pages.
 
 There are two ways to insert such a gallery.
+
 1. Use the built-in Wordpress gallery.
 2. Upload your pictures to a subfolder and use the shortcode [wp-imageflow2=FOLDERNAME]
 You may configure the background color, text color, container width and choose black or white for the scrollbar.
@@ -38,11 +39,13 @@ from Finn Rudolph.
 3. Configure the gallery in Settings -> WP-ImageFlow2.
 
 For a built-in Wordpress gallery:
+
 1. Use the shortcode [gallery] anywhere in a post or page
 2. If you want the image to link to an external url, enter the url in the description field of the image and enable the checkbox in the options. If the description
 field is left blank the link will go to the full size image.
 
 For galleries based on a subfolder:
+
 1. Create a folder for your galleries within your WordPress installation, wherever you want (has to be accessible from the internet).
 2. Set the "Path to galleries from homepage root path" in the configuration options
 3. Upload your image galleries to a subfolder of this folder
@@ -55,6 +58,7 @@ For galleries based on a subfolder:
 Use the Wordpress gallery shortcode [gallery]. 
 
 These gallery options may be used:
+
 * id
 * order (default is ASC)
 * orderby (default is menu_order ID)
@@ -63,6 +67,7 @@ These gallery options may be used:
 * size (applies to RSS feed only, medium is always used for the gallery)
 
 These gallery options will be ignored:
+
 * columns
 * itemtag 
 * icontag 
