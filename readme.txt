@@ -18,6 +18,7 @@ There are two ways to insert such a gallery.
 
 1. Use the built-in Wordpress gallery.
 2. Upload your pictures to a subfolder and use the shortcode [wp-imageflow2=FOLDERNAME]
+
 You may configure the background color, text color, container width and choose black or white for the scrollbar.
 
 When using the built in Wordpress gallery, the photo title will be displayed below each image. When using a subfolder gallery, the image name will 
@@ -25,8 +26,8 @@ be displayed below each image.
 
 [Demo](http://www.stofko.ca/wp-imageflow2-wordpress-plugin/)
 
-Notes
------
+= Notes =
+
 One gallery per page/post is supported.
 
 WP-ImageFlow2 is based on the discontinued WP-ImageFlow by Sven Kubiak, which is an implementation of the CoverFlow-like Picture Gallery ImageFlow 
