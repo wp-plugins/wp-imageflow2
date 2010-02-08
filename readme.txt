@@ -3,7 +3,7 @@ Author: Bev Stofko
 Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Tested up to: 2.9.1
-Version: 1.0.1
+Version: 1.1
 Requires at least: 2.8.4
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow
 
@@ -105,6 +105,10 @@ At this time only one WP_ImageFlow2 gallery may be placed on a page or post.
 2. Customize the background colour, text color, container width, slider color, link to description option, and gallery url 
 
 == Changelog ==
+
+Version 1.1 (February 8, 2010)
+
+* Fix problem with image paths on some servers
 
 Version 1.0.1 (February 3, 2010)
 

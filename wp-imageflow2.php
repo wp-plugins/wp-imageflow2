@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow2
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow. 
-Version: 1.0.1
+Version: 1.1
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -131,6 +131,7 @@ Class WPImageFlow2
 							if (filetype($gallerypath."/".$image) != "dir" && !eregi('refl_',$image))
 						    {						
 								$imagepath = 'http://www.' . $_SERVER['SERVER_NAME'] . '/' . $options['gallery_url'] . $match[1] . '/' . $image;
+								$imagepath = str_replace ("www.www.", "www.", $imagepath);		
 								$pic_original 	= $imagepath;
 								$pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . $pic_original . '&bgc=' . urlencode($bgcolor);
 								$replace .= '<img src="'.$pic_reflected.'" longdesc="'.$pic_original.'" alt="'.$image.'"/>';
