@@ -47,7 +47,7 @@ field is left blank the link will go to the full size image.
 For galleries based on a subfolder:
 
 1. Create a folder for your galleries within your WordPress installation, wherever you want (has to be accessible from the internet).
-2. Set the "Path to galleries from homepage root path" in the configuration options
+2. Set the "Path to galleries from homepage root path" in the configuration options (make sure there is no trailing space)
 3. Upload your image galleries to a subfolder of this folder
 4. Insert a gallery on a page by specifying [wp-imageflow2=FOLDERNAME].
 
