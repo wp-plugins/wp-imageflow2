@@ -5,7 +5,7 @@ Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Tested up to: 2.9.1
 Version: 1.2
 Requires at least: 2.8.4
-Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow
+Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox
 
 WordPress implementation of the picture gallery ImageFlow with Lightbox effect. Uses either the built-in Wordpress gallery or an uploaded directory 
 of images. Displays simple thumbnail list if Javascript is disabled.
