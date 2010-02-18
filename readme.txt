@@ -111,7 +111,7 @@ At this time only one WP_ImageFlow2 gallery may be placed on a page or post.
 
 == Changelog ==
 
-Version 1.2.1 ()
+Version 1.2.1 (February 18, 2010)
 
 * Add a "close" link to the overlay div of the image Lightbox in case the full size image never loads
 
