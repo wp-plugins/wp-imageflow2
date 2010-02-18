@@ -102,11 +102,11 @@
 	visibility:hidden;
 }
 
-a#wpif2_topboxclose {
+a#wpif2_topboxclose, a#wpif2_overlayclose {
 	color: #0066CC;
 	text-decoration: none;
 }
-a#wpif2_topboxclose:hover {
+a#wpif2_topboxclose:hover, a#wpif2_overlayclose:hover {
 	text-decoration: underline;
 }
 

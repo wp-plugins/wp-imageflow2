@@ -42,6 +42,7 @@ var wpif2_captionsdiv      = 'wpif2_captions';
 var wpif2_sliderdiv        = 'wpif2_slider';
 var wpif2_scrollbardiv     = 'wpif2_scrollbar';
 var wpif2_overlaydiv       = 'wpif2_overlay';
+var wpif2_overlayclosediv  = 'wpif2_overlayclose';
 var wpif2_topboxdiv        = 'wpif2_topbox';
 var wpif2_topboximgdiv     = 'wpif2_topboximg';
 var wpif2_topboxcaptiondiv = 'wpif2_topboxcaption';
@@ -324,7 +325,7 @@ function loaded ()
 {
       var objBody = $$('body')[0];
 
-	objBody.appendChild(Builder.node('div',{id:wpif2_overlaydiv}));
+	objBody.appendChild(Builder.node('div',{id:wpif2_overlaydiv}, Builder.node('a',{id:wpif2_overlayclosediv, href: '#' })));
 	
       objBody.appendChild(Builder.node('div',{id:wpif2_topboxdiv}, [
                 Builder.node('img',{id:wpif2_topboximgdiv}), 
@@ -334,6 +335,9 @@ function loaded ()
 	close_div = document.getElementById(wpif2_topboxclosediv);
 	close_div.onclick = function () { closeTop(); return false; };
 	close_div.innerHTML = "Close";
+	close2_div = document.getElementById(wpif2_overlayclosediv);
+	close2_div.onclick = function () { closeTop(); return false; };
+	close2_div.innerHTML = "Close";
 		
 	if(document.getElementById(wpif2_imageflowdiv))
 	{
@@ -521,11 +525,6 @@ function hideFlash(){
 
 function showTop(image)
 {
-	// get the image actual size by preloading into 't'
-	var t = new Image();
-      t.onload = (function(){	showImg(image, t.width, t.height); });
-	t.src = image.getAttribute("href");
-
 	topbox_div = document.getElementById(wpif2_topboxdiv);
 	overlay_div = document.getElementById(wpif2_overlaydiv);
 	topboximg_div = document.getElementById(wpif2_topboximgdiv);
@@ -540,12 +539,21 @@ function showTop(image)
 	topboximg_div.src = image.getAttribute('href');
 	document.getElementById(wpif2_topboxcaptiondiv).innerHTML = image.getAttribute('title');
 
+	// get the image actual size by preloading into 't'
+	var t = new Image();
+      t.onload = (function(){	showImg(image, t.width, t.height); });
+	t.src = image.getAttribute("href");
+
 	// Now wait until 't' is loaded
 }
 
 
 function showImg(image, img_width, img_height) 
 {	
+	// Do nothing if the overlay was closed in the meantime
+	if (document.getElementById(wpif2_overlaydiv).style.visibility == 'hidden') return;
+	
+	// Go ahead with the fade up
 	topbox_div = document.getElementById(wpif2_topboxdiv);
 	overlay_div = document.getElementById(wpif2_overlaydiv);
 	topboximg_div = document.getElementById(wpif2_topboximgdiv);
