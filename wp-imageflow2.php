@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow2
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow. 
-Version: 1.1
+Version: 1.2
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -42,6 +42,15 @@ Class WPImageFlow2
 {
 	var $isrss = false;
 	var $adminOptionsName = 'wpimageflow2_options';
+
+	/* html div ids */
+	var $imageflowdiv = 'wpif2_imageflow';
+	var $loadingdiv   = 'wpif2_loading';
+	var $imagesdiv    = 'wpif2_images';
+	var $captionsdiv  = 'wpif2_captions';
+	var $sliderdiv    = 'wpif2_slider';
+	var $scrollbardiv = 'wpif2_scrollbar';
+	var $noscriptdiv  = 'wpif2_imageflow_noscript';
 
 	function wpimageflow2()
 	{
@@ -115,15 +124,16 @@ Class WPImageFlow2
 					$gallerypath = $galleries_path . $match [1];
 					
 					if (file_exists($gallerypath))
-					{		
-						$replace  = '<div id="imageflow" style="background-color: ' . $bgcolor . '; color: ' . $txcolor . '; width: ' . $width .'">'; 
-						$replace .= '<div id="loading" style="color: ' . $txcolor . ';">';
+					{	
+						$noscript = '<noscript><div id="' . $this->noscriptdiv .'">';	
+						$replace  = '<div id="' . $this->imageflowdiv . '" style="background-color: ' . $bgcolor . '; color: ' . $txcolor . '; width: ' . $width .'">' . PHP_EOL; 
+						$replace .= '<div id="' . $this->loadingdiv . '" style="color: ' . $txcolor . ';">' . PHP_EOL;
 						$replace .= '<b>';
 						$replace .= __('Loading Images','wp-imageflow2');
-						$replace .= '</b><br/>';
-						$replace .= '<img src="'.$plugin_url.'/img/loading.gif" width="208" height="13" alt="loading" />';
-						$replace .= '</div>';
-						$replace .= '<div id="images">';	
+						$replace .= '</b><br/>' . PHP_EOL;
+						$replace .= '<img src="'.$plugin_url.'/img/loading.gif" width="208" height="13" alt="' . $loadingdiv . '" />' . PHP_EOL;
+						$replace .= '</div>' . PHP_EOL;
+						$replace .= '<div id="' . $this->imagesdiv . '">' . PHP_EOL;	
 					
 						$handle = opendir($gallerypath);
 						while ($image=readdir($handle))
@@ -134,21 +144,25 @@ Class WPImageFlow2
 								$imagepath = str_replace ("www.www.", "www.", $imagepath);		
 								$pic_original 	= $imagepath;
 								$pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . $pic_original . '&bgc=' . urlencode($bgcolor);
-								$replace .= '<img src="'.$pic_reflected.'" longdesc="'.$pic_original.'" alt="'.$image.'"/>';
+								/* Note that IE gets confused if we put newlines after each image, so we don't */
+								$replace .= '<img src="' . $pic_reflected . '" longdesc="' . $pic_original . '" alt="' . $image . '" rel="wpif2_lightbox"/>';
+
+								/* build separate list for users with scripts disabled */
+								$noscript .= '<a href="' . $pic_original . '"><img src="' . $pic_original .'" width="100px"></a>';
 						    }				
 						}			
 						closedir($handle);
 			
-						$replace .= '</div>';
-						$replace .= '<div id="captions"></div>';
-						$replace .= '<div id="scrollbar"';
+						$replace .= '</div>' . PHP_EOL;
+						$replace .= '<div id="' . $this->captionsdiv . '"></div>' . PHP_EOL;
+						$replace .= '<div id="' . $this->scrollbardiv . '"';
 						if ($slcolor == "black") {
 							$replace .= ' class="black"';
 						}
-						$replace .= '><div id="slider">';
+						$replace .= '><div id="' . $this->sliderdiv . '">';
 						$replace .= '</div>';
-						$replace .= '</div>';
-						$replace .= '</div>';	
+						$replace .= '</div>' . PHP_EOL;
+						$replace .= $noscript . '</div></noscript></div>';	
 						
 						$content = str_replace ($match[0], $replace, $content);	
 					}
@@ -236,14 +250,15 @@ Class WPImageFlow2
 		/**
 		* Start output
 		*/
-		$output  = '<div id="imageflow" style="background-color: ' . $bgcolor . '; color: ' . $txcolor . '; width: ' . $width . '">'; 
-		$output .= '<div id="loading" style="color: ' . $txcolor . ';">';
+		$noscript = '<noscript><div id="' . $this->noscriptdiv .'">';	
+		$output  = '<div id="' . $this->imageflowdiv . '" style="background-color: ' . $bgcolor . '; color: ' . $txcolor . '; width: ' . $width . '">' . PHP_EOL; 
+		$output .= '<div id="' . $this->loadingdiv . '" style="color: ' . $txcolor . ';">' . PHP_EOL;
 		$output .= '<b>';
 		$output .= __('Loading Images','wp-imageflow2');
-		$output .= '</b><br/>';
-		$output .= '<img src="'.$plugin_url.'/img/loading.gif" width="208" height="13" alt="loading" />';
-		$output .= '</div>';
-		$output .= '<div id="images">';	
+		$output .= '</b><br/>' . PHP_EOL;
+		$output .= '<img src="' . $plugin_url . '/img/loading.gif" width="208" height="13" alt="' . $loadingdiv . '" />' . PHP_EOL;
+		$output .= '</div>' . PHP_EOL;
+		$output .= '<div id="' . $this->imagesdiv . '">' . PHP_EOL;	
 
 		/**
 		* Add images
@@ -251,30 +266,40 @@ Class WPImageFlow2
 		$i = 0;
 		foreach ( $attachments as $id => $attachment ) {
 			$image = wp_get_attachment_image_src($id, "medium");
+			$image_large = wp_get_attachment_image_src($id, "large");
 			$pic_reflected 	= $plugin_url.'/php/reflect.php?img='.$image[0] . '&bgc=' . urlencode($bgcolor);
 			$pic_original 	= $image[0];
-			if ($link == 'true') {
-				/* Add link to description if this option is enabled */
-				$linkurl = $attachment->post_content;
-				if ($linkurl === '') $linkurl = $pic_original;
-			} else {
-				$linkurl = $pic_original;
+			$pic_large		= $image_large[0];
+			$linkurl = '';
+			$rel = '';
+
+			/* Add link to description if this option is enabled */
+			if ($link == 'true') $linkurl = $attachment->post_content;
+
+			/* If not linking to description link to the large size image */
+			if ($linkurl === '') {
+				$linkurl = $pic_large;
+				$rel = ' rel="wpif2_lightbox"';
 			}
-			$output .= '<img src="'.$pic_reflected.'" longdesc="'.$linkurl.'" alt="'.$attachment->post_title.'"/>';
+			/* Note that IE gets confused if we put newlines after each image, so we don't */
+			$output .= '<img src="'.$pic_reflected.'" longdesc="'.$linkurl.'"'. $rel . ' alt="'.$attachment->post_title.'"/>';
+
+			/* build separate thumbnail list for users with scripts disabled */
+			$noscript .= '<a href="' . $linkurl . '"><img src="' . $pic_original .'" width="100px"></a>';
 			$i++;
 		}
 					
 		
-		$output .= '</div>';
-		$output .= '<div id="captions"></div>';
-		$output .= '<div id="scrollbar"';
+		$output .= '</div>' . PHP_EOL;
+		$output .= '<div id="' . $this->captionsdiv . '"></div>' . PHP_EOL;
+		$output .= '<div id="' . $this->scrollbardiv . '"';
 		if ($slcolor == "black") {
 			$output .= ' class="black"';
 		}
-		$output .= '><div id="slider">';
+		$output .= '><div id="' . $this->sliderdiv . '">' . PHP_EOL;
 		$output .= '</div>';
-		$output .= '</div>';
-		$output .= '</div>';	
+		$output .= '</div>' . PHP_EOL;
+		$output .= $noscript . '</div></noscript></div>';	
 
 		return $output;
 	}
@@ -288,7 +313,7 @@ Class WPImageFlow2
 						'txcolor' => '#ffffff', // Text color defaults to white
 						'slcolor' => 'white',	// Slider color defaults to white
 						'link'    => 'false',	// Don't link to image description
-						'width'   => '520px'	// Width of containing div
+						'width'   => '520px',	// Width of containing div
 					);
 		$saved_options = get_option($this->adminOptionsName);
 		if (!empty($saved_options)) {
@@ -301,11 +326,14 @@ Class WPImageFlow2
 
 	function addScripts()
 	{
-		$plugin_url = get_option('siteurl') . "/" . PLUGINDIR . "/" . plugin_basename(dirname(__FILE__)); 			
-		
-		wp_enqueue_style( 'wpimageflow2css', $plugin_url.'/css/screen.css');
-		wp_enqueue_script('colorcode_validate', $plugin_url.'/js/colorcode_validate.js');
-		wp_enqueue_script('imageflow', $plugin_url.'/js/imageflow.js');
+		if (!is_admin()) {
+
+			$plugin_url = get_option('siteurl') . "/" . PLUGINDIR . "/" . plugin_basename(dirname(__FILE__)); 			
+			
+			wp_enqueue_style( 'wpimageflow2css', $plugin_url.'/css/screen.css');
+			wp_enqueue_script('colorcode_validate', $plugin_url.'/js/colorcode_validate.js');
+			wp_enqueue_script('wpif2_imageflow', $plugin_url.'/js/imageflow.js', array('scriptaculous-effects', 'scriptaculous-builder'));
+		}
 	}	
 	
 	function isRssFeed()
@@ -388,7 +416,7 @@ Class WPImageFlow2
 			/*
 			** Done validation, update whatever was accepted
 			*/
-			$options['gallery_url'] = $_POST['wpimageflow2_path'];
+			$options['gallery_url'] = trim($_POST['wpimageflow2_path']);
 			update_option($this->adminOptionsName, $options);
 			echo "<p>".__('Settings were saved.','wp-imageflow2')."</p></div>";	
 		}
