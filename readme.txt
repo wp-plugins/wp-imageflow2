@@ -3,25 +3,30 @@ Author: Bev Stofko
 Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Tested up to: 2.9.1
-Version: 1.1
+Version: 1.2.1
 Requires at least: 2.8.4
-Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow
+Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox
 
-WordPress implementation of the picture gallery ImageFlow. Uses either the built-in Wordpress gallery or an uploaded directory of images.
+WordPress implementation of the picture gallery ImageFlow with Lightbox effect. Uses either the built-in Wordpress gallery or an uploaded directory 
+of images. Displays simple thumbnail list if Javascript is disabled.
+
 
 == Description ==
 
-With WP-ImageFlow2 you can display nice looking ImageFlow galleries within posts and pages.
+With WP-ImageFlow2 you can display nice looking ImageFlow galleries within posts and pages. With version 1.2 you now have pretty Lightbox previews of 
+images.
 
 There are two ways to insert such a gallery.
 
 1. Use the built-in Wordpress gallery.
-2. Upload your pictures to a subfolder and use the shortcode [wp-imageflow2=FOLDERNAME]
+2. Upload your pictures to a subfolder and use the shortcode [wp-imageflow2=SUBFOLDER]
 
-You may configure the background color, text color, container width and choose black or white for the scrollbar.
+You can configure the background color, text color, container width and choose black or white for the scrollbar.
 
 When using the built in Wordpress gallery, the photo title will be displayed below each image. When using a subfolder gallery, the image name will 
 be displayed below each image.
+
+For a built-in gallery, the image may link to either the large size image or an external url.
 
 [Demo](http://www.stofko.ca/wp-imageflow2-wordpress-plugin/)
 
@@ -30,7 +35,7 @@ be displayed below each image.
 One gallery per page/post is supported.
 
 WP-ImageFlow2 is based on the discontinued WP-ImageFlow by Sven Kubiak, which is an implementation of the CoverFlow-like Picture Gallery ImageFlow 
-from Finn Rudolph.
+from Finn Rudolph. 
 
 == Installation ==
 
@@ -41,15 +46,15 @@ from Finn Rudolph.
 For a built-in Wordpress gallery:
 
 1. Use the shortcode [gallery] anywhere in a post or page
-2. If you want the image to link to an external url, enter the url in the description field of the image and enable the checkbox in the options. If the description
-field is left blank the link will go to the full size image.
+2. If you want the image to link to an external url, enter the url in the description field of the image (as http://www.website.com) and enable the 
+checkbox in the options. If the description field is left blank the link will go to the full size image.
 
 For galleries based on a subfolder:
 
 1. Create a folder for your galleries within your WordPress installation, wherever you want (has to be accessible from the internet).
-2. Set the "Path to galleries from homepage root path" in the configuration options (make sure there is no trailing space)
+2. Set the "Path to galleries from homepage root path" in the configuration options 
 3. Upload your image galleries to a subfolder of this folder
-4. Insert a gallery on a page by specifying [wp-imageflow2=FOLDERNAME].
+4. Insert a gallery on a page by specifying [wp-imageflow2=SUBFOLDER].
 
 == Frequently Asked Questions ==
 
@@ -64,7 +69,7 @@ These gallery options may be used:
 * orderby (default is menu_order ID)
 * include
 * exclude
-* size (applies to RSS feed only, medium is always used for the gallery)
+* size (applies to RSS feed only)
 
 These gallery options will be ignored:
 
@@ -102,9 +107,20 @@ At this time only one WP_ImageFlow2 gallery may be placed on a page or post.
 == Screenshots ==
 
 1. WP-ImageFlow 2
-2. Customize the background colour, text color, container width, slider color, link to description option, and gallery url 
+2. Choose the options you need. 
 
 == Changelog ==
+
+Version 1.2.1 (February 18, 2010)
+
+* Add a "close" link to the overlay div of the image Lightbox in case the full size image never loads
+
+Version 1.2 (February 16, 2010)
+
+* Use a Lightbox effect for the large size image display rather than opening a new window
+* Don't load scripts on admin pages
+* Trim spaces from the galleries url entered on the settings page
+* Display simple thumbnail gallery on browsers with Javascript disabled
 
 Version 1.1 (February 8, 2010)
 
