@@ -111,7 +111,7 @@ At this time only one WP_ImageFlow2 gallery may be placed on a page or post.
 
 == Changelog ==
 
-Version 1.2.2 ()
+Version 1.2.2 (March 2, 2010)
 
 * Remove the need for PHP 5
 * Add option to turn off reflections (if your server doesn't support GD or you just don't want them)
