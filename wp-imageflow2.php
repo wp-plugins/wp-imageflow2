@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow2
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow. 
-Version: 1.2.1
+Version: 1.2.2
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -106,6 +106,7 @@ Class WPImageFlow2
 			$txcolor = $options['txcolor'];
 			$slcolor = $options['slcolor'];
 			$width   = $options['width'];
+			$reflect = $options['reflect'];
 
 			$galleries_path = $_SERVER['DOCUMENT_ROOT'] . '/' . $options['gallery_url'];
 			if (!file_exists($galleries_path))
@@ -116,7 +117,8 @@ Class WPImageFlow2
 			*/
 			$plugin_url = get_option('siteurl') . "/" . PLUGINDIR . "/" . plugin_basename(dirname(__FILE__)); 			
 			
-			$search = "@(?:<p>)*\s*\[WP-IMAGEFLOW2\s*=\s*(\w+|^\+)\]\s*(?:</p>)*@i";
+			$search = "@(?:<p>)*\s*\[WP-IMAGEFLOW2\s*=\s*(.+|^\+)\]\s*(?:</p>)*@i";
+			//$search = "@(?:<p>)*\s*\[WP-IMAGEFLOW2\s*=\s*(\w+|^\+)\]\s*(?:</p>)*@i";
 			if (preg_match_all($search, $content, $matches, PREG_SET_ORDER))
 			{ 			
 				foreach ($matches as $match) 
@@ -138,17 +140,22 @@ Class WPImageFlow2
 						$handle = opendir($gallerypath);
 						while ($image=readdir($handle))
 						{
-							if (filetype($gallerypath."/".$image) != "dir" && !eregi('refl_',$image))
-						    {						
-								$imagepath = 'http://www.' . $_SERVER['SERVER_NAME'] . '/' . $options['gallery_url'] . $match[1] . '/' . $image;
-								$imagepath = str_replace ("www.www.", "www.", $imagepath);		
-								$pic_original 	= $imagepath;
-								$pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . $pic_original . '&bgc=' . urlencode($bgcolor);
-								/* Note that IE gets confused if we put newlines after each image, so we don't */
-								$replace .= '<img src="' . $pic_reflected . '" longdesc="' . $pic_original . '" alt="' . $image . '" rel="wpif2_lightbox"/>';
+						    if (filetype($gallerypath."/".$image) != "dir" && !eregi('refl_',$image))
+						    {
+							  $imagepath = 'http://www.' . $_SERVER['SERVER_NAME'] . '/' . $options['gallery_url'] . $match[1] . '/' . $image;
+							  $imagepath = str_replace ("www.www.", "www.", $imagepath);		
+							  $pic_original 	= $imagepath;
+							  $pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . $pic_original . '&bgc=' . urlencode($bgcolor);
 
-								/* build separate list for users with scripts disabled */
-								$noscript .= '<a href="' . $pic_original . '"><img src="' . $pic_original .'" width="100px"></a>';
+							  /* Code the image with or without reflection */
+							  /* Note that IE gets confused if we put newlines after each image, so we don't */
+							  if ($reflect == 'true') {	
+								$replace .= '<img src="' . $pic_reflected . '" longdesc="' . $pic_original . '" alt="' . $image . '" rel="wpif2_lightbox"/>';
+							  } else {
+								$replace .= '<img src="' . $pic_original . '" longdesc="' . $pic_original . '" alt="' . $image . '" rel="wpif2_lightbox"/>';
+							  }
+							  /* build separate list for users with scripts disabled */
+							  $noscript .= '<a href="' . $pic_original . '"><img src="' . $pic_original .'" width="100px"></a>';
 						    }				
 						}			
 						closedir($handle);
@@ -167,7 +174,7 @@ Class WPImageFlow2
 						$content = str_replace ($match[0], $replace, $content);	
 					}
 				}
-			}
+			} 
 		}		
 		return $content;	
 	}
@@ -244,6 +251,7 @@ Class WPImageFlow2
 		$slcolor = $options['slcolor'];
 		$width   = $options['width'];
 		$link    = $options['link'];
+		$reflect = $options['reflect'];
 
 		$plugin_url = get_option('siteurl') . "/" . PLUGINDIR . "/" . plugin_basename(dirname(__FILE__)); 			
 
@@ -282,8 +290,11 @@ Class WPImageFlow2
 				$rel = ' rel="wpif2_lightbox"';
 			}
 			/* Note that IE gets confused if we put newlines after each image, so we don't */
-			$output .= '<img src="'.$pic_reflected.'" longdesc="'.$linkurl.'"'. $rel . ' alt="'.$attachment->post_title.'"/>';
-
+			if ($reflect == 'true') {
+				$output .= '<img src="'.$pic_reflected.'" longdesc="'.$linkurl.'"'. $rel . ' alt="'.$attachment->post_title.'"/>';
+			} else {
+				$output .= '<img src="'.$pic_original.'" longdesc="'.$linkurl.'"'. $rel . ' alt="'.$attachment->post_title.'"/>';
+			}
 			/* build separate thumbnail list for users with scripts disabled */
 			$noscript .= '<a href="' . $linkurl . '"><img src="' . $pic_original .'" width="100px"></a>';
 			$i++;
@@ -314,6 +325,7 @@ Class WPImageFlow2
 						'slcolor' => 'white',	// Slider color defaults to white
 						'link'    => 'false',	// Don't link to image description
 						'width'   => '520px',	// Width of containing div
+						'reflect' => 'true',	// True to reflect images
 					);
 		$saved_options = get_option($this->adminOptionsName);
 		if (!empty($saved_options)) {
@@ -413,6 +425,15 @@ Class WPImageFlow2
 				$options['link'] = 'false';
 			}
 
+			/* 
+			** Look for reflect option
+			*/
+			if (isset ($_POST['wpimageflow2_reflect']) && ($_POST['wpimageflow2_reflect'] == 'reflect')) {
+				$options['reflect'] = 'true';
+			} else {
+				$options['reflect'] = 'false';
+			}
+
 			/*
 			** Done validation, update whatever was accepted
 			*/
@@ -469,6 +490,14 @@ Class WPImageFlow2
 					</th>
 					<td>
 					<input type="checkbox" name="wpimageflow2_link" value="link" <?php if ($options['link'] == 'true') echo ' CHECKED'; ?> />
+					</td>
+				</tr>
+				<tr>
+					<th scope="row" valign="top">
+					<? echo __('Check this box to have image reflections (requires php5 and gd).', 'wp-imageflow2'); ?>
+					</th>
+					<td>
+					<input type="checkbox" name="wpimageflow2_reflect" value="reflect" <?php if ($options['reflect'] == 'true') echo ' CHECKED'; ?> />
 					</td>
 				</tr>
 	    			<tr>

@@ -69,10 +69,15 @@
 	if (isset($_GET['img']))
 	{
 	  $source_image = $_GET['img'];
+	  $image_details = getimagesize($source_image);
+	
+	  if ($image_details === false)
+	  {
+		echo 'Not a valid image supplied, or this script does not have permissions to access it.';
+		exit();
+	  }
 
-	  $AgetHeaders = @get_headers($source_image);
-	  if (preg_match("|200|", $AgetHeaders[0])) {
-            if ($cache)
+        if ($cache)
             {
                 $cache_dir = dirname($source_image);
                 $cache_base = basename($source_image);
@@ -88,12 +93,6 @@
                     exit();
                 }
             }
-        }
-        else
-        {
-          echo "Cannot find or read source image $source_image";
-          exit();
-        }
 	}
 	else
 	{

@@ -3,7 +3,7 @@ Author: Bev Stofko
 Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Tested up to: 2.9.1
-Version: 1.2.1
+Version: 1.2.2
 Requires at least: 2.8.4
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox
 
@@ -110,6 +110,11 @@ At this time only one WP_ImageFlow2 gallery may be placed on a page or post.
 2. Choose the options you need. 
 
 == Changelog ==
+
+Version 1.2.2 ()
+
+* Remove the need for PHP 5
+* Add option to turn off reflections (if your server doesn't support GD or you just don't want them)
 
 Version 1.2.1 (February 18, 2010)
 
