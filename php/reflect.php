@@ -223,20 +223,10 @@
 	*/
 	
 	//	How big is the image?
-	$image_details = getimagesize($source_image);
-	
-	if ($image_details === false)
-	{
-		echo 'Not a valid image supplied, or this script does not have permissions to access it.';
-		exit();
-	}
-	else
-	{
-		$width = $image_details[0];
-		$height = $image_details[1];
-		$type = $image_details[2];
-		$mime = $image_details['mime'];
-	}
+	$width = $image_details[0];
+	$height = $image_details[1];
+	$type = $image_details[2];
+	$mime = $image_details['mime'];
 	
 	//	Calculate the height of the output image
 	if ($output_height < 1)
