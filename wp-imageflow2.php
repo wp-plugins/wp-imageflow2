@@ -494,7 +494,7 @@ Class WPImageFlow2
 				</tr>
 				<tr>
 					<th scope="row" valign="top">
-					<? echo __('Check this box to have image reflections (requires php5 and gd).', 'wp-imageflow2'); ?>
+					<? echo __('Check this box to have image reflections (requires gd).', 'wp-imageflow2'); ?>
 					</th>
 					<td>
 					<input type="checkbox" name="wpimageflow2_reflect" value="reflect" <?php if ($options['reflect'] == 'true') echo ' CHECKED'; ?> />
