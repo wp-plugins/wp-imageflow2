@@ -69,6 +69,13 @@
 	if (isset($_GET['img']))
 	{
 	  $source_image = $_GET['img'];
+
+	  // Convert from url to relative path so more servers support the functions
+	  $dir_array = parse_url($source_image);
+	  $url_path = $dir_array['path'];
+
+        $source_image = $_SERVER['DOCUMENT_ROOT'] . $url_path;
+
 	  $image_details = getimagesize($source_image);
 	
 	  if ($image_details === false)
