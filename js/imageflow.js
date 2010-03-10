@@ -1,6 +1,10 @@
 /**
- *	ImageFlow 0.9
+ *	ImageFlow 0.9 modified to work with Lightbox 
  *
+ *    This is a combination of the ImageFlow gallery with Lightbox pop-ups when linking to an image.
+ *    Copyright Bev Stofko 
+ *
+ *    Original ImageFlow 0.9 Comments-----------------------------:
  *	This code is based on Michael L. Perrys Cover flow in Javascript.
  *	For he wrote that "You can take this code and use it as your own" [1]
  *	this is my attempt to improve some things. Feel free to use it! If
@@ -13,6 +17,7 @@
  *	JavaScript mouse wheel code [4].
  *
  *	Thanks to Stephan Droste ImageFlow is now compatible with Safari 1.x.
+ *    --------------------------------------------------------------
  *
  *
  *	[1] http://www.adventuresinsoftware.com/blog/?p=104#comment-1981
@@ -25,17 +30,23 @@
 /* Configuration variables */
 var conf_reflection_p = 0.5;         // Sets the height of the reflection in % of the source image 
 var conf_focus = 4;                  // Sets the numbers of images on each side of the focussed one
-var conf_slider_width = 14;          // Sets the px width of the slider div
-var conf_images_cursor = 'pointer';  // Sets the cursor type for all images default is 'default'
-var conf_slider_cursor = 'default';  // Sets the slider cursor type: try "e-resize" default is 'default'
+var conf_wpif2_slider_width = 14;          // Sets the px width of the slider div
+var conf_wpif2_images_cursor = 'pointer';  // Sets the cursor type for all images default is 'default'
+var conf_wpif2_slider_cursor = 'default';  // Sets the slider cursor type: try "e-resize" default is 'default'
 
-/* Id names used in the HTML */
-var conf_imageflow = 'imageflow';    // Default is 'imageflow'
-var conf_loading = 'loading';        // Default is 'loading'
-var conf_images = 'images';          // Default is 'images'
-var conf_captions = 'captions';      // Default is 'captions'
-var conf_scrollbar = 'scrollbar';    // Default is 'scrollbar'
-var conf_slider = 'slider';          // Default is 'slider'
+/* HTML div ids that we manipulate here */
+var wpif2_imageflowdiv     = 'wpif2_imageflow';
+var wpif2_loadingdiv       = 'wpif2_loading';
+var wpif2_imagesdiv        = 'wpif2_images';
+var wpif2_captionsdiv      = 'wpif2_captions';
+var wpif2_sliderdiv        = 'wpif2_slider';
+var wpif2_scrollbardiv     = 'wpif2_scrollbar';
+var wpif2_overlaydiv       = 'wpif2_overlay';
+var wpif2_overlayclosediv  = 'wpif2_overlayclose';
+var wpif2_topboxdiv        = 'wpif2_topbox';
+var wpif2_topboximgdiv     = 'wpif2_topboximg';
+var wpif2_topboxcaptiondiv = 'wpif2_topboxcaption';
+var wpif2_topboxclosediv   = 'wpif2_topboxclose';
 
 /* Define global variables */
 var caption_id = 0;
@@ -91,7 +102,7 @@ function glideTo(x, new_caption_id)
 	if (dragging == false)
 	{
 		new_slider_pos = (scrollbar_width * (-(x*100/((max-1)*xstep))) / 100) - new_posx;
-		slider_div.style.marginLeft = (new_slider_pos - conf_slider_width) + 'px';
+		slider_div.style.marginLeft = (new_slider_pos - conf_wpif2_slider_width) + 'px';
 	}
 }
 
@@ -166,8 +177,13 @@ function moveTo(x)
 
 				default:
 					zIndex = zIndex + 1;
-					//image.onclick = function() { document.location = this.url; }
-					image.onclick = function() { window.open (this.url); }
+  					if (image.getAttribute("rel") == 'wpif2_lightbox') {
+						image.setAttribute("href",image.url),
+						image.setAttribute("title",image.getAttribute('alt'));
+						image.onclick = function () { showTop(this);return false; }
+					} else {
+						image.onclick = function() { window.open (this.url); }
+					}
 					break;
 			}
 			image.style.zIndex = zIndex;
@@ -180,11 +196,11 @@ function moveTo(x)
 function refresh(onload)
 {
 	/* Cache document objects in global variables */
-	imageflow_div = document.getElementById(conf_imageflow);
-	img_div = document.getElementById(conf_images);
-	scrollbar_div = document.getElementById(conf_scrollbar);
-	slider_div = document.getElementById(conf_slider);
-	caption_div = document.getElementById(conf_captions);
+	imageflow_div = document.getElementById(wpif2_imageflowdiv);
+	img_div = document.getElementById(wpif2_imagesdiv);
+	scrollbar_div = document.getElementById(wpif2_scrollbardiv);
+	slider_div = document.getElementById(wpif2_sliderdiv);
+	caption_div = document.getElementById(wpif2_captionsdiv);
 
 	/* Cache global variables, that only change on refresh */
 	images_width = img_div.offsetWidth;
@@ -193,7 +209,7 @@ function refresh(onload)
 	max_conf_focus = conf_focus * xstep;
 	size = images_width * 0.5;
 	scrollbar_width = images_width * 0.6;
-	conf_slider_width = conf_slider_width * 0.5;
+	conf_wpif2_slider_width = conf_wpif2_slider_width * 0.5;
 	max_height = images_width * 0.51;
 
 	/* Change imageflow div properties */
@@ -213,7 +229,7 @@ function refresh(onload)
 	
 	/* Set slider attributes */
 	slider_div.onmousedown = function () { dragstart(this); };
-	slider_div.style.cursor = conf_slider_cursor;
+	slider_div.style.cursor = conf_wpif2_slider_cursor;
 
 	/* Cache EVERYTHING! */
 	max = img_div.childNodes.length;
@@ -221,7 +237,7 @@ function refresh(onload)
 	for (var index = 0; index < max; index++)
 	{ 
 		var image = img_div.childNodes.item(index);
-		if (image.nodeType == 1)
+		if ((image.nodeType == 1) && (image.nodeName != "NOSCRIPT"))
 		{
 			array_images[i] = index;
 			
@@ -253,10 +269,15 @@ function refresh(onload)
 
 			/* Set ondblclick event */
 			image.url = image.getAttribute('longdesc');
-			image.ondblclick = function() { window.open (this.url); }
-
+			if (image.getAttribute("rel") == 'wpif2_lightbox') {
+				image.setAttribute("href",image.url),
+				image.setAttribute("title",image.getAttribute('alt'));
+				image.ondblclick = function () { showTop(this);return false; }
+			} else {
+				image.ondblclick = function() { window.open (this.url); }
+			}
 			/* Set image cursor type */
-			image.style.cursor = conf_images_cursor;
+			image.style.cursor = conf_wpif2_images_cursor;
 
 			i++;
 		}
@@ -281,15 +302,49 @@ function hide(id)
 	element.style.display = 'none';
 }
 
-/* Hide loading bar, show content and initialize mouse event listening after loading */
-window.onload = function()
+/* Show loading bar while page is loading */
+document.observe("dom:loaded", loading);
+function loading()
 {
-	if(document.getElementById(conf_imageflow))
+	show(wpif2_loadingdiv);
+
+	/* set up onload function */
+	if(typeof window.onload === "function")
+	  {
+		var oldonload = window.onload;
+		window.onload = function()
+		{
+			loaded();
+			oldonload();
+		};
+	} else window.onload = loaded;
+}
+
+/* Hide loading bar, show content and initialize mouse event listening after loading */
+function loaded ()
+{
+      var objBody = $$('body')[0];
+
+	objBody.appendChild(Builder.node('div',{id:wpif2_overlaydiv}, Builder.node('a',{id:wpif2_overlayclosediv, href: '#' })));
+	
+      objBody.appendChild(Builder.node('div',{id:wpif2_topboxdiv}, [
+                Builder.node('img',{id:wpif2_topboximgdiv}), 
+                Builder.node('div',{id:wpif2_topboxcaptiondiv}),
+                Builder.node('a',{id:wpif2_topboxclosediv, href: '#' }) ]));
+
+	close_div = document.getElementById(wpif2_topboxclosediv);
+	close_div.onclick = function () { closeTop(); return false; };
+	close_div.innerHTML = "Close";
+	close2_div = document.getElementById(wpif2_overlayclosediv);
+	close2_div.onclick = function () { closeTop(); return false; };
+	close2_div.innerHTML = "Close";
+		
+	if(document.getElementById(wpif2_imageflowdiv))
 	{
-		hide(conf_loading);
+		hide(wpif2_loadingdiv);
 		refresh(true);
-		show(conf_images);
-		show(conf_scrollbar);
+		show(wpif2_imagesdiv);
+		show(wpif2_scrollbardiv);
 		initMouseWheel();
 		initMouseDrag();
 	}
@@ -298,7 +353,7 @@ window.onload = function()
 /* Refresh ImageFlow on window resize */
 window.onresize = function()
 {
-	if(document.getElementById(conf_imageflow)) refresh();
+	if(document.getElementById(wpif2_imageflowdiv)) refresh();
 }
 
 /* Fixes the back button issue */
@@ -386,7 +441,7 @@ function drag(e)
 	if(dragobject != null)
 	{
 		dragging = true;
-		new_posx = (posx - dragx) + conf_slider_width;
+		new_posx = (posx - dragx) + conf_wpif2_slider_width;
 
 		/* Make sure, that the slider is moved in proper relation to previous movements by the glideTo function */
 		if(new_posx < ( - new_slider_pos)) new_posx = - new_slider_pos;
@@ -444,4 +499,187 @@ document.onkeydown = function(event)
 			handle(1);
 			break;
 	}
+}
+
+function getPageScroll(){
+	var xScroll, yScroll;
+	if (self.pageYOffset) {
+		yScroll = self.pageYOffset;
+		xScroll = self.pageXOffset;
+	} else if (document.documentElement && document.documentElement.scrollTop){	 // Explorer 6 Strict
+		yScroll = document.documentElement.scrollTop;
+		xScroll = document.documentElement.scrollLeft;
+	} else if (document.body) {// all other Explorers
+		yScroll = document.body.scrollTop;
+		xScroll = document.body.scrollLeft;	
+	}
+	arrayPageScroll = new Array(xScroll,yScroll) 
+	return arrayPageScroll;
+}
+
+function getPageSize(){
+	var xScroll, yScroll;
+	if (window.innerHeight && window.scrollMaxY) {	
+		xScroll = window.innerWidth + window.scrollMaxX;
+		yScroll = window.innerHeight + window.scrollMaxY;
+	} else if (document.body.scrollHeight > document.body.offsetHeight){ // all but Explorer Mac
+		xScroll = document.body.scrollWidth;
+		yScroll = document.body.scrollHeight;
+	} else { // Explorer Mac...would also work in Explorer 6 Strict, Mozilla and Safari
+		xScroll = document.body.offsetWidth;
+		yScroll = document.body.offsetHeight;
+	}
+	var windowWidth, windowHeight;
+	if (self.innerHeight) {	// all except Explorer
+		if(document.documentElement.clientWidth){
+			windowWidth = document.documentElement.clientWidth; 
+		} else {
+			windowWidth = self.innerWidth;
+		}
+		windowHeight = self.innerHeight;
+	} else if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode
+		windowWidth = document.documentElement.clientWidth;
+		windowHeight = document.documentElement.clientHeight;
+	} else if (document.body) { // other Explorers
+		windowWidth = document.body.clientWidth;
+		windowHeight = document.body.clientHeight;
+	}
+	// for small pages with total height less then height of the viewport
+	if(yScroll < windowHeight){
+		pageHeight = windowHeight;
+	} else { 
+		pageHeight = yScroll;
+	}
+	// for small pages with total width less then width of the viewport
+	if(xScroll < windowWidth){	
+		pageWidth = xScroll;		
+	} else {
+		pageWidth = windowWidth;
+	}
+	arrayPageSize = new Array(pageWidth,pageHeight,windowWidth,windowHeight) 
+	return arrayPageSize;
+}
+
+function showFlash(){
+	var flashObjects = document.getElementsByTagName("object");
+	for (i = 0; i < flashObjects.length; i++) {
+		flashObjects[i].style.visibility = "visible";
+	}
+	var flashEmbeds = document.getElementsByTagName("embed");
+	for (i = 0; i < flashEmbeds.length; i++) {
+		flashEmbeds[i].style.visibility = "visible";
+	}
+}
+
+function hideFlash(){
+	var flashObjects = document.getElementsByTagName("object");
+	for (i = 0; i < flashObjects.length; i++) {
+		flashObjects[i].style.visibility = "hidden";
+	}
+	var flashEmbeds = document.getElementsByTagName("embed");
+	for (i = 0; i < flashEmbeds.length; i++) {
+		flashEmbeds[i].style.visibility = "hidden";
+	}
+}
+
+function showTop(image)
+{
+	topbox_div = document.getElementById(wpif2_topboxdiv);
+	overlay_div = document.getElementById(wpif2_overlaydiv);
+	topboximg_div = document.getElementById(wpif2_topboximgdiv);
+
+	// Hide flash objects
+	hideFlash();
+
+	// Show the background overlay ...
+	var arrayPageSize = getPageSize();
+	overlay_div.style.width = arrayPageSize[0] + "px";
+	overlay_div.style.height = arrayPageSize[1] + "px";
+	overlay_div.style.visibility = 'visible';
+
+	// Get the top box data set up first
+	topboximg_div.src = image.getAttribute('href');
+	document.getElementById(wpif2_topboxcaptiondiv).innerHTML = image.getAttribute('title');
+
+	// get the image actual size by preloading into 't'
+	var t = new Image();
+      t.onload = (function(){	showImg(image, t.width, t.height); });
+	t.src = image.getAttribute("href");
+
+	// Now wait until 't' is loaded
+}
+
+
+function showImg(image, img_width, img_height) 
+{	
+	// Do nothing if the overlay was closed in the meantime
+	if (document.getElementById(wpif2_overlaydiv).style.visibility == 'hidden') return;
+	
+	// Go ahead with the fade up
+	topbox_div = document.getElementById(wpif2_topboxdiv);
+	overlay_div = document.getElementById(wpif2_overlaydiv);
+	topboximg_div = document.getElementById(wpif2_topboximgdiv);
+
+	// Size the box a bit taller than the image
+	boxWidth = img_width;
+	boxHeight = img_height + 30;
+
+	// Set the image width property
+	topboximg_div.width = boxWidth;
+
+	var arrayPageSize = getPageSize();
+	var screenWidth = arrayPageSize[2];
+	var screenHeight = arrayPageSize[3];
+
+	var arrayPageScroll = getPageScroll();
+
+	//if (self.innerHeight) {	// all except Explorer
+	//	if(document.documentElement.clientWidth){
+	//		screenWidth = document.documentElement.clientWidth; 
+	//	} else {
+	//		screenWidth = self.innerWidth;
+	//	}
+	//	screenHeight = self.innerHeight;
+	//} else if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode
+	//	screenWidth = document.documentElement.clientWidth;
+	//	screenHeight = document.documentElement.clientHeight;
+	//} else if (document.body) { // other Explorers
+	//	screenWidth = document.body.clientWidth;
+	//	screenHeight = document.body.clientHeight;
+	//}
+
+	// scale the box if the image is larger than the screen
+	if (boxWidth > screenWidth) {
+		boxHeight = Math.floor(boxHeight * screenWidth / boxWidth);
+		boxWidth = screenWidth - 100;
+		topboximg_div.width = boxWidth;
+	}
+	if (boxHeight > screenHeight) {
+		boxWidth = Math.floor(boxWidth * screenHeight / boxHeight);
+		boxHeight = screenHeight - 100;
+		topboximg_div.width = boxWidth;
+	}
+
+	xPos = Math.floor((screenWidth - boxWidth) * 0.5) + arrayPageScroll[0];
+	yPos = Math.floor((screenHeight - boxHeight) * 0.5) + arrayPageScroll[1];
+
+	topbox_div.style.left = xPos + 'px';
+	topbox_div.style.top = yPos + 'px';
+	topbox_div.style.width = boxWidth + 'px';
+
+	// Finally show the topbox...
+	topbox_div.style.display = 'none';
+	topbox_div.style.visibility = 'visible';
+	new Effect.Appear(topbox_div, { from: 0.0, to: 1.0, duration: .4 });
+
+}
+
+function closeTop()
+{
+	//Hide the overlay and tobox...
+	document.getElementById(wpif2_overlaydiv).style.visibility='hidden';
+	document.getElementById(wpif2_topboxdiv).style.visibility='hidden';
+
+	// Show hidden objects
+	showFlash();
 }
