@@ -177,8 +177,7 @@ function moveTo(x)
 
 				default:
 					zIndex = zIndex + 1;
-  					if (image.getAttribute("rel") == 'wpif2_lightbox') {
-						image.setAttribute("href",image.url),
+  					if (image.getAttribute("rel") && (image.getAttribute("rel") == 'wpif2_lightbox')) {
 						image.setAttribute("title",image.getAttribute('alt'));
 						image.onclick = function () { showTop(this);return false; }
 					} else {
@@ -206,6 +205,7 @@ function refresh(onload)
 	images_width = img_div.offsetWidth;
 	images_top = imageflow_div.offsetTop;
 	images_left = imageflow_div.offsetLeft;
+
 	max_conf_focus = conf_focus * xstep;
 	size = images_width * 0.5;
 	scrollbar_width = images_width * 0.6;
@@ -269,8 +269,7 @@ function refresh(onload)
 
 			/* Set ondblclick event */
 			image.url = image.getAttribute('longdesc');
-			if (image.getAttribute("rel") == 'wpif2_lightbox') {
-				image.setAttribute("href",image.url),
+			if (image.getAttribute("rel") && (image.getAttribute("rel") == 'wpif2_lightbox')) {
 				image.setAttribute("title",image.getAttribute('alt'));
 				image.ondblclick = function () { showTop(this);return false; }
 			} else {
@@ -318,6 +317,11 @@ function loading()
 			oldonload();
 		};
 	} else window.onload = loaded;
+
+	window.onunload = function(){
+		/* Fixes the back button issue */
+		document = null;
+	}
 }
 
 /* Hide loading bar, show content and initialize mouse event listening after loading */
@@ -354,12 +358,6 @@ function loaded ()
 window.onresize = function()
 {
 	if(document.getElementById(wpif2_imageflowdiv)) refresh();
-}
-
-/* Fixes the back button issue */
-window.onunload = function()
-{
-  document = null;
 }
 
 
@@ -598,13 +596,13 @@ function showTop(image)
 	overlay_div.style.visibility = 'visible';
 
 	// Get the top box data set up first
-	topboximg_div.src = image.getAttribute('href');
+	topboximg_div.src = image.url;
 	document.getElementById(wpif2_topboxcaptiondiv).innerHTML = image.getAttribute('title');
 
 	// get the image actual size by preloading into 't'
 	var t = new Image();
       t.onload = (function(){	showImg(image, t.width, t.height); });
-	t.src = image.getAttribute("href");
+	t.src = image.url;
 
 	// Now wait until 't' is loaded
 }
@@ -632,21 +630,6 @@ function showImg(image, img_width, img_height)
 	var screenHeight = arrayPageSize[3];
 
 	var arrayPageScroll = getPageScroll();
-
-	//if (self.innerHeight) {	// all except Explorer
-	//	if(document.documentElement.clientWidth){
-	//		screenWidth = document.documentElement.clientWidth; 
-	//	} else {
-	//		screenWidth = self.innerWidth;
-	//	}
-	//	screenHeight = self.innerHeight;
-	//} else if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode
-	//	screenWidth = document.documentElement.clientWidth;
-	//	screenHeight = document.documentElement.clientHeight;
-	//} else if (document.body) { // other Explorers
-	//	screenWidth = document.body.clientWidth;
-	//	screenHeight = document.body.clientHeight;
-	//}
 
 	// scale the box if the image is larger than the screen
 	if (boxWidth > screenWidth) {
