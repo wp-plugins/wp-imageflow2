@@ -20,6 +20,11 @@ There are two ways to insert a WP-ImageFlow2 gallery:
 1. Use the built-in Wordpress gallery use the shortcode [wp-imageflow2]
 2. Upload your pictures to a subfolder and use the shortcode [wp-imageflow2 dir=SUBFOLDER]
 
+IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
+
+* Use [wp-imageflow2] instead of [gallery]
+* Use [wp-imageflow2 dir=SUBFOLDER] instead of [wp-imageflow2=SUBFOLDER]
+
 You can configure the background color, text color, container width and choose black or white for the scrollbar.
 
 When using the built in Wordpress gallery, the photo title will be displayed below each image. When using a subfolder gallery, the image name will 
@@ -30,11 +35,6 @@ For a built-in gallery, the image may link to either the large size image or an 
 [Demo](http://www.stofko.ca/wp-imageflow2-wordpress-plugin/)
 
 = Notes =
-
-IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
-
-* Use [wp-imageflow2] instead of [gallery]
-* Use [wp-imageflow2 dir=SUBFOLDER] instead of [wp-imageflow2=SUBFOLDER]
 
 One gallery per page/post is supported.
 
