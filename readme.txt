@@ -69,7 +69,7 @@ For galleries based on a subfolder:
 
 = How do I make a built-in gallery display as ImageFlow? =
 
-Use the Wordpress gallery shortcode [wp-imageflow2].
+Create a standard Wordpress gallery and use the shortcode [wp-imageflow2] in your post or page.
 
 These gallery options may be used:
 
