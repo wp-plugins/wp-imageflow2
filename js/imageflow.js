@@ -170,7 +170,7 @@ moveTo:function(x)
 			switch ( image.i == this.caption_id )
 			{
 				case false:
-					image.onclick = function() { this.glideTo(this.x_pos, this.i); }
+					image.onclick = function() { imageflow2.glideTo(this.x_pos, this.i); }
 					break;
 
 				default:
@@ -240,7 +240,7 @@ refresh:function(onload)
 			this.array_images[i] = index;
 			
 			/* Set image onclick by adding i and x_pos as attributes! */
-			image.onclick = function() { this.glideTo(this.x_pos, this.i); }
+			image.onclick = function() { imageflow2.glideTo(this.x_pos, this.i); }
 			image.x_pos = (-i * this.xstep);
 			image.i = i;
 			
