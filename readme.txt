@@ -122,7 +122,7 @@ At this time only one WP_ImageFlow2 gallery may be placed on a page or post.
 
 Version 1.3.0 (March 25, 2010)
 
-* New shortcode method: [wp-imageflow2] for the built-in gallery and [wp-imageflow2 dir=subdir] for a subdirectory
+* New shortcode method: [wp-imageflow2] for the built-in gallery and [wp-imageflow2 dir=subdir] for a subdirectory. YOU MUST UPDATE YOUR SHORTCODES WHEN UPGRADING FROM A PREVIOUS VERSION.
 * Dropped support for prior shortcode method
 * Organize code into a class to prevent potential collisions with other plugins
 * General code clean-up
