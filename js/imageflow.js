@@ -311,21 +311,21 @@ setup:function()
 		var oldonunload = window.onunload;
 		window.onunload = function()
 		{
-			this.unloaded();
+			imageflow2.unloaded();
 			oldonunload();
 		};
-	} else window.onunload = this.unloaded;
+	} else window.onunload = imageflow2.unloaded;
 
 	if(typeof window.onload === "function")
 	  {
 		var oldonload = window.onload;
 		window.onload = function()
 		{
-			this.loaded();
+			imageflow2.loaded();
 			oldonload();
 		};
 	} else {
-		window.onload = this.loaded;
+		window.onload = imageflow2.loaded;
 	}
 
 	/* Refresh Imageflow2 on window resize */
