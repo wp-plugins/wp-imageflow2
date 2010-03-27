@@ -68,11 +68,6 @@
 #wpif2_overlay
 {
 	background-color: #000000; /* The color to display*/
-
-	/* The transparency of the background */
-	opacity: .75;
-	filter: alpha(opacity=75);
-
 	position: absolute;
 	left: 0px;
 	top: 0px;
