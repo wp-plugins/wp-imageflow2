@@ -1,6 +1,10 @@
 /**
- *	ImageFlow 0.9
+ *	ImageFlow 0.9 modified to work with Lightbox 
  *
+ *    This is a combination of the ImageFlow gallery with Lightbox pop-ups when linking to an image.
+ *    Copyright Bev Stofko 
+ *
+ *    Original ImageFlow 0.9 Comments-----------------------------:
  *	This code is based on Michael L. Perrys Cover flow in Javascript.
  *	For he wrote that "You can take this code and use it as your own" [1]
  *	this is my attempt to improve some things. Feel free to use it! If
@@ -13,6 +17,7 @@
  *	JavaScript mouse wheel code [4].
  *
  *	Thanks to Stephan Droste ImageFlow is now compatible with Safari 1.x.
+ *    --------------------------------------------------------------
  *
  *
  *	[1] http://www.adventuresinsoftware.com/blog/?p=104#comment-1981
@@ -21,93 +26,97 @@
  *	[4] http://adomas.org/javascript-mouse-wheel/
  */
 
+var imageflow2 = {
 
 /* Configuration variables */
-var conf_reflection_p = 0.5;         // Sets the height of the reflection in % of the source image 
-var conf_focus = 4;                  // Sets the numbers of images on each side of the focussed one
-var conf_slider_width = 14;          // Sets the px width of the slider div
-var conf_images_cursor = 'pointer';  // Sets the cursor type for all images default is 'default'
-var conf_slider_cursor = 'default';  // Sets the slider cursor type: try "e-resize" default is 'default'
+conf_reflection_p: 	0.5,		// Sets the height of the reflection in % of the source image 
+conf_focus: 		4,          // Sets the numbers of images on each side of the focussed one
+conf_ib_slider_width:	14,         // Sets the px width of the slider div
+conf_ib_images_cursor:	'pointer',  // Sets the cursor type for all images default is 'default'
+conf_ib_slider_cursor:	'default',  // Sets the slider cursor type: try "e-resize" default is 'default'
 
-/* Id names used in the HTML */
-var conf_imageflow = 'imageflow';    // Default is 'imageflow'
-var conf_loading = 'loading';        // Default is 'loading'
-var conf_images = 'images';          // Default is 'images'
-var conf_captions = 'captions';      // Default is 'captions'
-var conf_scrollbar = 'scrollbar';    // Default is 'scrollbar'
-var conf_slider = 'slider';          // Default is 'slider'
+/* HTML div ids that we manipulate here */
+ib_imageflow2div:		'wpif2_imageflow',
+ib_loadingdiv:		'wpif2_loading',
+ib_imagesdiv:		'wpif2_images',
+ib_captionsdiv:		'wpif2_captions',
+ib_sliderdiv:		'wpif2_slider',
+ib_scrollbardiv:		'wpif2_scrollbar',
+ib_overlaydiv:		'wpif2_overlay',
+ib_overlayclosediv:	'wpif2_overlayclose',
+ib_topboxdiv:		'wpif2_topbox',
+ib_topboximgdiv:		'wpif2_topboximg',
+ib_topboxcaptiondiv:	'wpif2_topboxcaption',
+ib_topboxclosediv:	'wpif2_topboxclose',
 
 /* Define global variables */
-var caption_id = 0;
-var new_caption_id = 0;
-var current = 0;
-var target = 0;
-var mem_target = 0;
-var timer = 0;
-var array_images = new Array();
-var new_slider_pos = 0;
-var dragging = false;
-var dragobject = null;
-var dragx = 0;
-var posx = 0;
-var new_posx = 0;
-var xstep = 150;
+caption_id:		0,
+new_caption_id:	0,
+current:		0,
+target:		0,
+mem_target:		0,
+timer:		0,
+array_images:	[],
+new_slider_pos:	0,
+dragging:		false,
+dragobject:		null,
+dragx:		0,
+posx:			0,
+new_posx:		0,
+xstep:		150,
 
-
-function step()
-{
-	switch (target < current-1 || target > current+1) 
+step:function() {
+	switch (imageflow2.target < imageflow2.current-1 || imageflow2.target > imageflow2.current+1) 
 	{
 		case true:
-			moveTo(current + (target-current)/3);
-			window.setTimeout(step, 50);
-			timer = 1;
+			imageflow2.moveTo(imageflow2.current + (imageflow2.target-imageflow2.current)/3);
+			window.setTimeout(imageflow2.step, 50);
+			imageflow2.timer = 1;
 			break;
 
 		default:
-			timer = 0;
+			imageflow2.timer = 0;
 			break;
 	}
-}
+},
 
-function glideTo(x, new_caption_id)
-{	
+glideTo:function(x, new_caption_id) {	
 	/* Animate gliding to new x position */
-	target = x;
-	mem_target = x;
-	if (timer == 0)
+	this.target = x;
+	this.mem_target = x;
+	if (this.timer == 0)
 	{
-		window.setTimeout(step, 50);
-		timer = 1;
+		window.setTimeout(this.step, 50);
+		this.timer = 1;
 	}
 	
 	/* Display new caption */
-	caption_id = new_caption_id;
-	caption = img_div.childNodes.item(array_images[caption_id]).getAttribute('alt');
+	this.caption_id = new_caption_id;
+	caption = img_div.childNodes.item(this.array_images[this.caption_id]).getAttribute('alt');
 	if (caption == '') caption = '&nbsp;';
 	caption_div.innerHTML = caption;
 
 	/* Set scrollbar slider to new position */
-	if (dragging == false)
+	if (this.dragging == false)
 	{
-		new_slider_pos = (scrollbar_width * (-(x*100/((max-1)*xstep))) / 100) - new_posx;
-		slider_div.style.marginLeft = (new_slider_pos - conf_slider_width) + 'px';
+		this.new_slider_pos = (scrollbar_width * (-(x*100/((max-1)*this.xstep))) / 100) - this.new_posx;
+		slider_div.style.marginLeft = (this.new_slider_pos - this.conf_ib_slider_width) + 'px';
 	}
-}
+},
 
-function moveTo(x)
+moveTo:function(x)
 {
-	current = x;
+	this.current = x;
 	var zIndex = max;
 	
 	/* Main loop */
 	for (var index = 0; index < max; index++)
 	{
-		var image = img_div.childNodes.item(array_images[index]);
-		var current_image = index * -xstep;
+		var image = img_div.childNodes.item(this.array_images[index]);
+		var current_image = index * -this.xstep;
 
-		/* Don't display images that are not conf_focussed */
-		if ((current_image+max_conf_focus) < mem_target || (current_image-max_conf_focus) > mem_target)
+		/* Don't display images that are not this.conf_focussed */
+		if ((current_image+this.max_conf_focus) < this.mem_target || (current_image-this.max_conf_focus) > this.mem_target)
 		{
 			image.style.visibility = 'hidden';
 			image.style.display = 'none';
@@ -133,7 +142,7 @@ function moveTo(x)
 					var new_img_w = image.w * new_img_h / image.h;
 					break;
 			}
-			var new_img_top = (images_width * 0.34 - new_img_h) + images_top + ((new_img_h / (conf_reflection_p + 1)) * conf_reflection_p);
+			var new_img_top = (images_width * 0.34 - new_img_h) + images_top + ((new_img_h / (this.conf_reflection_p + 1)) * this.conf_reflection_p);
 
 			/* Set new image properties */
 			image.style.left = xs - (image.pc / 2) / z * size + images_left + 'px';
@@ -158,46 +167,51 @@ function moveTo(x)
 			}
 			
 			/* Change zIndex and onclick function of the focussed image */
-			switch ( image.i == caption_id )
+			switch ( image.i == this.caption_id )
 			{
 				case false:
-					image.onclick = function() { glideTo(this.x_pos, this.i); }
+					image.onclick = function() { imageflow2.glideTo(this.x_pos, this.i); }
 					break;
 
 				default:
 					zIndex = zIndex + 1;
-					//image.onclick = function() { document.location = this.url; }
-					image.onclick = function() { window.open (this.url); }
+  					if (image.getAttribute("rel") && (image.getAttribute("rel") == 'wpif2_lightbox')) {
+						image.setAttribute("title",image.getAttribute('alt'));
+						image.onclick = function () { imageflow2.showTop(this);return false; }
+					} else {
+						image.onclick = function() { window.open (this.url); }
+					}
 					break;
 			}
 			image.style.zIndex = zIndex;
 		}
-		x += xstep;
+		x += this.xstep;
 	}
-}
+},
 
 /* Main function */
-function refresh(onload)
+refresh:function(onload)
 {
 	/* Cache document objects in global variables */
-	imageflow_div = document.getElementById(conf_imageflow);
-	img_div = document.getElementById(conf_images);
-	scrollbar_div = document.getElementById(conf_scrollbar);
-	slider_div = document.getElementById(conf_slider);
-	caption_div = document.getElementById(conf_captions);
+	imageflow2_div = document.getElementById(this.ib_imageflow2div);
+	img_div = document.getElementById(this.ib_imagesdiv);
+	scrollbar_div = document.getElementById(this.ib_scrollbardiv);
+	slider_div = document.getElementById(this.ib_sliderdiv);
+	caption_div = document.getElementById(this.ib_captionsdiv);
 
 	/* Cache global variables, that only change on refresh */
 	images_width = img_div.offsetWidth;
-	images_top = imageflow_div.offsetTop;
-	images_left = imageflow_div.offsetLeft;
-	max_conf_focus = conf_focus * xstep;
+	images_top = imageflow2_div.offsetTop;
+	images_left = imageflow2_div.offsetLeft;
+
+	this.max_conf_focus = this.conf_focus * this.xstep;
 	size = images_width * 0.5;
 	scrollbar_width = images_width * 0.6;
-	conf_slider_width = conf_slider_width * 0.5;
+	this.conf_ib_slider_width = this.conf_ib_slider_width * 0.5;
 	max_height = images_width * 0.51;
 
-	/* Change imageflow div properties */
-	imageflow_div.style.height = max_height + 'px';
+	/* Change imageflow2 div properties */
+	imageflow2_div.style.height = max_height + 'px';
 
 	/* Change images div properties */
 	img_div.style.height = images_width * 0.338 + 'px';
@@ -212,8 +226,8 @@ function refresh(onload)
 	scrollbar_div.style.width = scrollbar_width + 'px';
 	
 	/* Set slider attributes */
-	slider_div.onmousedown = function () { dragstart(this); };
-	slider_div.style.cursor = conf_slider_cursor;
+	slider_div.onmousedown = function () { imageflow2.dragstart(this); };
+	slider_div.style.cursor = this.conf_ib_slider_cursor;
 
 	/* Cache EVERYTHING! */
 	max = img_div.childNodes.length;
@@ -221,13 +235,13 @@ function refresh(onload)
 	for (var index = 0; index < max; index++)
 	{ 
 		var image = img_div.childNodes.item(index);
-		if (image.nodeType == 1)
+		if ((image.nodeType == 1) && (image.nodeName != "NOSCRIPT"))
 		{
-			array_images[i] = index;
+			this.array_images[i] = index;
 			
 			/* Set image onclick by adding i and x_pos as attributes! */
-			image.onclick = function() { glideTo(this.x_pos, this.i); }
-			image.x_pos = (-i * xstep);
+			image.onclick = function() { imageflow2.glideTo(this.x_pos, this.i); }
+			image.x_pos = (-i * this.xstep);
 			image.i = i;
 			
 			/* Add width and height as attributes ONLY once onload */
@@ -238,7 +252,7 @@ function refresh(onload)
 			}
 
 			/* Check source image format. Get image height minus reflection height! */
-			switch ((image.w + 1) > (image.h / (conf_reflection_p + 1))) 
+			switch ((image.w + 1) > (image.h / (this.conf_reflection_p + 1))) 
 			{
 				/* Landscape format */
 				case true:
@@ -253,81 +267,165 @@ function refresh(onload)
 
 			/* Set ondblclick event */
 			image.url = image.getAttribute('longdesc');
-			image.ondblclick = function() { window.open (this.url); }
-
+			if (image.getAttribute("rel") && (image.getAttribute("rel") == 'wpif2_lightbox')) {
+				image.setAttribute("title",image.getAttribute('alt'));
+				image.ondblclick = function () { imageflow2.showTop(this);return false; }
+			} else {
+				image.ondblclick = function() { window.open (this.url); }
+			}
 			/* Set image cursor type */
-			image.style.cursor = conf_images_cursor;
+			image.style.cursor = this.conf_ib_images_cursor;
 
 			i++;
 		}
 	}
-	max = array_images.length;
+	max = this.array_images.length;
 
-	/* Display images in current order */
-	moveTo(current);
-	glideTo(current, caption_id);
-}
+	/* Display images in this.current order */
+	this.moveTo(this.current);
+	this.glideTo(this.current, this.caption_id);
+},
 
 /* Show/hide element functions */
-function show(id)
+show:function(id)
 {
 	var element = document.getElementById(id);
 	element.style.visibility = 'visible';
-}
-function hide(id)
+},
+hide:function(id)
 {
 	var element = document.getElementById(id);
 	element.style.visibility = 'hidden';
 	element.style.display = 'none';
-}
+},
 
-/* Hide loading bar, show content and initialize mouse event listening after loading */
-window.onload = function()
+setup:function()
 {
-	if(document.getElementById(conf_imageflow))
-	{
-		hide(conf_loading);
-		refresh(true);
-		show(conf_images);
-		show(conf_scrollbar);
-		initMouseWheel();
-		initMouseDrag();
+	if(document.getElementById(imageflow2.ib_imageflow2div) == null) return;
+
+	/* Show loading bar while page is loading */
+	this.show(this.ib_loadingdiv);
+
+	if(typeof window.onunload === "function")
+	  {
+		var oldonunload = window.onunload;
+		window.onunload = function()
+		{
+			imageflow2.unloaded();
+			oldonunload();
+		};
+	} else window.onunload = imageflow2.unloaded;
+
+	if(typeof window.onload === "function")
+	  {
+		var oldonload = window.onload;
+		window.onload = function()
+		{
+			imageflow2.loaded();
+			oldonload();
+		};
+	} else {
+		window.onload = imageflow2.loaded;
 	}
-}
 
-/* Refresh ImageFlow on window resize */
-window.onresize = function()
+	/* Refresh Imageflow2 on window resize */
+	window.onresize = function()
+	{
+		if(document.getElementById(this.ib_imageflow2div)) refresh(false);
+	}
+
+	document.onkeydown = function(event)
+	{
+		var charCode  = getKeyCode(event);
+		switch (charCode)
+		{
+			/* Right arrow key */
+			case 39:
+				handle(-1);
+				break;
+		
+			/* Left arrow key */
+			case 37:
+				handle(1);
+				break;
+		}
+	}
+},
+
+loaded:function ()
 {
-	if(document.getElementById(conf_imageflow)) refresh();
-}
+	if(document.getElementById(imageflow2.ib_imageflow2div))
+	{
+		/* Append overlay divs to the page */
+		var objBody = document.getElementsByTagName("body").item(0);
 
-/* Fixes the back button issue */
-window.onunload = function()
+		/* -- overlay div */
+		var objOverlay = document.createElement('div');
+		objOverlay.setAttribute('id',imageflow2.ib_overlaydiv);
+		objOverlay.onclick = function() { imageflow2.closeTop(); }
+		objBody.appendChild(objOverlay);
+	
+		/* -- top box div */
+		var objLightbox = document.createElement('div');
+		objLightbox.setAttribute('id',imageflow2.ib_topboxdiv);
+		objLightbox.onclick = function() { imageflow2.closeTop(); }
+		objBody.appendChild(objLightbox);
+
+		/* ---- image div */
+		var objLightboxImage = document.createElement("img");
+		objLightboxImage.setAttribute('id',imageflow2.ib_topboximgdiv);
+		objLightbox.appendChild(objLightboxImage);
+
+		/* ---- caption div */
+		var objCaption = document.createElement("div");
+		objCaption.setAttribute('id',imageflow2.ib_topboxcaptiondiv);
+		objLightbox.appendChild(objCaption);
+
+		/* ---- close link */
+		var objClose = document.createElement("a");
+		objClose.setAttribute('id',imageflow2.ib_topboxclosediv);
+		objClose.setAttribute('href','#');
+		objLightbox.appendChild(objClose);
+
+		objClose.onclick = function () { imageflow2.closeTop(); return false; };
+		objClose.innerHTML = "Close";
+		
+		/* Hide loading bar, show content and initialize mouse event listening after loading */
+		imageflow2.hide(imageflow2.ib_loadingdiv);
+		imageflow2.refresh(true);
+		imageflow2.show(imageflow2.ib_imagesdiv);
+		imageflow2.show(imageflow2.ib_scrollbardiv);
+		imageflow2.initMouseWheel();
+		imageflow2.initMouseDrag();
+	}
+},
+
+unloaded:function ()
 {
-  document = null;
-}
-
+	/* Fixes the back button issue */
+	document = null;
+},
 
 /* Handle the wheel angle change (delta) of the mouse wheel */
-function handle(delta)
+handle:function(delta)
 {
 	var change = false;
 	switch (delta > 0)
 	{
 		case true:
-			if(caption_id >= 1)
+			if(this.caption_id >= 1)
 			{
-				target = target + xstep;
-				new_caption_id = caption_id - 1;
+				this.target = this.target + this.xstep;
+				this.new_caption_id = this.caption_id - 1;
 				change = true;
 			}
 			break;
 
 		default:
-			if(caption_id < (max-1))
+			if(this.caption_id < (max-1))
 			{
-				target = target - xstep;
-				new_caption_id = caption_id + 1;
+				this.target = this.target - this.xstep;
+				this.new_caption_id = this.caption_id + 1;
 				change = true;
 			}
 			break;
@@ -336,12 +434,12 @@ function handle(delta)
 	/* Glide to next (mouse wheel down) / previous (mouse wheel up) image */
 	if (change == true)
 	{
-		glideTo(target, new_caption_id);
+		this.glideTo(this.target, this.new_caption_id);
 	}
-}
+},
 
 /* Event handler for mouse wheel event */
-function wheel(event)
+wheel:function(event)
 {
 	var delta = 0;
 	if (!event) event = window.event;
@@ -353,66 +451,68 @@ function wheel(event)
 	{
 		delta = -event.detail / 3;
 	}
-	if (delta) handle(delta);
+	if (delta) imageflow2.handle(delta);
 	if (event.preventDefault) event.preventDefault();
 	event.returnValue = false;
-}
+},
 
 /* Initialize mouse wheel event listener */
-function initMouseWheel()
+initMouseWheel:function()
 {
-	if(window.addEventListener) imageflow_div.addEventListener('DOMMouseScroll', wheel, false);
-	imageflow_div.onmousewheel = wheel;
-}
+	if(window.addEventListener) {
+		imageflow2_div.addEventListener('DOMMouseScroll', this.wheel, false);
+	}
+	imageflow2_div.onmousewheel = this.wheel;
+},
 
 /* This function is called to drag an object (= slider div) */
-function dragstart(element)
+dragstart:function(element)
 {
-	dragobject = element;
-	dragx = posx - dragobject.offsetLeft + new_slider_pos;
-}
+	imageflow2.dragobject = element;
+	imageflow2.dragx = imageflow2.posx - imageflow2.dragobject.offsetLeft + imageflow2.new_slider_pos;
+},
 
-/* This function is called to stop dragging an object */
-function dragstop()
+/* This function is called to stop this.dragging an object */
+dragstop:function()
 {
-	dragobject = null;
-	dragging = false;
-}
+	imageflow2.dragobject = null;
+	imageflow2.dragging = false;
+},
 
 /* This function is called on mouse movement and moves an object (= slider div) on user action */
-function drag(e)
+drag:function(e)
 {
-	posx = document.all ? window.event.clientX : e.pageX;
-	if(dragobject != null)
+	imageflow2.posx = document.all ? window.event.clientX : e.pageX;
+	if(imageflow2.dragobject != null)
 	{
-		dragging = true;
-		new_posx = (posx - dragx) + conf_slider_width;
+		imageflow2.dragging = true;
+		imageflow2.new_posx = (imageflow2.posx - imageflow2.dragx) + imageflow2.conf_ib_slider_width;
 
 		/* Make sure, that the slider is moved in proper relation to previous movements by the glideTo function */
-		if(new_posx < ( - new_slider_pos)) new_posx = - new_slider_pos;
-		if(new_posx > (scrollbar_width - new_slider_pos)) new_posx = scrollbar_width - new_slider_pos;
+		if(imageflow2.new_posx < ( - imageflow2.new_slider_pos)) imageflow2.new_posx = - imageflow2.new_slider_pos;
+		if(imageflow2.new_posx > (scrollbar_width - imageflow2.new_slider_pos)) imageflow2.new_posx = scrollbar_width - imageflow2.new_slider_pos;
 		
-		var slider_pos = (new_posx + new_slider_pos);
+		var slider_pos = (imageflow2.new_posx + imageflow2.new_slider_pos);
 		var step_width = slider_pos / ((scrollbar_width) / (max-1));
 		var image_number = Math.round(step_width);
-		var new_target = (image_number) * -xstep;
+		var new_target = (image_number) * -imageflow2.xstep;
 		var new_caption_id = image_number;
 
-		dragobject.style.left = new_posx + 'px';
-		glideTo(new_target, new_caption_id);
+		imageflow2.dragobject.style.left = imageflow2.new_posx + 'px';
+		imageflow2.glideTo(new_target, new_caption_id);
 	}
-}
+},
 
 /* Initialize mouse event listener */
-function initMouseDrag()
+initMouseDrag:function()
 {
-	document.onmousemove = drag;
-	document.onmouseup = dragstop;
+	document.onmousemove = imageflow2.drag;
+	document.onmouseup = imageflow2.dragstop;
 
 	/* Avoid text and image selection while dragging  */
 	document.onselectstart = function () 
 	{
-		if (dragging == true)
+		if (imageflow2.dragging == true)
 		{
 			return false;
 		}
@@ -421,27 +521,186 @@ function initMouseDrag()
 			return true;
 		}
 	}
-}
+},
 
-function getKeyCode(event)
+getKeyCode:function(event)
 {
 	event = event || window.event;
 	return event.keyCode;
+},
+
+
+getPageScroll:function(){
+	var xScroll, yScroll;
+	if (self.pageYOffset) {
+		yScroll = self.pageYOffset;
+		xScroll = self.pageXOffset;
+	} else if (document.documentElement && document.documentElement.scrollTop){	 // Explorer 6 Strict
+		yScroll = document.documentElement.scrollTop;
+		xScroll = document.documentElement.scrollLeft;
+	} else if (document.body) {// all other Explorers
+		yScroll = document.body.scrollTop;
+		xScroll = document.body.scrollLeft;	
+	}
+	arrayPageScroll = new Array(xScroll,yScroll) 
+	return arrayPageScroll;
+},
+
+getPageSize:function(){
+	var xScroll, yScroll;
+	if (window.innerHeight && window.scrollMaxY) {	
+		xScroll = window.innerWidth + window.scrollMaxX;
+		yScroll = window.innerHeight + window.scrollMaxY;
+	} else if (document.body.scrollHeight > document.body.offsetHeight){ // all but Explorer Mac
+		xScroll = document.body.scrollWidth;
+		yScroll = document.body.scrollHeight;
+	} else { // Explorer Mac...would also work in Explorer 6 Strict, Mozilla and Safari
+		xScroll = document.body.offsetWidth;
+		yScroll = document.body.offsetHeight;
+	}
+	var windowWidth, windowHeight;
+	if (self.innerHeight) {	// all except Explorer
+		if(document.documentElement.clientWidth){
+			windowWidth = document.documentElement.clientWidth; 
+		} else {
+			windowWidth = self.innerWidth;
+		}
+		windowHeight = self.innerHeight;
+	} else if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode
+		windowWidth = document.documentElement.clientWidth;
+		windowHeight = document.documentElement.clientHeight;
+	} else if (document.body) { // other Explorers
+		windowWidth = document.body.clientWidth;
+		windowHeight = document.body.clientHeight;
+	}
+	// for small pages with total height less then height of the viewport
+	if(yScroll < windowHeight){
+		pageHeight = windowHeight;
+	} else { 
+		pageHeight = yScroll;
+	}
+	// for small pages with total width less then width of the viewport
+	if(xScroll < windowWidth){	
+		pageWidth = xScroll;		
+	} else {
+		pageWidth = windowWidth;
+	}
+	arrayPageSize = new Array(pageWidth,pageHeight,windowWidth,windowHeight) 
+	return arrayPageSize;
+},
+
+showFlash:function(){
+	var flashObjects = document.getElementsByTagName("object");
+	for (i = 0; i < flashObjects.length; i++) {
+		flashObjects[i].style.visibility = "visible";
+	}
+	var flashEmbeds = document.getElementsByTagName("embed");
+	for (i = 0; i < flashEmbeds.length; i++) {
+		flashEmbeds[i].style.visibility = "visible";
+	}
+},
+
+hideFlash:function(){
+	var flashObjects = document.getElementsByTagName("object");
+	for (i = 0; i < flashObjects.length; i++) {
+		flashObjects[i].style.visibility = "hidden";
+	}
+	var flashEmbeds = document.getElementsByTagName("embed");
+	for (i = 0; i < flashEmbeds.length; i++) {
+		flashEmbeds[i].style.visibility = "hidden";
+	}
+},
+
+showTop:function(image)
+{
+	topbox_div = document.getElementById(imageflow2.ib_topboxdiv);
+	overlay_div = document.getElementById(imageflow2.ib_overlaydiv);
+	topboximg_div = document.getElementById(imageflow2.ib_topboximgdiv);
+
+	// Hide flash objects
+	imageflow2.hideFlash();
+
+	// Show the background overlay ...
+	var arrayPageSize = imageflow2.getPageSize();
+	overlay_div.style.width = arrayPageSize[0] + "px";
+	overlay_div.style.height = arrayPageSize[1] + "px";
+	overlay_div.style.display = 'none';
+	overlay_div.style.visibility = 'visible';
+	new Effect.Appear(overlay_div, { from: 0.0, to: .75, duration: .2 });
+
+	// Get the top box data set up first
+	topboximg_div.src = image.url;
+	document.getElementById(imageflow2.ib_topboxcaptiondiv).innerHTML = image.getAttribute('title');
+
+	// get the image actual size by preloading into 't'
+	var t = new Image();
+      t.onload = (function(){	imageflow2.showImg(image, t.width, t.height); });
+	t.src = image.url;
+
+	// Now wait until 't' is loaded
+},
+
+
+showImg:function(image, img_width, img_height) 
+{	
+	// Do nothing if the overlay was closed in the meantime
+	if (document.getElementById(imageflow2.ib_overlaydiv).style.visibility == 'hidden') return;
+	
+	// Go ahead with the fade up
+	topbox_div = document.getElementById(imageflow2.ib_topboxdiv);
+	overlay_div = document.getElementById(imageflow2.ib_overlaydiv);
+	topboximg_div = document.getElementById(imageflow2.ib_topboximgdiv);
+
+	// Size the box a bit taller than the image
+	boxWidth = img_width;
+	boxHeight = img_height + 30;
+
+	// Set the image width property
+	topboximg_div.width = boxWidth;
+
+	var arrayPageSize = imageflow2.getPageSize();
+	var screenWidth = arrayPageSize[2];
+	var screenHeight = arrayPageSize[3];
+
+	var arrayPageScroll = imageflow2.getPageScroll();
+
+	// scale the box if the image is larger than the screen
+	if (boxWidth > screenWidth) {
+		boxHeight = Math.floor(boxHeight * screenWidth / boxWidth);
+		boxWidth = screenWidth - 100;
+		topboximg_div.width = boxWidth;
+	}
+	if (boxHeight > screenHeight) {
+		boxWidth = Math.floor(boxWidth * screenHeight / boxHeight);
+		boxHeight = screenHeight - 100;
+		topboximg_div.width = boxWidth;
+	}
+
+	xPos = Math.floor((screenWidth - boxWidth) * 0.5) + arrayPageScroll[0];
+	yPos = Math.floor((screenHeight - boxHeight) * 0.5) + arrayPageScroll[1];
+
+	topbox_div.style.left = xPos + 'px';
+	topbox_div.style.top = yPos + 'px';
+	topbox_div.style.width = boxWidth + 'px';
+
+	// Finally show the topbox...
+	topbox_div.style.display = 'none';
+	topbox_div.style.visibility = 'visible';
+	new Effect.Appear(topbox_div, { from: 0.0, to: 1.0, duration: .4 });
+
+},
+
+closeTop:function()
+{
+	//Hide the overlay and tobox...
+	document.getElementById(this.ib_overlaydiv).style.visibility='hidden';
+	document.getElementById(this.ib_topboxdiv).style.visibility='hidden';
+
+	// Show hidden objects
+	this.showFlash();
 }
 
-document.onkeydown = function(event)
-{
-	var charCode  = getKeyCode(event);
-	switch (charCode)
-	{
-		/* Right arrow key */
-		case 39:
-			handle(-1);
-			break;
-		
-		/* Left arrow key */
-		case 37:
-			handle(1);
-			break;
-	}
 }
+jQuery(document).ready(function() {
+	imageflow2.setup();
+});
