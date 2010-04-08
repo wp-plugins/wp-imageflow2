@@ -595,7 +595,7 @@ this.showImg = function(image, img_width, img_height)
 
 	// The image should be preloaded at this point
 	topboximg_div.src = image.url;
-
+	document.getElementById(this.ifp_topboxcaptiondiv).innerHTML = image.getAttribute('title');
 
 	// Find previous image that doesn't link to an url
 	prev_div.style.visibility = 'hidden';

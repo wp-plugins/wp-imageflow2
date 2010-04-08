@@ -3,7 +3,7 @@ Author: Bev Stofko
 Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Tested up to: 2.9.1
-Version: 1.4
+Version: 1.4.1
 Requires at least: 2.8.4
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox
 
@@ -124,6 +124,10 @@ If you have configured a light colored background for your gallery you should ch
 2. Choose the options you need. 
 
 == Changelog ==
+
+Version 1.4.1 (April 8, 2010)
+
+* Fix captions when cycling through the Lightbox view 
 
 Version 1.4 (April 8, 2010)
 
