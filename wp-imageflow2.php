@@ -2,21 +2,12 @@
 /*
 Plugin Name: WP-ImageFlow2
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
-Description: WordPress implementation of the picture gallery ImageFlow. 
-Version: 1.3.1
+Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
+Version: 1.4
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
-Based on the discontinued plugin by Sven Kubiak
-URI: http://www.svenkubiak.de/wp-imageflow2
-Description: WordPress implementation of the picture gallery ImageFlow. 
-Version: 1.0
-Author: Sven Kubiak
-Author URI: http://www.svenkubiak.de
-
-ImageFlow Author: Finn Rudoplh
-ImageFlow Homepage: http://imageflow.finnrudolph.de
-(WP-ImageFlow2 currently contains ImageFlow Version 0.9)
+Based on the discontinued plugin by Sven Kubiak http://www.svenkubiak.de/wp-imageflow2
 
 Copyright 2010 Bev Stofko
 
@@ -51,6 +42,8 @@ Class WPImageFlow2
 	var $sliderdiv    = 'wpif2_slider';
 	var $scrollbardiv = 'wpif2_scrollbar';
 	var $noscriptdiv  = 'wpif2_imageflow_noscript';
+
+	var $wpif2_instance = 0;
 
 	function wpimageflow2()
 	{
@@ -91,10 +84,19 @@ Class WPImageFlow2
 		/*
 		** ImageFlow2 gallery shortcode handler
 		*/
+		$this->wpif2_instance ++;
+
+		/* Javascript for this instance */
+		// start the javascript output
+		$js  = "\n".'<script type="text/javascript">'."\n";
+		$js .= 'jQuery(document).ready(function() { var imageflow2_' . $this->wpif2_instance . ' = new imageflowplus('.$this->wpif2_instance.'); });';
+		$js .= "\n</script>\n\n";
+
+		/* Now output the gallery html */
 	 	if ( !isset ($attr['dir']) ) {
-			return $this->galleryBuiltin($attr);
+			return $js . $this->galleryBuiltin($attr);
 		} else {
-			return $this->galleryFromDir($attr);
+			return $js . $this->galleryFromDir($attr);
 	  	}
 	}
 
@@ -170,15 +172,15 @@ Class WPImageFlow2
 		/**
 		* Start output
 		*/
-		$noscript = '<noscript><div id="' . $this->noscriptdiv .'">';	
-		$output  = '<div id="' . $this->imageflow2div . '" style="background-color: ' . $bgcolor . '; color: ' . $txcolor . '; width: ' . $width . '">' . PHP_EOL; 
-		$output .= '<div id="' . $this->loadingdiv . '" style="color: ' . $txcolor . ';">' . PHP_EOL;
+		$noscript = '<noscript><div id="' . $this->noscriptdiv . '_' . $this->wpif2_instance . '" class="' . $this->noscriptdiv . '">';	
+		$output  = '<div id="' . $this->imageflow2div . '_' . $this->wpif2_instance . '" class="' . $this->imgeflow2div . '" style="background-color: ' . $bgcolor . '; color: ' . $txcolor . '; width: ' . $width . '">' . PHP_EOL; 
+		$output .= '<div id="' . $this->loadingdiv . '_' . $this->wpif2_instance . '" class="' . $this->loadingdiv . '" style="color: ' . $txcolor . ';">' . PHP_EOL;
 		$output .= '<b>';
 		$output .= __('Loading Images','wp-imageflow2');
 		$output .= '</b><br/>' . PHP_EOL;
 		$output .= '<img src="' . $plugin_url . '/img/loading.gif" width="208" height="13" alt="' . $loadingdiv . '" />' . PHP_EOL;
 		$output .= '</div>' . PHP_EOL;
-		$output .= '<div id="' . $this->imagesdiv . '">' . PHP_EOL;	
+		$output .= '<div id="' . $this->imagesdiv . '_' . $this->wpif2_instance . '" class="' . $this->imagesdiv . '">' . PHP_EOL;	
 
 		/**
 		* Add images
@@ -215,13 +217,12 @@ Class WPImageFlow2
 					
 		
 		$output .= '</div>' . PHP_EOL;
-		$output .= '<div id="' . $this->captionsdiv . '"></div>' . PHP_EOL;
-		$output .= '<div id="' . $this->captionsdiv . '"></div>' . PHP_EOL;
-		$output .= '<div id="' . $this->scrollbardiv . '"';
+		$output .= '<div id="' . $this->captionsdiv . '_' . $this->wpif2_instance . '" class="' . $this->captionsdiv . '"></div>' . PHP_EOL;
+		$output .= '<div id="' . $this->scrollbardiv . '_' . $this->wpif2_instance . '" class="' . $this->scrollbardiv . '"';
 		if ($slcolor == "black") {
 			$output .= ' class="black"';
 		}
-		$output .= '><div id="' . $this->sliderdiv . '">' . PHP_EOL;
+		$output .= '><div id="' . $this->sliderdiv . '_' . $this->wpif2_instance . '" class="' . $this->sliderdiv . '">' . PHP_EOL;
 		$output .= '</div>';
 		$output .= '</div>' . PHP_EOL;
 		$output .= $noscript . '</div></noscript></div>';	
@@ -255,15 +256,15 @@ Class WPImageFlow2
 					
 		if (file_exists($gallerypath))
 		{	
-			$noscript = '<noscript><div id="' . $this->noscriptdiv .'">';	
-			$replace  = '<div id="' . $this->imageflow2div . '" style="background-color: ' . $bgcolor . '; color: ' . $txcolor . '; width: ' . $width .'">' . PHP_EOL; 
-			$replace .= '<div id="' . $this->loadingdiv . '" style="color: ' . $txcolor . ';">' . PHP_EOL;
+			$noscript = '<noscript><div id="' . $this->noscriptdiv .'" class="' . $this->noscriptdiv . '">';	
+			$replace  = '<div id="' . $this->imageflow2div . '_' . $this->wpif2_instance . '" class="' . $this->imageflow2div . '" style="background-color: ' . $bgcolor . '; color: ' . $txcolor . '; width: ' . $width .'">' . PHP_EOL; 
+			$replace .= '<div id="' . $this->loadingdiv . '_' . $this->wpif2_instance . '" class="' . $this->loadingdiv . '" style="color: ' . $txcolor . ';">' . PHP_EOL;
 			$replace .= '<b>';
 			$replace .= __('Loading Images','wp-imageflow2');
 			$replace .= '</b><br/>' . PHP_EOL;
 			$replace .= '<img src="'.$plugin_url.'/img/loading.gif" width="208" height="13" alt="' . $loadingdiv . '" />' . PHP_EOL;
 			$replace .= '</div>' . PHP_EOL;
-			$replace .= '<div id="' . $this->imagesdiv . '">' . PHP_EOL;	
+			$replace .= '<div id="' . $this->imagesdiv . '_' . $this->wpif2_instance . '" class="' . $this->imagesdiv . '">' . PHP_EOL;	
 					
 			$handle = opendir($gallerypath);
 			while ($image=readdir($handle))
@@ -289,12 +290,12 @@ Class WPImageFlow2
 			closedir($handle);
 			
 			$replace .= '</div>' . PHP_EOL;
-			$replace .= '<div id="' . $this->captionsdiv . '"></div>' . PHP_EOL;
-			$replace .= '<div id="' . $this->scrollbardiv . '"';
+			$replace .= '<div id="' . $this->captionsdiv . '_' . $this->wpif2_instance . '" class="' . $this->captionsdiv . '"></div>' . PHP_EOL;
+			$replace .= '<div id="' . $this->scrollbardiv . '_' . $this->wpif2_instance . '" class="' . $this->scrollbardiv . '"';
 			if ($slcolor == "black") {
 				$replace .= ' class="black"';
 			}
-			$replace .= '><div id="' . $this->sliderdiv . '">';
+			$replace .= '><div id="' . $this->sliderdiv . '_' . $this->wpif2_instance . '" class="' . $this->sliderdiv . '">';
 			$replace .= '</div>';
 			$replace .= '</div>' . PHP_EOL;
 			$replace .= $noscript . '</div></noscript></div>';	
@@ -325,13 +326,12 @@ Class WPImageFlow2
 
 	function addScripts()
 	{
+		$plugin_url = get_option('siteurl') . "/" . PLUGINDIR . "/" . plugin_basename(dirname(__FILE__)); 			
 		if (!is_admin()) {
-
-			$plugin_url = get_option('siteurl') . "/" . PLUGINDIR . "/" . plugin_basename(dirname(__FILE__)); 			
-			
 			wp_enqueue_style( 'wpimageflow2css', $plugin_url.'/css/screen.css');
+			wp_enqueue_script('wpif2_imageflow2', $plugin_url.'/js/imageflowplus.js', array('jquery', 'scriptaculous-effects', 'scriptaculous-builder'));
+		} else {
 			wp_enqueue_script('colorcode_validate', $plugin_url.'/js/colorcode_validate.js');
-			wp_enqueue_script('wpif2_imageflow2', $plugin_url.'/js/imageflow.js', array('jquery', 'scriptaculous-effects', 'scriptaculous-builder'));
 		}
 	}	
 	

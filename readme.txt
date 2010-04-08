@@ -3,27 +3,25 @@ Author: Bev Stofko
 Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Tested up to: 2.9.1
-Version: 1.3.1
+Version: 1.4
 Requires at least: 2.8.4
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox
 
-WordPress implementation of the picture gallery ImageFlow with Lightbox effect. Uses either the built-in Wordpress gallery or an uploaded directory 
+WordPress implementation of the picture gallery ImageFlow with Lightbox popups. Uses either the built-in Wordpress gallery or an uploaded directory 
 of images. Displays simple thumbnail list if Javascript is disabled.
 
 
 == Description ==
 
-Display nice looking ImageFlow galleries within posts and pages.  Link each image to either a Lightbox preview or an external URL.
+** Version 1.4 contains significant changes and should be considered beta at this time. **
+
+Display nice looking ImageFlow galleries within posts and pages.  Link each image to either a Lightbox preview or an external URL. The Lightbox pop-up supports
+cycling through all the photos - left/right arrows appear when hovering over the photos.
 
 There are two ways to insert a WP-ImageFlow2 gallery:
 
 1. Use the built-in Wordpress gallery use the shortcode [wp-imageflow2]
 2. Upload your pictures to a subfolder and use the shortcode [wp-imageflow2 dir=SUBFOLDER]
-
-IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
-
-* Use [wp-imageflow2] instead of [gallery]
-* Use [wp-imageflow2 dir=SUBFOLDER] instead of [wp-imageflow2=SUBFOLDER]
 
 You can configure the background color, text color, container width and choose black or white for the scrollbar.
 
@@ -36,21 +34,20 @@ For a built-in gallery, the image may link to either the large size image or an 
 
 = Notes =
 
-One gallery per page/post is supported.
+IF YOU ARE UPGRADING FROM 1.3.1 OR PRIOR AND YOU USED CUSTOM STYLING ON YOUR WP-IMAGEFLOW2 DIVS, YOU MUST UPDATE YOUR CUSTOM STYLES:
 
-WP-ImageFlow2 is based on the discontinued WP-ImageFlow by Sven Kubiak, which is an implementation of the CoverFlow-like Picture Gallery ImageFlow 
-from Finn Rudolph. 
+* The main WP-ImageFlow2 divs are now CLASSes instead of IDs in order to support multiple instances, so any custom styling must be changed from #wpif2... to .wpif2...
+
+IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
+
+* Use [wp-imageflow2] instead of [gallery]
+* Use [wp-imageflow2 dir=SUBFOLDER] instead of [wp-imageflow2=SUBFOLDER]
 
 == Installation ==
 
 1. Unzip to the /wp-content/plugins/ directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Configure the gallery in Settings -> WP-ImageFlow2.
-
-If you are upgrading from 1.2.6 or prior, you must edit your gallery shortcodes:
-
-* Use [wp-imageflow2] instead of [gallery]
-* Use [wp-imageflow2 dir=SUBFOLDER] instead of [wp-imageflow2=SUBFOLDER]
 
 For a built-in Wordpress gallery:
 
@@ -64,6 +61,17 @@ For galleries based on a subfolder:
 2. Set the "Path to galleries from homepage root path" in the configuration options 
 3. Upload your image galleries to a subfolder of this folder
 4. Insert a gallery on a page by specifying [wp-imageflow2 dir=SUBFOLDER].
+
+= Notes =
+
+IF YOU ARE UPGRADING FROM 1.3.1 OR PRIOR AND YOU USED CUSTOM STYLING ON YOUR WP-IMAGEFLOW2 DIVS, YOU MUST UPDATE YOUR CUSTOM STYLES:
+
+* The main WP-ImageFlow2 divs are now CLASSes instead of IDs in order to support multiple instances, so any custom styling must be changed from #wpif2... to .wpif2...
+
+IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
+
+* Use [wp-imageflow2] instead of [gallery]
+* Use [wp-imageflow2 dir=SUBFOLDER] instead of [wp-imageflow2=SUBFOLDER]
 
 == Frequently Asked Questions ==
 
@@ -109,16 +117,19 @@ This gallery style will display the image names as the captions, and will link t
 
 If you have configured a light colored background for your gallery you should choose black for the slider bar color and a dark color for the text.
 
-= How many galleries may I place on one page? =
-
-At this time only one WP_ImageFlow2 gallery may be placed on a page or post.
-
 == Screenshots ==
 
 1. WP-ImageFlow 2
 2. Choose the options you need. 
 
 == Changelog ==
+
+Version 1.4 (April 8, 2010)
+
+* Support multiple instances of wp-imageflow2 galleries on a single page. You must update your custom styles when updating from a previous version (see Installation notes).
+* Lightbox pop-up now supports cycling through the images directly with left/right arrows appearing when hovering over the photos.
+* Fix color-code check in settings page (broken on version 1.2)
+* Style changes in the method used to display the flow gallery - should be compatible with more themes
 
 Version 1.3.1 (March 26, 2010)
 
