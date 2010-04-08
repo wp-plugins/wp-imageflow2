@@ -13,7 +13,12 @@ of images. Displays simple thumbnail list if Javascript is disabled.
 
 == Description ==
 
-** Version 1.4 contains significant changes and should be considered beta at this time. **
+**Version 1.4 contains significant changes and should be considered beta at this time.
+
+New features:
+
+* Support multiple instances of the galleries on a single page
+* Lightbox pop-ups now link to the left/right images directly**
 
 Display nice looking ImageFlow galleries within posts and pages.  Link each image to either a Lightbox preview or an external URL. The Lightbox pop-up supports
 cycling through all the photos - left/right arrows appear when hovering over the photos.
