@@ -13,15 +13,10 @@ of images. Displays simple thumbnail list if Javascript is disabled.
 
 == Description ==
 
-**Version 1.4 contains significant changes and should be considered beta at this time.
-
-New features:
-
-* Support multiple instances of the galleries on a single page
-* Lightbox pop-ups now link to the left/right images directly**
+** Version 1.4 contains significant changes and should be considered beta at this time. **
 
 Display nice looking ImageFlow galleries within posts and pages.  Link each image to either a Lightbox preview or an external URL. The Lightbox pop-up supports
-cycling through all the photos - left/right arrows appear when hovering over the photos.
+cycling through all the photos - left/right arrows appear when hovering over the photos. Supports multiple instances of the galleries on a single page.
 
 There are two ways to insert a WP-ImageFlow2 gallery:
 
@@ -34,6 +29,7 @@ When using the built in Wordpress gallery, the photo title will be displayed bel
 be displayed below each image.
 
 For a built-in gallery, the image may link to either the large size image or an external url.
+
 
 [Demo](http://www.stofko.ca/wp-imageflow2-wordpress-plugin/)
 
