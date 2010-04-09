@@ -3,11 +3,11 @@
 Plugin Name: WP-ImageFlow2
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
-Version: 1.4.1
+Version: 1.4.2
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
-Based on the discontinued plugin by Sven Kubiak http://www.svenkubiak.de/wp-imageflow2
+Originally based on the discontinued plugin by Sven Kubiak http://www.svenkubiak.de/wp-imageflow2, but has now grown substantially.
 
 Copyright 2010 Bev Stofko
 
@@ -271,8 +271,16 @@ Class WPImageFlow2
 			{
 			    if (filetype($gallerypath."/".$image) != "dir" && !eregi('refl_',$image))
 			    {
-				  $imagepath = 'http://www.' . $_SERVER['SERVER_NAME'] . '/' . $options['gallery_url'] . $attr['dir'] . '/' . $image;
-				  $imagepath = str_replace ("www.www.", "www.", $imagepath);		
+				   $pageURL = 'http';
+				   if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
+				   $pageURL .= "://";
+				   if ($_SERVER["SERVER_PORT"] != "80") {
+				    $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"];
+				   } else {
+				    $pageURL .= $_SERVER["SERVER_NAME"];
+				   }
+				  $imagepath = $pageURL . '/' . $options['gallery_url'] . $attr['dir'] . '/' . $image;
+
 				  $pic_original 	= $imagepath;
 				  $pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . $pic_original . '&bgc=' . urlencode($bgcolor);
 
