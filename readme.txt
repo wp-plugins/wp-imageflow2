@@ -7,7 +7,7 @@ Version: 1.4.3
 Requires at least: 2.8.4
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox
 
-WordPress implementation of the picture gallery ImageFlow with Lightbox popups. Uses either the built-in Wordpress gallery or an uploaded directory 
+ImageFlow style picture gallery with Lightbox popups. Uses either the built-in Wordpress gallery or an uploaded directory 
 of images. Displays simple thumbnail list if Javascript is disabled.
 
 
