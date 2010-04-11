@@ -108,7 +108,7 @@ IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
 
 Version 1.4.4 (April 11, 2010)
 
-* Admin menu fix possible missing text
+* Admin menu - fix possible missing text
 
 Version 1.4.3 (April 11, 2010)
 
