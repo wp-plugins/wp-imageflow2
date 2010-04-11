@@ -3,7 +3,7 @@ Author: Bev Stofko
 Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Tested up to: 2.9.1
-Version: 1.4.2
+Version: 1.4.3
 Requires at least: 2.8.4
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox
 
@@ -50,35 +50,12 @@ IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Configure the gallery in Settings -> WP-ImageFlow2.
 
-For a built-in Wordpress gallery:
+= For a built-in Wordpress gallery: =
 
-1. Use the shortcode [wp-imageflow2] anywhere in a post or page
-2. If you want the image to link to an external url, enter the url in the description field of the image (as http://www.website.com) and enable the 
+1. Create a standard Wordpress gallery on your post or page. Enter a title to display, and optionally enter a description that may be used as an external link.
+2. Use the shortcode [wp-imageflow2] anywhere in the post or page
+3. If you want the image to link to an external url, enter the url in the description field of the image (as http://www.website.com) and enable the 
 checkbox in the options. If the description field is left blank the link will go to the full size image.
-
-For galleries based on a subfolder:
-
-1. Create a folder for your galleries within your WordPress installation, wherever you want (has to be accessible from the internet).
-2. Set the "Path to galleries from homepage root path" in the configuration options 
-3. Upload your image galleries to a subfolder of this folder
-4. Insert a gallery on a page by specifying [wp-imageflow2 dir=SUBFOLDER].
-
-= Notes =
-
-IF YOU ARE UPGRADING FROM 1.3.1 OR PRIOR AND YOU USED CUSTOM STYLING ON YOUR WP-IMAGEFLOW2 DIVS, YOU MUST UPDATE YOUR CUSTOM STYLES:
-
-* The main WP-ImageFlow2 divs are now CLASSes instead of IDs in order to support multiple instances, so any custom styling must be changed from #wpif2... to .wpif2...
-
-IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
-
-* Use [wp-imageflow2] instead of [gallery]
-* Use [wp-imageflow2 dir=SUBFOLDER] instead of [wp-imageflow2=SUBFOLDER]
-
-== Frequently Asked Questions ==
-
-= How do I make a built-in gallery display as ImageFlow? =
-
-Create a standard Wordpress gallery and use the shortcode [wp-imageflow2] in your post or page.
 
 These gallery options may be used:
 
@@ -97,15 +74,12 @@ These gallery options will be ignored:
 * captiontag
 * link
 
-Upload your images to your post or page gallery. Enter a title to display, and optionally enter a description that may be used as an external link.
+= For galleries based on a subfolder: =
 
-= How do I make a gallery without using the built-in gallery? =
-
-1. Create a directory on your server to contain the galleries
-2. Configure the url to the galleries in the settings
-3. Create a sub-directory below the galleries directory
-4. Upload your images to that directory
-5. Insert the shortcode [wp-imageflow2 dir=sub-directory] in a post or page
+1. Create a folder for your galleries within your WordPress installation, wherever you want (has to be accessible from the internet - ie wp-content/galleries).
+2. Set the "Path to galleries from homepage root path" in the configuration options  (ie wp-content/galleries/)
+3. Upload your image galleries to a subfolder of this folder (ie wp-content/galleries/gallery1)
+4. Insert a gallery on a page by specifying [wp-imageflow2 dir=SUBFOLDER] (ie [wp-imageflow2 dir=gallery1])
 
 If you have entered the gallery path correctly you will see a list of the sub-directories on the settings page of the administration panel.
 
@@ -114,9 +88,16 @@ This gallery style will display the image names as the captions, and will link t
 * If you installed Wordpress at the root level, your galleries path might be wp-content/galleries/
 * If you installed Wordpress under blog, your galleries path might be blog/wp-content/galleries/
 
-= Why can't I see any text or slider bar? =
+= Notes =
 
-If you have configured a light colored background for your gallery you should choose black for the slider bar color and a dark color for the text.
+IF YOU ARE UPGRADING FROM 1.3.1 OR PRIOR AND YOU USED CUSTOM STYLING ON YOUR WP-IMAGEFLOW2 DIVS, YOU MUST UPDATE YOUR CUSTOM STYLES:
+
+* The main WP-ImageFlow2 divs are now CLASSes instead of IDs in order to support multiple instances, so any custom styling must be changed from #wpif2... to .wpif2...
+
+IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
+
+* Use [wp-imageflow2] instead of [gallery]
+* Use [wp-imageflow2 dir=SUBFOLDER] instead of [wp-imageflow2=SUBFOLDER]
 
 == Screenshots ==
 
@@ -124,6 +105,10 @@ If you have configured a light colored background for your gallery you should ch
 2. Choose the options you need. 
 
 == Changelog ==
+
+Version 1.4.3 (April 11, 2010)
+
+* Fix class on outer div
 
 Version 1.4.2 (April 9, 2010)
 

@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow2
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
-Version: 1.4.2
+Version: 1.4.3
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -173,7 +173,7 @@ Class WPImageFlow2
 		* Start output
 		*/
 		$noscript = '<noscript><div id="' . $this->noscriptdiv . '_' . $this->wpif2_instance . '" class="' . $this->noscriptdiv . '">';	
-		$output  = '<div id="' . $this->imageflow2div . '_' . $this->wpif2_instance . '" class="' . $this->imgeflow2div . '" style="background-color: ' . $bgcolor . '; color: ' . $txcolor . '; width: ' . $width . '">' . PHP_EOL; 
+		$output  = '<div id="' . $this->imageflow2div . '_' . $this->wpif2_instance . '" class="' . $this->imageflow2div . '" style="background-color: ' . $bgcolor . '; color: ' . $txcolor . '; width: ' . $width . '">' . PHP_EOL; 
 		$output .= '<div id="' . $this->loadingdiv . '_' . $this->wpif2_instance . '" class="' . $this->loadingdiv . '" style="color: ' . $txcolor . ';">' . PHP_EOL;
 		$output .= '<b>';
 		$output .= __('Loading Images','wp-imageflow2');
