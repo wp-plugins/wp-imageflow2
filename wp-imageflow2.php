@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow2
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
-Version: 1.4.3
+Version: 1.4.4
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -446,7 +446,7 @@ Class WPImageFlow2
 	    		<table class="form-table">
 				<tr>
 					<th scope="row" valign="top">
-					<? echo __('Background color', 'wp-imageflow2'); ?>
+					<?php echo __('Background color', 'wp-imageflow2'); ?>
 					</th>
 					<td>
 					<input type="text" name="wpimageflow2_bgc" onkeyup="colorcode_validate(this, this.value);" value="<?php echo $options['bgcolor']; ?>"> 
@@ -454,7 +454,7 @@ Class WPImageFlow2
 				</tr>
 				<tr>
 					<th scope="row" valign="top">
-					<? echo __('Text color', 'wp-imageflow2'); ?>
+					<?php echo __('Text color', 'wp-imageflow2'); ?>
 					</th>
 					<td>
 					<input type="text" name="wpimageflow2_txc" onkeyup="colorcode_validate(this, this.value);" value="<?php echo $options['txcolor']; ?>"> 
@@ -462,7 +462,7 @@ Class WPImageFlow2
 				</tr>
 				<tr>
 					<th scope="row" valign="top">
-					<? echo __('Slider color', 'wp-imageflow2'); ?>
+					<?php echo __('Slider color', 'wp-imageflow2'); ?>
 					</th>
 					<td>
 					<select name="wpimageflow2_slc">
@@ -473,7 +473,7 @@ Class WPImageFlow2
 				</tr>
 				<tr>
 					<th scope="row" valign="top">
-					<? echo __('Container width CSS', 'wp-imageflow2'); ?>
+					<?php echo __('Container width CSS', 'wp-imageflow2'); ?>
 					</th>
 					<td>
 					<input type="text" name="wpimageflow2_width" value="<?php echo $options['width']; ?>"> 
@@ -481,7 +481,7 @@ Class WPImageFlow2
 				</tr>
 				<tr>
 					<th scope="row" valign="top">
-					<? echo __('Check this box to have the built in gallery use the description field as an external link from the image thumbnail.', 'wp-imageflow2'); ?>
+					<?php echo __('Check this box to have the built in gallery use the description field as an external link from the image thumbnail.', 'wp-imageflow2'); ?>
 					</th>
 					<td>
 					<input type="checkbox" name="wpimageflow2_link" value="link" <?php if ($options['link'] == 'true') echo ' CHECKED'; ?> />
@@ -489,7 +489,7 @@ Class WPImageFlow2
 				</tr>
 				<tr>
 					<th scope="row" valign="top">
-					<? echo __('Check this box to have image reflections (requires gd).', 'wp-imageflow2'); ?>
+					<?php echo __('Check this box to have image reflections (requires gd).', 'wp-imageflow2'); ?>
 					</th>
 					<td>
 					<input type="checkbox" name="wpimageflow2_reflect" value="reflect" <?php if ($options['reflect'] == 'true') echo ' CHECKED'; ?> />
