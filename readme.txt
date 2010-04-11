@@ -108,7 +108,7 @@ IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
 
 Version 1.4.3 (April 11, 2010)
 
-* Fix class on outer div
+* Fix class on outer div (this matters to those who use custom styling)
 
 Version 1.4.2 (April 9, 2010)
 
