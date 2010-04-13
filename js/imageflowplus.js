@@ -224,7 +224,7 @@ this.refresh = function(onload)
 	this.scrollbar_div.style.width = this.scrollbar_width + 'px';
 	
 	/* Set slider attributes */
-	this.slider_div.onmousedown = function () { this.dragstart(this); };
+	this.slider_div.onmousedown = function () { thisObject.dragstart(this); return false; };
 	this.slider_div.style.cursor = this.conf_ifp_slider_cursor;
 
 	/* Cache EVERYTHING! */
@@ -406,38 +406,38 @@ this.initMouseWheel = function()
 /* This function is called to drag an object (= slider div) */
 this.dragstart = function(element)
 {
-	this.dragobject = element;
-	this.dragx = this.posx - this.dragobject.offsetLeft + this.new_slider_pos;
+	thisObject.dragobject = element;
+	thisObject.dragx = thisObject.posx - thisObject.dragobject.offsetLeft + thisObject.new_slider_pos;
 };
 
 /* This function is called to stop this.dragging an object */
 this.dragstop = function()
 {
-	this.dragobject = null;
-	this.dragging = false;
+	thisObject.dragobject = null;
+	thisObject.dragging = false;
 };
 
 /* This function is called on mouse movement and moves an object (= slider div) on user action */
 this.drag = function(e)
 {
-	this.posx = document.all ? window.event.clientX : e.pageX;
-	if(this.dragobject != null)
+	thisObject.posx = document.all ? window.event.clientX : e.pageX;
+	if(thisObject.dragobject != null)
 	{
-		this.dragging = true;
-		this.new_posx = (this.posx - this.dragx) + this.conf_ifp_slider_width;
+		thisObject.dragging = true;
+		thisObject.new_posx = (thisObject.posx - thisObject.dragx) + thisObject.conf_ifp_slider_width;
 
-		/* Make sure, that the slider is moved in proper relation to previous movements by the this.glideTo function */
-		if(this.new_posx < ( - this.new_slider_pos)) this.new_posx = - this.new_slider_pos;
-		if(this.new_posx > (this.scrollbar_width - this.new_slider_pos)) this.new_posx = this.scrollbar_width - this.new_slider_pos;
+		/* Make sure, that the slider is moved in proper relation to previous movements by the glideTo function */
+		if(thisObject.new_posx < ( - thisObject.new_slider_pos)) thisObject.new_posx = - thisObject.new_slider_pos;
+		if(thisObject.new_posx > (thisObject.scrollbar_width - thisObject.new_slider_pos)) thisObject.new_posx = thisObject.scrollbar_width - thisObject.new_slider_pos;
 		
-		var slider_pos = (this.new_posx + this.new_slider_pos);
-		var step_width = slider_pos / ((this.scrollbar_width) / (this.max-1));
+		var slider_pos = (thisObject.new_posx + thisObject.new_slider_pos);
+		var step_width = slider_pos / ((thisObject.scrollbar_width) / (thisObject.max-1));
 		var image_number = Math.round(step_width);
-		var new_target = (image_number) * -this.xstep;
+		var new_target = (image_number) * -thisObject.xstep;
 		var new_caption_id = image_number;
 
-		this.dragobject.style.left = this.new_posx + 'px';
-		this.glideTo(new_target, new_caption_id);
+		thisObject.dragobject.style.left = thisObject.new_posx + 'px';
+		thisObject.glideTo(new_target, new_caption_id);
 	}
 };
 

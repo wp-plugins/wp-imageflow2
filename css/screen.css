@@ -107,6 +107,10 @@
 	height: 100%;
 	display: block;
 	background-image: url(data:image/gif;base64,AAAA); /* Trick IE into showing hover */
+	text-decoration: none;
+	outline-color: invert;
+	outline-style: none;
+	outline-width: medium;
 }
 #wpif2_topboxnext {
 	position:absolute;
@@ -116,9 +120,13 @@
 	height: 100%;
 	display: block;
 	background-image: url(data:image/gif;base64,AAAA); /* Trick IE into showing hover */
+	text-decoration: none;
+	outline-color: invert;
+	outline-style: none;
+	outline-width: medium;
 }
-#wpif2_topboxprev:hover, #wpif2_topboxprev:visited:hover { background: url(../img/prevlabel.gif) left 15% no-repeat; }
-#wpif2_topboxnext:hover, #wpif2_topboxnext:visited:hover { background: url(../img/nextlabel.gif) right 15% no-repeat; }
+#wpif2_topboxprev:hover, #wpif2_topboxprev:visited:hover { background: url(../img/prevlabel.gif) left 15% no-repeat; text-decoration: }
+#wpif2_topboxnext:hover, #wpif2_topboxnext:visited:hover { background: url(../img/nextlabel.gif) right 15% no-repeat; text-decoration: none;}
 
 a#wpif2_topboxclose, a#wpif2_overlayclose {
 	color: #0066CC;
