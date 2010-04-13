@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow2
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
-Version: 1.4.5
+Version: 1.4.6
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -27,6 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 global $wp_version;
 define('WPIMAGEFLOW2VERSION', version_compare($wp_version, '2.8.4', '>='));
+
+if(!defined("PHP_EOL")){define("PHP_EOL", strtoupper(substr(PHP_OS,0,3) == "WIN") ? "\r\n" : "\n");}
 
 if (!class_exists("WPImageFlow2")) {
 Class WPImageFlow2
@@ -218,11 +220,11 @@ Class WPImageFlow2
 		
 		$output .= '</div>' . PHP_EOL;
 		$output .= '<div id="' . $this->captionsdiv . '_' . $this->wpif2_instance . '" class="' . $this->captionsdiv . '"></div>' . PHP_EOL;
-		$output .= '<div id="' . $this->scrollbardiv . '_' . $this->wpif2_instance . '" class="' . $this->scrollbardiv . '"';
-		if ($slcolor == "black") {
-			$output .= ' class="black"';
+		$output .= '<div id="' . $this->scrollbardiv . '_' . $this->wpif2_instance . '" class="' . $this->scrollbardiv;
+		if ($slcolor == " black") {
+			$output .= ' black';
 		}
-		$output .= '><div id="' . $this->sliderdiv . '_' . $this->wpif2_instance . '" class="' . $this->sliderdiv . '">' . PHP_EOL;
+		$output .= '"><div id="' . $this->sliderdiv . '_' . $this->wpif2_instance . '" class="' . $this->sliderdiv . '">' . PHP_EOL;
 		$output .= '</div>';
 		$output .= '</div>' . PHP_EOL;
 		$output .= $noscript . '</div></noscript></div>';	
@@ -299,11 +301,11 @@ Class WPImageFlow2
 			
 			$replace .= '</div>' . PHP_EOL;
 			$replace .= '<div id="' . $this->captionsdiv . '_' . $this->wpif2_instance . '" class="' . $this->captionsdiv . '"></div>' . PHP_EOL;
-			$replace .= '<div id="' . $this->scrollbardiv . '_' . $this->wpif2_instance . '" class="' . $this->scrollbardiv . '"';
+			$replace .= '<div id="' . $this->scrollbardiv . '_' . $this->wpif2_instance . '" class="' . $this->scrollbardiv;
 			if ($slcolor == "black") {
-				$replace .= ' class="black"';
+				$replace .= ' black';
 			}
-			$replace .= '><div id="' . $this->sliderdiv . '_' . $this->wpif2_instance . '" class="' . $this->sliderdiv . '">';
+			$replace .= '"><div id="' . $this->sliderdiv . '_' . $this->wpif2_instance . '" class="' . $this->sliderdiv . '">';
 			$replace .= '</div>';
 			$replace .= '</div>' . PHP_EOL;
 			$replace .= $noscript . '</div></noscript></div>';	

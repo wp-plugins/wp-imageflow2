@@ -50,7 +50,7 @@
 	width:14px;
 	height:14px;	
 }
-.wpif2_scrollbar.black #slider {
+.wpif2_scrollbar.black .wpif2_slider {
 	background-image:url(../img/sliderblack.png);
 }	
 .wpif2_imageflow{
