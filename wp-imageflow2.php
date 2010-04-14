@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow2
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
-Version: 1.4.6
+Version: 1.4.7
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -339,7 +339,7 @@ Class WPImageFlow2
 		$plugin_url = get_option('siteurl') . "/" . PLUGINDIR . "/" . plugin_basename(dirname(__FILE__)); 			
 		if (!is_admin()) {
 			wp_enqueue_style( 'wpimageflow2css', $plugin_url.'/css/screen.css');
-			wp_enqueue_script('wpif2_imageflow2', $plugin_url.'/js/imageflowplus.js', array('jquery', 'scriptaculous-effects', 'scriptaculous-builder'));
+			wp_enqueue_script('wpif2_imageflow2', $plugin_url.'/js/imageflowplus.js', array('jquery'));
 		} else {
 			wp_enqueue_script('colorcode_validate', $plugin_url.'/js/colorcode_validate.js');
 		}
@@ -384,7 +384,7 @@ Class WPImageFlow2
 			/*
 			** Validate the background colour
 			*/
-			if (preg_match('/^#[a-f0-9]{6}$/i', $_POST['wpimageflow2_bgc'])) {
+			if ((preg_match('/^#[a-f0-9]{6}$/i', $_POST['wpimageflow2_bgc'])) || ($_POST['wpimageflow2_bgc'] == 'transparent')) {
 				$options['bgcolor'] = $_POST['wpimageflow2_bgc'];
 			} else {
 			echo "<p><b style='color:red;'>".__('Invalid background color, not saved.','wp-imageflow2'). " - " . $_POST['wpimageflow2_bgc'] ."</b></p>";	

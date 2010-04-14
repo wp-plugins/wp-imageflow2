@@ -293,6 +293,7 @@ this.loaded = function()
 			objOverlay.setAttribute('id',thisObject.ifp_overlaydiv);
 			objOverlay.onclick = function() { thisObject.closeTop(); return false; };
 			objBody.appendChild(objOverlay);
+			jQuery("#"+thisObject.ifp_overlaydiv).fadeTo("fast", .7);
 	
 			/* -- top box div */
 			var objLightbox = document.createElement('div');
@@ -567,7 +568,7 @@ this.showTop = function(image)
 	overlay_div.style.height = arrayPageSize[1] + "px";
 	overlay_div.style.display = 'none';
 	overlay_div.style.visibility = 'visible';
-	new Effect.Appear(overlay_div, { from: 0.0, to: .75, duration: .2 });
+	jQuery("#"+this.ifp_overlaydiv).show();
 
 	// Get the top box data set up first
 	topboximg_div.src = image.url;
@@ -668,7 +669,8 @@ this.showImg = function(image, img_width, img_height)
 	// Finally show the topbox...
 	topbox_div.style.display = 'none';
 	topbox_div.style.visibility = 'visible';
-	new Effect.Appear(topbox_div, { from: 0.0, to: 1.0, duration: .4 });
+	jQuery("#"+this.ifp_topboxdiv).fadeIn("slow");
+
 };
 
 this.closeTop = function()
