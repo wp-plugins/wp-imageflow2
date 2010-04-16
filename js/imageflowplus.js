@@ -617,7 +617,7 @@ this.showImg = function(image, img_width, img_height)
 	// Find next image that doesn't link to an url
 	next_div.style.visibility = 'hidden';
 	if (image.i < this.max-1) {
-		for (index = image.i+1; index <= this.max; index++) {
+		for (index = image.i+1; index < this.max; index++) {
 			next_image = this.img_div.childNodes.item(this.array_images[index]);
 			if (next_image.getAttribute("rel") && (next_image.getAttribute("rel") == 'wpif2_lightbox')) {
 				// Found one - preload and set the next link

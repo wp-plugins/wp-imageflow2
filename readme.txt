@@ -3,7 +3,7 @@ Author: Bev Stofko
 Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Tested up to: 2.9.1
-Version: 1.4.7
+Version: 1.4.8
 Requires at least: 2.8.4
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox
 
@@ -66,29 +66,18 @@ These gallery options may be used:
 * exclude
 * size (applies to RSS feed only)
 
-These gallery options will be ignored:
-
-* columns
-* itemtag 
-* icontag 
-* captiontag
-* link
-
 = For galleries based on a subfolder: =
 
-1. Create a folder for your galleries within your WordPress installation, wherever you want (has to be accessible from the internet - ie wp-content/galleries).
-2. Set the "Path to galleries from homepage root path" in the configuration options  (ie wp-content/galleries/)
-3. Upload your image galleries to a subfolder of this folder (ie wp-content/galleries/gallery1)
-4. Insert a gallery on a page by specifying [wp-imageflow2 dir=SUBFOLDER] (ie [wp-imageflow2 dir=gallery1])
+1. Create a folder for your galleries within your WordPress installation, wherever you want. The location has to be accessible from the internet - for example you could use wp-content/galleries.
+2. Upload your image galleries to a subfolder of this folder, for example you might upload your images under "wp-content/galleries/subfolder".
+3. Set the "Path to galleries from homepage root path" in the settings admin page for WP-ImageFlow2. Enter the path with trailing slash like: "wp-content/galleries/". If you have entered the gallery path correctly you will see a list of the sub-directories on the settings page.
+4. Insert a gallery on a page by specifying the shortcode [wp-imageflow2 dir=subfolder] on your post or page.
 
-If you have entered the gallery path correctly you will see a list of the sub-directories on the settings page of the administration panel.
-
-This gallery style will display the image names as the captions, and will link to the full size image. 
-
-* If you installed Wordpress at the root level, your galleries path might be wp-content/galleries/
-* If you installed Wordpress under blog, your galleries path might be blog/wp-content/galleries/
+This gallery style will display the image names as the captions, and will link to the full size image.
 
 = Notes =
+
+If your reflected images don't show up, you might have a strict server that generates 404 errors on the reflected images. In this case select the option in the settings for strict servers.
 
 IF YOU ARE UPGRADING FROM 1.3.1 OR PRIOR AND YOU USED CUSTOM STYLING ON YOUR WP-IMAGEFLOW2 DIVS, YOU MUST UPDATE YOUR CUSTOM STYLES:
 
@@ -105,6 +94,12 @@ IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
 2. Choose the options you need. 
 
 == Changelog ==
+
+Version 1.4.8 (April 16, 2010)
+
+* Use stronger styling on slider to override some theme styles
+* New option - to be used on servers with more secure settings to prevent reflected images generating 404 errors
+* Fix Lightbox when last image in gallery has an external link
 
 Version 1.4.7 (April 14, 2010)
 

@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow2
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
-Version: 1.4.7
+Version: 1.4.8
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -168,6 +168,7 @@ Class WPImageFlow2
 		$width   = $options['width'];
 		$link    = $options['link'];
 		$reflect = $options['reflect'];
+		$strict  = $options['strict'];
 
 		$plugin_url = get_option('siteurl') . "/" . PLUGINDIR . "/" . plugin_basename(dirname(__FILE__)); 			
 
@@ -191,7 +192,13 @@ Class WPImageFlow2
 		foreach ( $attachments as $id => $attachment ) {
 			$image 		= wp_get_attachment_image_src($id, "medium");
 			$image_large 	= wp_get_attachment_image_src($id, "large");
-			$pic_reflected 	= $plugin_url.'/php/reflect.php?img='.$image[0] . '&bgc=' . urlencode($bgcolor);
+			if ($strict == 'true') {
+				$dir_array = parse_url($image[0]);
+				$url_path = $dir_array['path'];
+				$pic_reflected 	= $plugin_url.'/php/reflect.php?img='.$url_path . '&bgc=' . urlencode($bgcolor);
+			} else {
+				$pic_reflected 	= $plugin_url.'/php/reflect.php?img='.$image[0] . '&bgc=' . urlencode($bgcolor);
+			}
 			$pic_original 	= $image[0];
 			$pic_large		= $image_large[0];
 			$linkurl 		= '';
@@ -244,6 +251,7 @@ Class WPImageFlow2
 		$slcolor = $options['slcolor'];
 		$width   = $options['width'];
 		$reflect = $options['reflect'];
+		$strict  = $options['strict'];
 
 		$galleries_path = $_SERVER['DOCUMENT_ROOT'] . '/' . $options['gallery_url'];
 		if (!file_exists($galleries_path))
@@ -284,7 +292,13 @@ Class WPImageFlow2
 				  $imagepath = $pageURL . '/' . $options['gallery_url'] . $attr['dir'] . '/' . $image;
 
 				  $pic_original 	= $imagepath;
-				  $pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . $pic_original . '&bgc=' . urlencode($bgcolor);
+				  if ($strict == 'true') {
+					  $dir_array = parse_url($pic_original);
+					  $url_path = $dir_array['path'];
+					  $pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . $url_path . '&bgc=' . urlencode($bgcolor);
+				  } else {
+					  $pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . $pic_original . '&bgc=' . urlencode($bgcolor);
+				  }
 
 				  /* Code the image with or without reflection */
 				  /* Note that IE gets confused if we put newlines after each image, so we don't */
@@ -324,6 +338,7 @@ Class WPImageFlow2
 						'link'    => 'false',	// Don't link to image description
 						'width'   => '520px',	// Width of containing div
 						'reflect' => 'true',	// True to reflect images
+						'strict'  => 'false',	// True for strict servers that don't allow http:// in script args
 					);
 		$saved_options = get_option($this->adminOptionsName);
 		if (!empty($saved_options)) {
@@ -431,6 +446,15 @@ Class WPImageFlow2
 				$options['reflect'] = 'false';
 			}
 
+			/* 
+			** Look for strict option
+			*/
+			if (isset ($_POST['wpimageflow2_strict']) && ($_POST['wpimageflow2_strict'] == 'strict')) {
+				$options['strict'] = 'true';
+			} else {
+				$options['strict'] = 'false';
+			}
+
 			/*
 			** Done validation, update whatever was accepted
 			*/
@@ -497,9 +521,17 @@ Class WPImageFlow2
 					<input type="checkbox" name="wpimageflow2_reflect" value="reflect" <?php if ($options['reflect'] == 'true') echo ' CHECKED'; ?> />
 					</td>
 				</tr>
+				<tr>
+					<th scope="row" valign="top">
+					<?php echo __('Check this box if your server is strict and serves a 404 error on reflected images.', 'wp-imageflow2'); ?>
+					</th>
+					<td>
+					<input type="checkbox" name="wpimageflow2_strict" value="strict" <?php if ($options['strict'] == 'true') echo ' CHECKED'; ?> />
+					</td>
+				</tr>
 	    			<tr>
 					<th scope="row" valign="top">
-					<?php echo __('Enter a value here if you wish to upload images to a directory and use the wp-imageflow2 shortcode.','wp-imageflow2'); ?>	
+					<?php echo __('Enter a value here if you wish to upload images to a directory.','wp-imageflow2'); ?>	
 					</th>
 					<td>
 					<?php echo __('Path to galleries from homepage root path.','wp-imageflow2'); ?>
