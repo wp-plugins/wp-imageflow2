@@ -3,7 +3,7 @@ Author: Bev Stofko
 Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Tested up to: 2.9.1
-Version: 1.4.8
+Version: 1.4.9
 Requires at least: 2.8.4
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox
 
@@ -94,6 +94,10 @@ IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
 2. Choose the options you need. 
 
 == Changelog ==
+
+Version 1.4.9 (April 17, 2010)
+
+* Remove the slider styling added in 1.4.8 - it caused other problems. 
 
 Version 1.4.8 (April 16, 2010)
 
