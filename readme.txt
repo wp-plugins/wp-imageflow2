@@ -13,8 +13,6 @@ of images. Displays simple thumbnail list if Javascript is disabled.
 
 == Description ==
 
-** Version 1.4.x contains significant changes and should be considered beta at this time. **
-
 Display nice looking ImageFlow galleries within posts and pages.  Link each image to either a Lightbox preview or an external URL. The Lightbox pop-up supports
 cycling through all the photos - left/right arrows appear when hovering over the photos. Supports multiple instances of the galleries on a single page.
 
@@ -108,7 +106,7 @@ Version 1.4.8 (April 16, 2010)
 Version 1.4.7 (April 14, 2010)
 
 * Drop Scriptaculous library since it clashes with MooTools, now only uses the basic jquery library
-* Support transparency as a background colour
+* Support transparency as a background colour. In this case the image reflections will be black over a transparent div.
 
 Version 1.4.6 (April 13, 2010)
 
