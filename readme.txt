@@ -36,17 +36,6 @@ is clicked and expanded into the Lightbox display the auto rotation is suspended
 
 [Demo](http://www.stofko.ca/wp-imageflow2-wordpress-plugin/)
 
-= Notes =
-
-IF YOU ARE UPGRADING FROM 1.3.1 OR PRIOR AND YOU USED CUSTOM STYLING ON YOUR WP-IMAGEFLOW2 DIVS, YOU MUST UPDATE YOUR CUSTOM STYLES:
-
-* The main WP-ImageFlow2 divs are now CLASSes instead of IDs in order to support multiple instances, so any custom styling must be changed from #wpif2... to .wpif2...
-
-IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
-
-* Use [wp-imageflow2] instead of [gallery]
-* Use [wp-imageflow2 dir=SUBFOLDER] instead of [wp-imageflow2=SUBFOLDER]
-
 == Installation ==
 
 1. Unzip to the /wp-content/plugins/ directory
