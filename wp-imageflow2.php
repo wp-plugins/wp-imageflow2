@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow2
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
-Version: 1.4.9
+Version: 1.5.0
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -89,10 +89,14 @@ Class WPImageFlow2
 		$this->wpif2_instance ++;
 
 		/* Javascript for this instance */
+		$options = $this->getAdminOptions();
+
 		// start the javascript output
 		$js  = "\n".'<script type="text/javascript">'."\n";
-		$js .= 'jQuery(document).ready(function() { var imageflow2_' . $this->wpif2_instance . ' = new imageflowplus('.$this->wpif2_instance.'); });';
-		$js .= "\n</script>\n\n";
+		$js .= 'jQuery(document).ready(function() { '."\n".'var imageflow2_' . $this->wpif2_instance . ' = new imageflowplus('.$this->wpif2_instance.');'."\n";
+		$js .= 'imageflow2_' . $this->wpif2_instance . '.init( {conf_autorotate: "' . $options['autorotate'] . '", conf_autorotatepause: ' . $options['pause'] . '} );'."\n";
+		$js .= '});'."\n";
+		$js .= "</script>\n\n";
 
 		/* Now output the gallery html */
 	 	if ( !isset ($attr['dir']) ) {
@@ -113,27 +117,30 @@ Class WPImageFlow2
 		}
 
 		/*
-		** Standard gallery shortcode defaults	
+		** Standard gallery shortcode defaults that we support here	
 		*/
 		global $post;
 		extract(shortcode_atts(array(
 				'order'      => 'ASC',
 				'orderby'    => 'menu_order ID',
 				'id'         => $post->ID,
-				'itemtag'    => 'dl',
-				'icontag'    => 'dt',
-				'captiontag' => 'dd',
-				'columns'    => 3,
 				'size'       => 'thumbnail',
 				'include'    => '',
-				'exclude'    => ''
+				'exclude'    => '',
+				'mediatag'	 => '',	// corresponds to Media Tags plugin by Paul Menard
 		  ), $attr));
 	
 		$id = intval($id);
 		if ( 'RAND' == $order )
 			$orderby = 'none';
 
-		if ( !empty($include) ) {
+		if ( !empty($mediatag) ) {
+			$mediaList = get_attachments_by_media_tags("media_tags=$mediatag&orderby=$orderby&order=$order");
+			$attachments = array();
+			foreach ($mediaList as $key => $val) {
+				$attachments[$val->ID] = $mediaList[$key];
+			}
+		} elseif ( !empty($include) ) {
 			$include = preg_replace( '/[^0-9,]+/', '', $include );
 			$_attachments = get_posts( array('include' => $include, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $order, 'orderby' => $orderby) );
 
@@ -339,6 +346,8 @@ Class WPImageFlow2
 						'width'   => '520px',	// Width of containing div
 						'reflect' => 'true',	// True to reflect images
 						'strict'  => 'false',	// True for strict servers that don't allow http:// in script args
+						'autorotate' => 'off',	// True to enable auto rotation
+						'pause' =>	'3000'	// Time to pause between auto rotations
 					);
 		$saved_options = get_option($this->adminOptionsName);
 		if (!empty($saved_options)) {
@@ -455,6 +464,20 @@ Class WPImageFlow2
 				$options['strict'] = 'false';
 			}
 
+			/* 
+			** Look for auto rotate option
+			*/
+			if (isset ($_POST['wpimageflow2_autorotate']) && ($_POST['wpimageflow2_autorotate'] == 'autorotate')) {
+				$options['autorotate'] = 'on';
+			} else {
+				$options['autorotate'] = 'off';
+			}
+
+			/*
+			** Accept the pause value
+			*/
+			$options['pause'] = $_POST['wpimageflow2_pause'];
+
 			/*
 			** Done validation, update whatever was accepted
 			*/
@@ -527,6 +550,22 @@ Class WPImageFlow2
 					</th>
 					<td>
 					<input type="checkbox" name="wpimageflow2_strict" value="strict" <?php if ($options['strict'] == 'true') echo ' CHECKED'; ?> />
+					</td>
+				</tr>
+				<tr>
+					<th scope="row" valign="top">
+					<?php echo __('Enable auto rotation.', 'wp-imageflow2'); ?>
+					</th>
+					<td>
+					<input type="checkbox" name="wpimageflow2_autorotate" value="autorotate" <?php if ($options['autorotate'] == 'on') echo ' CHECKED'; ?> />
+					</td>
+				</tr>
+				<tr>
+					<th scope="row" valign="top">
+					<?php echo __('Auto rotation pause between images', 'wp-imageflow2'); ?>
+					</th>
+					<td>
+					<input type="text" name="wpimageflow2_pause" value="<?php echo $options['pause']; ?>"> 
 					</td>
 				</tr>
 	    			<tr>

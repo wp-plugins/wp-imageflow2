@@ -1,5 +1,5 @@
 /**
- *	ImageFlowPlus 1.0
+ *	ImageFlowPlus 1.1
  *
  *    This provides an ImageFlow style gallery plus the following great features:
  *    - Lightbox pop-ups when linking to an image
@@ -7,6 +7,8 @@
  *	- Supports multiple instances and avoid collisions with other scripts by using object-oriented code
  *
  *    Copyright Bev Stofko http://www.stofko.ca
+ *
+ *	Version 1.1 adds auto-rotation option (May 3, 2010)
  *
  *    Resources ----------------------------------------------------
  *	[1] http://www.adventuresinsoftware.com/blog/?p=104#comment-1981, Michael L. Perry's Cover Flow
@@ -18,12 +20,19 @@
 
 function imageflowplus(instance) {
 
-/* Configuration variables */
+/* Options */
+this.defaults =
+{
+conf_autorotate:		'off',	// Sets auto-rotate option 'on' or 'off', default is 'off'
+conf_autorotatepause: 	3000		// Set the pause delay in the auto-rotation
+};
+
+/* Possible future options */
 this.conf_reflection_p =	0.5;		// Sets the height of the reflection in % of the source image 
 this.conf_focus =			4;		// Sets the numbers of images on each side of the focussed one
 this.conf_ifp_slider_width =	14;         // Sets the px width of the slider div
 this.conf_ifp_images_cursor =	'pointer';  // Sets the cursor type for all images default is 'default'
-this.conf_ifp_slider_cursor =	'default';   // Sets the slider cursor type: try "e-resize" default is 'default'
+this.conf_ifp_slider_cursor =	'default';  // Sets the slider cursor type: try "e-resize" default is 'default'
 
 /* HTML div ids that we manipulate here */
 this.ifp_imageflow2div =	'wpif2_imageflow_' + instance;
@@ -43,8 +52,8 @@ this.ifp_topboxclosediv =	'wpif2_topboxclose';
 this.ifp_topboxnextdiv =	'wpif2_topboxnext';
 
 /* Define global variables */
-this.caption_id =		0;
-this.new_caption_id =	0;
+this.image_id =		0;
+this.new_image_id =	0;
 this.current =		0;
 this.target =		0;
 this.mem_target =		0;
@@ -57,8 +66,22 @@ this.dragx =		0;
 this.posx =			0;
 this.new_posx =		0;
 this.xstep =		150;
+this.autorotate = 	'off';
 
 var thisObject = this;
+
+/* initialize */
+this.init = function(options)
+{
+	/* Evaluate options */
+	var optionsArray = new Array('conf_autorotate', 'conf_autorotatepause');
+	var max = optionsArray.length;
+	for (var i = 0; i < max; i++)
+	{
+		var name = optionsArray[i];
+		this[name] = (options !== undefined && options[name] !== undefined) ? options[name] : thisObject.defaults[name];
+	}
+};
 
 /* show/hide element functions */
 this.show = function(id)
@@ -84,8 +107,9 @@ this.step = function() {
 	}
 };
 
-this.glideTo = function(x, new_caption_id) {	
-	/* Animate gliding to new x position */
+this.glideTo = function(new_image_id) {
+	var x = (-new_image_id * this.xstep);
+	/* Animate gliding to new image */
 	this.target = x;
 	this.mem_target = x;
 	if (this.timer == 0)
@@ -95,8 +119,8 @@ this.glideTo = function(x, new_caption_id) {
 	}
 	
 	/* Display new caption */
-	this.caption_id = new_caption_id;
-	caption = this.img_div.childNodes.item(this.array_images[this.caption_id]).getAttribute('alt');
+	this.image_id = new_image_id;
+	caption = this.img_div.childNodes.item(this.array_images[this.image_id]).getAttribute('alt');
 	if (caption == '') { caption = '&nbsp;'; }
 	this.caption_div.innerHTML = caption;
 
@@ -107,6 +131,23 @@ this.glideTo = function(x, new_caption_id) {
 		this.slider_div.style.marginLeft = (this.new_slider_pos - this.conf_ifp_slider_width) + 'px';
 	}
 };
+
+this.rotate = function()
+{
+	/* Do nothing if autorotate has been turned off */
+	if (thisObject.autorotate == "on") {
+		if (thisObject.image_id >= thisObject.max-1) {
+			thisObject.glideTo(0);
+		} else {
+			thisObject.glideTo(thisObject.image_id+1);
+		}
+	}
+
+	if (thisObject.conf_autorotate == 'on') {
+		/* Set up next auto-glide */
+		window.setTimeout (thisObject.rotate, thisObject.conf_autorotatepause);
+	}
+}
 
 this.moveTo = function(x)
 {
@@ -165,17 +206,17 @@ this.moveTo = function(x)
 			}
 			
 			/* Change zIndex and onclick function of the focussed image */
-			switch ( image.i == thisObject.caption_id )
+			switch ( image.i == thisObject.image_id )
 			{
 				case false:
-					image.onclick = function() { thisObject.glideTo(this.x_pos, this.i); return false; };
+					image.onclick = function() { thisObject.autorotate = "off"; thisObject.glideTo(this.i); return false; };
 					break;
 
 				default:
 					zIndex = zIndex + 1;
   					if (image.getAttribute("rel") && (image.getAttribute("rel") == 'wpif2_lightbox')) {
 						image.setAttribute("title",image.getAttribute('alt'));
-						image.onclick = function () { thisObject.showTop(this); return false; };
+						image.onclick = function () { thisObject.conf_autorotate = "off"; thisObject.showTop(this); return false; };
 					} else {
 						image.onclick = function() { window.open (this.url); return false; };
 					}
@@ -209,6 +250,8 @@ this.refresh = function(onload)
 	this.max_height = Math.round(this.images_width * 0.51);
 
 	/* Change imageflow2 div properties */
+	this.imageflow2_div.onmouseover = function () { thisObject.autorotate = 'off'; return false; };
+	this.imageflow2_div.onmouseout = function () { thisObject.autorotate = thisObject.conf_autorotate; return false; };
 	this.imageflow2_div.style.height = this.max_height + 'px';
 
 	/* Change images div properties */
@@ -237,8 +280,8 @@ this.refresh = function(onload)
 		{
 			this.array_images[i] = index;
 			
-			/* Set image onclick by adding i and x_pos as attributes! */
-			image.onclick = function() { thisObject.glideTo(this.x_pos, this.i); return false; };
+			/* Set image onclick to glide to this image */
+			image.onclick = function() { thisObject.conf_autorotate = "off"; thisObject.glideTo(this.i); return false; };
 			image.x_pos = (-i * this.xstep);
 			image.i = i;
 			
@@ -263,7 +306,7 @@ this.refresh = function(onload)
 			image.url = image.getAttribute('longdesc');
 			if (image.getAttribute("rel") && (image.getAttribute("rel") == 'wpif2_lightbox')) {
 				image.setAttribute("title",image.getAttribute('alt'));
-				image.ondblclick = function () { thisObject.showTop(this);return false; }
+				image.ondblclick = function () { thisObject.conf_autorotate = 'off'; thisObject.showTop(this);return false; }
 			} else {
 				image.ondblclick = function() { window.open (this.url); }
 			}
@@ -277,7 +320,13 @@ this.refresh = function(onload)
 
 	/* Display images in current order */
 	this.moveTo(this.current);
-	this.glideTo(this.current, this.caption_id);
+	this.glideTo(this.image_id);
+
+	/* If autorotate on, set up next glide */
+	this.autorotate = this.conf_autorotate;
+	if (this.autorotate == "on") {
+		window.setTimeout (thisObject.rotate, thisObject.conf_autorotatepause);
+	}
 };
 
 this.loaded = function()
@@ -355,17 +404,17 @@ this.handle = function(delta)
 	var change = false;
 	if (delta > 0)
 	{
-		if(this.caption_id >= 1)
+		if(this.image_id >= 1)
 		{
 			this.target = this.target + this.xstep;
-			this.new_caption_id = this.caption_id - 1;
+			this.new_image_id = this.image_id - 1;
 			change = true;
 		}
 	} else {
-		if(this.caption_id < (this.max-1))
+		if(this.image_id < (this.max-1))
 		{
 			this.target = this.target - this.xstep;
-			this.new_caption_id = this.caption_id + 1;
+			this.new_image_id = this.image_id + 1;
 			change = true;
 		}
 	}
@@ -373,7 +422,8 @@ this.handle = function(delta)
 	/* Glide to next (mouse wheel down) / previous (mouse wheel up) image */
 	if (change === true)
 	{
-		this.glideTo(this.target, this.new_caption_id);
+		this.glideTo(this.new_image_id);
+		this.autorotate = "off";
 	}
 };
 
@@ -409,6 +459,8 @@ this.dragstart = function(element)
 {
 	thisObject.dragobject = element;
 	thisObject.dragx = thisObject.posx - thisObject.dragobject.offsetLeft + thisObject.new_slider_pos;
+
+	thisObject.autorotate = "off";
 };
 
 /* This function is called to stop this.dragging an object */
@@ -435,10 +487,10 @@ this.drag = function(e)
 		var step_width = slider_pos / ((thisObject.scrollbar_width) / (thisObject.max-1));
 		var image_number = Math.round(step_width);
 		var new_target = (image_number) * -thisObject.xstep;
-		var new_caption_id = image_number;
+		var new_image_id = image_number;
 
 		thisObject.dragobject.style.left = thisObject.new_posx + 'px';
-		thisObject.glideTo(new_target, new_caption_id);
+		thisObject.glideTo(new_image_id);
 	}
 };
 
@@ -685,7 +737,7 @@ this.closeTop = function()
 	this.showFlash();
 };
 
-// Initial construction
+// Setup
 	if(document.getElementById(thisObject.ifp_imageflow2div) === null) { return; }
 
 	/* show loading bar while page is loading */

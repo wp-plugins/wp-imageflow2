@@ -3,9 +3,9 @@ Author: Bev Stofko
 Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Tested up to: 2.9.1
-Version: 1.4.9
+Version: 1.5.0
 Requires at least: 2.8.4
-Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox
+Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox, carousel, autorotate, automatic, rotate, media, tages
 
 ImageFlow style picture gallery with Lightbox popups. Uses either the built-in Wordpress gallery or an uploaded directory 
 of images. Displays simple thumbnail list if Javascript is disabled.
@@ -21,13 +21,18 @@ There are two ways to insert a WP-ImageFlow2 gallery:
 1. Use the built-in Wordpress gallery use the shortcode [wp-imageflow2]
 2. Upload your pictures to a subfolder and use the shortcode [wp-imageflow2 dir=SUBFOLDER]
 
-You can configure the background color, text color, container width and choose black or white for the scrollbar.
+You can configure the background color, text color, container width and choose black or white for the scrollbar. Auto-rotation of the images is now supported.
 
 When using the built in Wordpress gallery, the photo title will be displayed below each image. When using a subfolder gallery, the image name will 
 be displayed below each image.
 
 For a built-in gallery, the image may link to either the large size image or an external url.
 
+= Auto Rotation =
+
+When auto rotation is enabled, the images will automatically rotate through the carousel. You may configure the pause time between rotations. Once the end
+of the gallery is reached it flows back to the beginning and starts again. The rotation will pause when the mouse hovers over the bounding div. Once an image
+is clicked and expanded into the Lightbox display the auto rotation is suspended.
 
 [Demo](http://www.stofko.ca/wp-imageflow2-wordpress-plugin/)
 
@@ -50,12 +55,12 @@ IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
 
 = For a built-in Wordpress gallery: =
 
-1. Create a standard Wordpress gallery on your post or page. Enter a title to display, and optionally enter a description that may be used as an external link.
+1. Upload images using the Wordpress image uploader on your post or page or into the media library. Enter a title to display, and optionally enter a description that may be used as an external link.
 2. Use the shortcode [wp-imageflow2] anywhere in the post or page
 3. If you want the image to link to an external url, enter the url in the description field of the image (as http://www.website.com) and enable the 
 checkbox in the options. If the description field is left blank the link will go to the full size image.
 
-These gallery options may be used:
+These standard gallery options may be used:
 
 * id
 * order (default is ASC)
@@ -63,6 +68,10 @@ These gallery options may be used:
 * include
 * exclude
 * size (applies to RSS feed only)
+
+These additional gallery options may be used:
+
+* mediatags (corresponds to Media Tags plugin by Paul Menard. This option will pull matching media out of your media library and include it in the gallery.)
 
 = For galleries based on a subfolder: =
 
@@ -92,6 +101,11 @@ IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
 2. Choose the options you need. 
 
 == Changelog ==
+
+Version 1.5.0 (May 3, 2010)
+
+* Support gallery based on Media Tags (plugin by Paul Menard)
+* Support auto-rotation (default is disabled, enable using the settings page)
 
 Version 1.4.9 (April 17, 2010)
 
