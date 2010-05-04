@@ -67,6 +67,7 @@ this.posx =			0;
 this.new_posx =		0;
 this.xstep =		150;
 this.autorotate = 	'off';
+this.rotatestarted = 	'false';
 
 var thisObject = this;
 
@@ -324,8 +325,9 @@ this.refresh = function(onload)
 
 	/* If autorotate on, set up next glide */
 	this.autorotate = this.conf_autorotate;
-	if (this.autorotate == "on") {
+	if ((this.autorotate == "on") && (this.rotatestarted == "false")) {
 		window.setTimeout (thisObject.rotate, thisObject.conf_autorotatepause);
+		this.rotatestarted = 'true';
 	}
 };
 
