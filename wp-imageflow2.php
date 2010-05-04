@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow2
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
-Version: 1.5.0
+Version: 1.5.1
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -235,7 +235,7 @@ Class WPImageFlow2
 		$output .= '</div>' . PHP_EOL;
 		$output .= '<div id="' . $this->captionsdiv . '_' . $this->wpif2_instance . '" class="' . $this->captionsdiv . '"></div>' . PHP_EOL;
 		$output .= '<div id="' . $this->scrollbardiv . '_' . $this->wpif2_instance . '" class="' . $this->scrollbardiv;
-		if ($slcolor == " black") {
+		if ($slcolor == "black") {
 			$output .= ' black';
 		}
 		$output .= '"><div id="' . $this->sliderdiv . '_' . $this->wpif2_instance . '" class="' . $this->sliderdiv . '">' . PHP_EOL;
