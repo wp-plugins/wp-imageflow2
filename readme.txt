@@ -8,7 +8,7 @@ Requires at least: 2.8.4
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox, carousel, autorotate, automatic, rotate, media, tages
 
 ImageFlow style picture gallery with Lightbox popups. Uses either the built-in Wordpress gallery or an uploaded directory 
-of images. Displays simple thumbnail list if Javascript is disabled.
+of images. This is a very light script that uses basic JQuery. Displays simple thumbnail list if Javascript is disabled.
 
 
 == Description ==
