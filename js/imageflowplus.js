@@ -335,7 +335,7 @@ this.loaded = function()
 {
 	if(document.getElementById(thisObject.ifp_imageflow2div))
 	{
-		if (instance === 1) {
+		if (document.getElementById(thisObject.ifp_overlaydiv) === null) {
 			/* Append overlay divs to the page - the overlay is shared by all instances */
 			var objBody = document.getElementsByTagName("body").item(0);
 
@@ -465,7 +465,7 @@ this.dragstart = function(element)
 	thisObject.autorotate = "off";
 };
 
-/* This function is called to stop this.dragging an object */
+/* This function is called to stop dragging an object */
 this.dragstop = function()
 {
 	thisObject.dragobject = null;
@@ -499,13 +499,13 @@ this.drag = function(e)
 /* Initialize mouse event listener */
 this.initMouseDrag = function()
 {
-	document.onmousemove = this.drag;
-	document.onmouseup = this.dragstop;
+	thisObject.imageflow2_div.onmousemove = thisObject.drag;
+	thisObject.imageflow2_div.onmouseup = thisObject.dragstop;
 
 	/* Avoid text and image selection while this.dragging  */
 	document.onselectstart = function () 
 	{
-		if (this.dragging === true)
+		if (thisObject.dragging === true)
 		{
 			return false;
 		}

@@ -3,7 +3,7 @@ Author: Bev Stofko
 Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Tested up to: 2.9.1
-Version: 1.5.2
+Version: 1.5.3
 Requires at least: 2.8.4
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox, carousel, autorotate, automatic, rotate, media, tages
 
@@ -16,14 +16,16 @@ of images. This is a very light script that uses basic JQuery. Displays simple t
 Display nice looking ImageFlow galleries within posts and pages.  Link each image to either a Lightbox preview or an external URL. The Lightbox pop-up supports
 cycling through all the photos - left/right arrows appear when hovering over the photos. Supports multiple instances of the galleries on a single page.
 
+This is a very light script that uses the basic JQuery library;
+
 There are two ways to insert a WP-ImageFlow2 gallery:
 
-1. Use the built-in Wordpress gallery use the shortcode [wp-imageflow2]
+1. Use the built-in Wordpress media library use the shortcode [wp-imageflow2]
 2. Upload your pictures to a subfolder and use the shortcode [wp-imageflow2 dir=SUBFOLDER]
 
 You can configure the background color, text color, container width and choose black or white for the scrollbar. Auto-rotation of the images is now supported.
 
-When using the built in Wordpress gallery, the photo title will be displayed below each image. When using a subfolder gallery, the image name will 
+When using the built in Wordpress library, the photo title will be displayed below each image. When using a subfolder gallery, the image name will 
 be displayed below each image.
 
 For a built-in gallery, the image may link to either the large size image or an external url.
@@ -42,7 +44,7 @@ is clicked and expanded into the Lightbox display the auto rotation is suspended
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Configure the gallery in Settings -> WP-ImageFlow2.
 
-= For a built-in Wordpress gallery: =
+= Using the built-in Wordpress library: =
 
 1. Upload images using the Wordpress image uploader on your post or page or into the media library. Enter a title to display, and optionally enter a description that may be used as an external link.
 2. Use the shortcode [wp-imageflow2] anywhere in the post or page
@@ -90,6 +92,11 @@ IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
 2. Choose the options you need. 
 
 == Changelog ==
+
+Version 1.5.3 (May 7, 2010)
+
+* Fix dragging the scrollbar on galleries beyond the first on a page
+* Update overlay div creation
 
 Version 1.5.2 (May 4, 2010)
 
