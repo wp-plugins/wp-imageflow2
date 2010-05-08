@@ -121,7 +121,7 @@ this.glideTo = function(new_image_id) {
 	
 	/* Display new caption */
 	this.image_id = new_image_id;
-	caption = this.img_div.childNodes.item(this.array_images[this.image_id]).getAttribute('alt');
+	var caption = this.img_div.childNodes.item(this.array_images[this.image_id]).getAttribute('alt');
 	if (caption == '') { caption = '&nbsp;'; }
 	this.caption_div.innerHTML = caption;
 
