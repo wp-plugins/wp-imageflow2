@@ -70,9 +70,21 @@
 	{
 	  $source_image = $_GET['img'];
 
-	  $AgetHeaders = @get_headers($source_image);
-	  if (preg_match("|200|", $AgetHeaders[0])) {
-            if ($cache)
+	  // Convert from url to relative path so more servers support the functions
+	  $dir_array = parse_url($source_image);
+	  $url_path = $dir_array['path'];
+
+        $source_image = $_SERVER['DOCUMENT_ROOT'] . $url_path;
+
+	  $image_details = getimagesize($source_image);
+	
+	  if ($image_details === false)
+	  {
+		echo 'Not a valid image supplied, or this script does not have permissions to access it.';
+		exit();
+	  }
+
+        if ($cache)
             {
                 $cache_dir = dirname($source_image);
                 $cache_base = basename($source_image);
@@ -88,12 +100,6 @@
                     exit();
                 }
             }
-        }
-        else
-        {
-          echo "Cannot find or read source image $source_image";
-          exit();
-        }
 	}
 	else
 	{
@@ -224,20 +230,10 @@
 	*/
 	
 	//	How big is the image?
-	$image_details = getimagesize($source_image);
-	
-	if ($image_details === false)
-	{
-		echo 'Not a valid image supplied, or this script does not have permissions to access it.';
-		exit();
-	}
-	else
-	{
-		$width = $image_details[0];
-		$height = $image_details[1];
-		$type = $image_details[2];
-		$mime = $image_details['mime'];
-	}
+	$width = $image_details[0];
+	$height = $image_details[1];
+	$type = $image_details[2];
+	$mime = $image_details['mime'];
 	
 	//	Calculate the height of the output image
 	if ($output_height < 1)
