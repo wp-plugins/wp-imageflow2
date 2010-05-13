@@ -3,7 +3,7 @@ Author: Bev Stofko
 Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Tested up to: 2.9.1
-Version: 1.5.4
+Version: 1.6.0
 Requires at least: 2.8.4
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox, carousel, autorotate, automatic, rotate, media, tages
 
@@ -49,7 +49,8 @@ is clicked and expanded into the Lightbox display the auto rotation is suspended
 1. Upload images using the Wordpress image uploader on your post or page or into the media library. Enter a title to display, and optionally enter a description that may be used as an external link.
 2. Use the shortcode [wp-imageflow2] anywhere in the post or page
 3. If you want the image to link to an external url, enter the url in the description field of the image (as http://www.website.com) and enable the 
-checkbox in the options. If the description field is left blank the link will go to the full size image.
+checkbox in the options. If the description field does not contain an url, the image will link to the full size popup image with the description (if any) displayed as text
+below the image.
 
 These standard gallery options may be used:
 
@@ -60,9 +61,11 @@ These standard gallery options may be used:
 * exclude
 * size (applies to RSS feed only)
 
-These additional gallery options may be used:
+These additional WP-Imageflow2 specific options may be used:
 
-* mediatags (corresponds to Media Tags plugin by Paul Menard. This option will pull matching media out of your media library and include it in the gallery.)
+* mediatags - Corresponds to Media Tags plugin by Paul Menard. This option will pull matching media out of your media library and include it in the gallery.
+* startimg  - Gives the starting slide number to center in the gallery, the default is 1.
+* rotate    - Turns on/off auto-rotation for this instance (overrides the setting from the admin panel). Values are 'on' or 'off'.
 
 = For galleries based on a subfolder: =
 
@@ -72,6 +75,11 @@ These additional gallery options may be used:
 4. Insert a gallery on a page by specifying the shortcode [wp-imageflow2 dir=subfolder] on your post or page.
 
 This gallery style will display the image names as the captions, and will link to the full size image.
+
+These additional WP-Imageflow2 specific options may be used:
+
+* startimg  - Gives the starting slide number to center in the gallery, the default is 1.
+* rotate    - Turns on/off auto-rotation for this instance (overrides the setting from the admin panel). Values are 'on' or 'off'.
 
 = Notes =
 
@@ -92,6 +100,13 @@ IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
 2. Choose the options you need. 
 
 == Changelog ==
+
+Version 1.6.0 (May 13, 2010)
+
+* NEW FEATURE - Provide an option to start at a specific slide number
+* NEW FEATURE - Provide an option to turn on/off rotate for each instance of a gallery
+* NEW FEATURE - Support full text description in the popup window of a built-in gallery
+* Handle files with special characters in the name
 
 Version 1.5.4 (May 7, 2010)
 

@@ -1,5 +1,5 @@
 /**
- *	ImageFlowPlus 1.1
+ *	ImageFlowPlus 1.2
  *
  *    This provides an ImageFlow style gallery plus the following great features:
  *    - Lightbox pop-ups when linking to an image
@@ -9,6 +9,7 @@
  *    Copyright Bev Stofko http://www.stofko.ca
  *
  *	Version 1.1 adds auto-rotation option (May 3, 2010)
+ *	Version 1.2 adds startimg option, longdesc may be link or text description (May 13, 2010)
  *
  *    Resources ----------------------------------------------------
  *	[1] http://www.adventuresinsoftware.com/blog/?p=104#comment-1981, Michael L. Perry's Cover Flow
@@ -24,12 +25,13 @@ function imageflowplus(instance) {
 this.defaults =
 {
 conf_autorotate:		'off',	// Sets auto-rotate option 'on' or 'off', default is 'off'
-conf_autorotatepause: 	3000		// Set the pause delay in the auto-rotation
+conf_autorotatepause: 	3000,		// Set the pause delay in the auto-rotation
+conf_startimg:		1		// Starting focused image
 };
 
 /* Possible future options */
 this.conf_reflection_p =	0.5;		// Sets the height of the reflection in % of the source image 
-this.conf_focus =			4;		// Sets the numbers of images on each side of the focussed one
+this.conf_focus =			4;		// Sets the numbers of images on each side of the focused one
 this.conf_ifp_slider_width =	14;         // Sets the px width of the slider div
 this.conf_ifp_images_cursor =	'pointer';  // Sets the cursor type for all images default is 'default'
 this.conf_ifp_slider_cursor =	'default';  // Sets the slider cursor type: try "e-resize" default is 'default'
@@ -75,7 +77,7 @@ var thisObject = this;
 this.init = function(options)
 {
 	/* Evaluate options */
-	var optionsArray = new Array('conf_autorotate', 'conf_autorotatepause');
+	var optionsArray = new Array('conf_autorotate', 'conf_autorotatepause', 'conf_startimg');
 	var max = optionsArray.length;
 	for (var i = 0; i < max; i++)
 	{
@@ -121,7 +123,7 @@ this.glideTo = function(new_image_id) {
 	
 	/* Display new caption */
 	this.image_id = new_image_id;
-	var caption = this.img_div.childNodes.item(this.array_images[this.image_id]).getAttribute('alt');
+	var caption = this.img_div.childNodes.item(this.array_images[this.image_id]).getAttribute('alt').replace(/\+\+.*/,'');
 	if (caption == '') { caption = '&nbsp;'; }
 	this.caption_div.innerHTML = caption;
 
@@ -161,7 +163,7 @@ this.moveTo = function(x)
 		var image = this.img_div.childNodes.item(this.array_images[index]);
 		var current_image = index * -this.xstep;
 
-		/* Don't display images that are not this.conf_focussed */
+		/* Don't display images that are not focused */
 		if ((current_image+this.max_conf_focus) < this.mem_target || (current_image-this.max_conf_focus) > this.mem_target)
 		{
 			image.style.visibility = 'hidden';
@@ -206,7 +208,7 @@ this.moveTo = function(x)
 				zIndex = zIndex - 1;
 			}
 			
-			/* Change zIndex and onclick function of the focussed image */
+			/* Change zIndex and onclick function of the focused image */
 			switch ( image.i == thisObject.image_id )
 			{
 				case false:
@@ -216,7 +218,7 @@ this.moveTo = function(x)
 				default:
 					zIndex = zIndex + 1;
   					if (image.getAttribute("rel") && (image.getAttribute("rel") == 'wpif2_lightbox')) {
-						image.setAttribute("title",image.getAttribute('alt'));
+						image.setAttribute("title",image.getAttribute('alt').replace(/\+\+.*/,''));
 						image.onclick = function () { thisObject.conf_autorotate = "off"; thisObject.showTop(this); return false; };
 					} else {
 						image.onclick = function() { window.open (this.url); return false; };
@@ -306,7 +308,8 @@ this.refresh = function(onload)
 			/* Set ondblclick event */
 			image.url = image.getAttribute('longdesc');
 			if (image.getAttribute("rel") && (image.getAttribute("rel") == 'wpif2_lightbox')) {
-				image.setAttribute("title",image.getAttribute('alt'));
+				image.setAttribute("title",image.getAttribute('alt').replace(/\+\+.*/,''));
+
 				image.ondblclick = function () { thisObject.conf_autorotate = 'off'; thisObject.showTop(this);return false; }
 			} else {
 				image.ondblclick = function() { window.open (this.url); }
@@ -320,6 +323,11 @@ this.refresh = function(onload)
 	this.max = this.array_images.length;
 
 	/* Display images in current order */
+	if ((this.conf_startimg > 0) && (this.conf_startimg <= this.max))	{
+		this.image_id = this.conf_startimg - 1;
+		this.mem_target = (-this.image_id * this.xstep);
+		this.current = this.mem_target;
+	}
 	this.moveTo(this.current);
 	this.glideTo(this.image_id);
 
@@ -647,10 +655,10 @@ this.showImg = function(image, img_width, img_height)
 	var topboximg_div = document.getElementById(this.ifp_topboximgdiv);
 	var prev_div = document.getElementById(this.ifp_topboxprevdiv);
 	var next_div = document.getElementById(this.ifp_topboxnextdiv);
+	var caption_div = document.getElementById(this.ifp_topboxcaptiondiv);
 
 	// The image should be preloaded at this point
 	topboximg_div.src = image.url;
-	document.getElementById(this.ifp_topboxcaptiondiv).innerHTML = image.getAttribute('title');
 
 	// Find previous image that doesn't link to an url
 	prev_div.style.visibility = 'hidden';
@@ -684,30 +692,39 @@ this.showImg = function(image, img_width, img_height)
 		}
 	}
 
-	// Size the box a bit taller than the image
+	// Size the box to fit the image plus estimate caption height plus some space
 	var boxWidth = img_width;
 	var boxHeight = img_height + 30;
 
-	// Set the image width property
-	topboximg_div.width = boxWidth;
+	topboximg_div.width = boxWidth;	
 
+	// Add description and include its height in the calculations
+	var description = image.getAttribute('alt').replace(/.*\+\+/,'');
+	if (description != '') { description = '<p>' + description + '</p>'; }
+	caption_div.innerHTML = image.getAttribute('title') + description;
+	if (description != '') {
+		jQuery('#'+this.ifp_topboxcaptiondiv).width(boxWidth);	// do this now to estimate the description height
+		boxHeight += jQuery('#'+this.ifp_topboxcaptiondiv).height();
+	}
+
+	// scale the box if the image is larger than the screen
 	var arrayPageSize = this.getPageSize();
 	var screenWidth = arrayPageSize[2];
 	var screenHeight = arrayPageSize[3];
 
 	var arrayPageScroll = this.getPageScroll();
 
-	// scale the box if the image is larger than the screen
 	if (boxWidth > screenWidth) {
-		boxHeight = Math.floor(boxHeight * screenWidth / boxWidth);
+		boxHeight = Math.floor(boxHeight * (screenWidth-100) / boxWidth);
 		boxWidth = screenWidth - 100;
 		topboximg_div.width = boxWidth;
 	}
 	if (boxHeight > screenHeight) {
-		boxWidth = Math.floor(boxWidth * screenHeight / boxHeight);
+		boxWidth = Math.floor(boxWidth * (screenHeight-100) / boxHeight);
 		boxHeight = screenHeight - 100;
 		topboximg_div.width = boxWidth;
 	}
+	jQuery('#'+this.ifp_topboxcaptiondiv).width(boxWidth);
 
 	var xPos = Math.floor((screenWidth - boxWidth) * 0.5) + arrayPageScroll[0];
 	var yPos = Math.floor((screenHeight - boxHeight) * 0.5) + arrayPageScroll[1];

@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow2
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
-Version: 1.5.4
+Version: 1.6.0
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -88,17 +88,29 @@ Class WPImageFlow2
 		*/
 		$this->wpif2_instance ++;
 
-		/* Javascript for this instance */
+		/* First produce the Javascript for this instance */
 		$options = $this->getAdminOptions();
 
 		// start the javascript output
 		$js  = "\n".'<script type="text/javascript">'."\n";
 		$js .= 'jQuery(document).ready(function() { '."\n".'var imageflow2_' . $this->wpif2_instance . ' = new imageflowplus('.$this->wpif2_instance.');'."\n";
-		$js .= 'imageflow2_' . $this->wpif2_instance . '.init( {conf_autorotate: "' . $options['autorotate'] . '", conf_autorotatepause: ' . $options['pause'] . '} );'."\n";
+		$js .= 'imageflow2_' . $this->wpif2_instance . '.init( {conf_autorotate: "';
+		if ( !isset ($attr['rotate']) ) {
+			$js .= $options['autorotate'];
+		} else {
+			$js .= $attr['rotate'];
+		}
+		$js .= '", conf_autorotatepause: ' . $options['pause'];
+		if ( !isset ($attr['startimg']) ) {
+			$js .= ', conf_startimg: 1';
+		} else {
+			$js .= ', conf_startimg: ' . $attr['startimg'];
+		}
+		$js .= '} );'."\n";
 		$js .= '});'."\n";
 		$js .= "</script>\n\n";
 
-		/* Now output the gallery html */
+		/* Now produce the gallery html */
 	 	if ( !isset ($attr['dir']) ) {
 			return $js . $this->galleryBuiltin($attr);
 		} else {
@@ -202,29 +214,33 @@ Class WPImageFlow2
 			if ($strict == 'true') {
 				$dir_array = parse_url($image[0]);
 				$url_path = $dir_array['path'];
-				$pic_reflected 	= $plugin_url.'/php/reflect.php?img='.$url_path . '&bgc=' . urlencode($bgcolor);
+				$pic_reflected 	= $plugin_url.'/php/reflect.php?img='. urlencode($url_path) . '&bgc=' . urlencode($bgcolor);
 			} else {
-				$pic_reflected 	= $plugin_url.'/php/reflect.php?img='.$image[0] . '&bgc=' . urlencode($bgcolor);
+				$pic_reflected 	= $plugin_url.'/php/reflect.php?img='. urlencode($image[0]) . '&bgc=' . urlencode($bgcolor);
 			}
 			$pic_original 	= $image[0];
 			$pic_large		= $image_large[0];
 			$linkurl 		= '';
 			$rel 			= '';
 
-			/* Add link to description if this option is enabled */
-			if ($link == 'true') $linkurl = $attachment->post_content;
+			/* If the media description contains an url and the link option is enabled, use the media description as the linkurl */
+			if (($link == 'true') && (substr($attachment->post_content,0,7) == 'http://')) $linkurl = $attachment->post_content;
 
-			/* If not linking to description link to the large size image */
 			if ($linkurl === '') {
+				/* We are linking to the popup - use the title and description as the alt text */
 				$linkurl = $pic_large;
 				$rel = ' rel="wpif2_lightbox"';
+				$alt = ' alt="'.$attachment->post_title."++".$attachment->post_content.'"';
+			} else {
+				/* We are linking to an external url - use the title as the alt text */
+				$alt = ' alt="'.$attachment->post_title.'"';
 			}
 
 			/* Note that IE gets confused if we put newlines after each image, so we don't */
 			if ($reflect == 'true') {
-				$output .= '<img src="'.$pic_reflected.'" longdesc="'.$linkurl.'"'. $rel . ' alt="'.$attachment->post_title.'"/>';
+				$output .= '<img src="'.$pic_reflected.'" longdesc="'.$linkurl.'"'. $rel . $alt . ' />';
 			} else {
-				$output .= '<img src="'.$pic_original.'" longdesc="'.$linkurl.'"'. $rel . ' alt="'.$attachment->post_title.'"/>';
+				$output .= '<img src="'.$pic_original.'" longdesc="'.$linkurl.'"'. $rel . $alt . ' />';
 			}
 			/* build separate thumbnail list for users with scripts disabled */
 			$noscript .= '<a href="' . $linkurl . '"><img src="' . $pic_original .'" width="100px"></a>';
@@ -302,9 +318,9 @@ Class WPImageFlow2
 				  if ($strict == 'true') {
 					  $dir_array = parse_url($pic_original);
 					  $url_path = $dir_array['path'];
-					  $pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . $url_path . '&bgc=' . urlencode($bgcolor);
+					  $pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . urlencode($url_path) . '&bgc=' . urlencode($bgcolor);
 				  } else {
-					  $pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . $pic_original . '&bgc=' . urlencode($bgcolor);
+					  $pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . urlencode($pic_original) . '&bgc=' . urlencode($bgcolor);
 				  }
 
 				  /* Code the image with or without reflection */
