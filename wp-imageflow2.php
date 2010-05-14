@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow2
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
-Version: 1.6.0
+Version: 1.6.1
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -276,7 +276,7 @@ Class WPImageFlow2
 		$reflect = $options['reflect'];
 		$strict  = $options['strict'];
 
-		$galleries_path = $_SERVER['DOCUMENT_ROOT'] . '/' . $options['gallery_url'];
+		$galleries_path = $_SERVER['DOCUMENT_ROOT'] . '/' . $this->get_path($options['gallery_url']);
 		if (!file_exists($galleries_path))
 			return '';
 
@@ -312,7 +312,7 @@ Class WPImageFlow2
 				   } else {
 				    $pageURL .= $_SERVER["SERVER_NAME"];
 				   }
-				  $imagepath = $pageURL . '/' . $options['gallery_url'] . $attr['dir'] . '/' . $image;
+				  $imagepath = $pageURL . '/' . $this->get_path($options['gallery_url']) . $attr['dir'] . '/' . $image;
 
 				  $pic_original 	= $imagepath;
 				  if ($strict == 'true') {
@@ -372,6 +372,16 @@ Class WPImageFlow2
 		}
 
 		return $use_options;
+	}
+
+	function get_path($gallery_url) {
+		/*
+		** Determine the path to prepend with DOCUMENT_ROOT
+		*/
+		if (substr($gallery_url, 0, 7) != "http://") return $gallery_url;
+
+		$dir_array = parse_url($gallery_url);
+		return $dir_array['path'];
 	}
 
 	function addScripts()
@@ -615,7 +625,7 @@ Class WPImageFlow2
 					</th>
 					<td>
 					<?php
-						$galleries_path = $_SERVER['DOCUMENT_ROOT'] . '/' . $options['gallery_url'];
+						$galleries_path = $_SERVER['DOCUMENT_ROOT'] . '/' . $this->get_path($options['gallery_url']);
 						if (file_exists($galleries_path)) {
 							$handle	= opendir($galleries_path);
 							while ($dir=readdir($handle))

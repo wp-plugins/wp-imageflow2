@@ -3,7 +3,7 @@ Author: Bev Stofko
 Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Tested up to: 2.9.1
-Version: 1.6.0
+Version: 1.6.1
 Requires at least: 2.8.4
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox, carousel, autorotate, automatic, rotate, media, tages
 
@@ -71,7 +71,7 @@ These additional WP-Imageflow2 specific options may be used:
 
 1. Create a folder for your galleries within your WordPress installation, wherever you want. The location has to be accessible from the internet - for example you could use wp-content/galleries.
 2. Upload your image galleries to a subfolder of this folder, for example you might upload your images under "wp-content/galleries/subfolder".
-3. Set the "Path to galleries from homepage root path" in the settings admin page for WP-ImageFlow2. Enter the path with trailing slash like: "wp-content/galleries/". If you have entered the gallery path correctly you will see a list of the sub-directories on the settings page.
+3. Set the "Path to galleries from homepage root path" in the settings admin page for WP-ImageFlow2. Enter the path with trailing slash like: "wp-content/galleries/". NEW - alternatively you may also enter the full path like "http://www.mywebsite.com/wp-content/galleries/". Note that the gallery must reside on the same server as the blog. If you have entered the gallery path correctly you will see a list of the sub-directories on the settings page.
 4. Insert a gallery on a page by specifying the shortcode [wp-imageflow2 dir=subfolder] on your post or page.
 
 This gallery style will display the image names as the captions, and will link to the full size image.
@@ -100,6 +100,10 @@ IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
 2. Choose the options you need. 
 
 == Changelog ==
+
+Version 1.6.1 (May 14, 2010)
+
+* Support directory paths specified as URLs to provide support to more server configurations
 
 Version 1.6.0 (May 13, 2010)
 
