@@ -599,7 +599,7 @@ Class WPImageFlow2
 					<?php echo __('Enter a value here if you wish to upload images to a directory.','wp-imageflow2'); ?>	
 					</th>
 					<td>
-					<?php echo __('Path to galleries from homepage root path.','wp-imageflow2'); ?>
+					<?php echo __('Path to galleries from homepage root path or full url.','wp-imageflow2'); ?>
 					<br /><input type="text" size="35" name="wpimageflow2_path" value="<?php echo $options['gallery_url']; ?>">
 					<br /><?php echo __('e.g.','wp-imageflow2'); ?> wp-content/galleries/
 					<br /><?php echo __('Ending slash, but NO starting slash','wp-imageflow2'); ?>
