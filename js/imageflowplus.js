@@ -1,5 +1,5 @@
 /**
- *	ImageFlowPlus 1.2
+ *	ImageFlowPlus 1.3
  *
  *    This provides an ImageFlow style gallery plus the following great features:
  *    - Lightbox pop-ups when linking to an image
@@ -10,6 +10,7 @@
  *
  *	Version 1.1 adds auto-rotation option (May 3, 2010)
  *	Version 1.2 adds startimg option, longdesc may be link or text description (May 13, 2010)
+ *	Version 1.3 fixes bug when gallery has only one image
  *
  *    Resources ----------------------------------------------------
  *	[1] http://www.adventuresinsoftware.com/blog/?p=104#comment-1981, Michael L. Perry's Cover Flow
@@ -111,6 +112,7 @@ this.step = function() {
 };
 
 this.glideTo = function(new_image_id) {
+	if (this.max == 1) return;
 	var x = (-new_image_id * this.xstep);
 	/* Animate gliding to new image */
 	this.target = x;
