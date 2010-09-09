@@ -11,6 +11,7 @@
  *	Version 1.1 adds auto-rotation option (May 3, 2010)
  *	Version 1.2 adds startimg option, longdesc may be link or text description (May 13, 2010)
  *	Version 1.3 fixes bug when gallery has only one image
+ *	Version 1.4 don't display top box caption if it is the same as the top box title
  *
  *    Resources ----------------------------------------------------
  *	[1] http://www.adventuresinsoftware.com/blog/?p=104#comment-1981, Michael L. Perry's Cover Flow
@@ -702,6 +703,7 @@ this.showImg = function(image, img_width, img_height)
 
 	// Add description and include its height in the calculations
 	var description = image.getAttribute('alt').replace(/.*\+\+/,'');
+	if (description == image.getAttribute('title')) description = '';
 	if (description != '') { description = '<p>' + description + '</p>'; }
 	caption_div.innerHTML = image.getAttribute('title') + description;
 	if (description != '') {

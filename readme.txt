@@ -2,8 +2,8 @@
 Author: Bev Stofko
 Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
-Tested up to: 2.9.1
-Version: 1.6.2
+Tested up to: 3.0
+Version: 1.6.3
 Requires at least: 2.8.4
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox, carousel, autorotate, automatic, rotate, media, tages
 
@@ -63,7 +63,7 @@ These standard gallery options may be used:
 
 These additional WP-Imageflow2 specific options may be used:
 
-* mediatags - Corresponds to Media Tags plugin by Paul Menard. This option will pull matching media out of your media library and include it in the gallery.
+* mediatag  - Corresponds to Media Tags plugin by Paul Menard. This option will pull matching media out of your media library and include it in the gallery.
 * startimg  - Gives the starting slide number to center in the gallery, the default is 1.
 * rotate    - Turns on/off auto-rotation for this instance (overrides the setting from the admin panel). Values are 'on' or 'off'.
 
@@ -100,6 +100,10 @@ IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
 2. Choose the options you need. 
 
 == Changelog ==
+
+Version 1.6.3 (September 9, 2010)
+
+* Fix display of caption for galleries based on a directory
 
 Version 1.6.2 (May 17, 2010)
 
