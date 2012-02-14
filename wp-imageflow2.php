@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow2
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
-Version: 1.6.3
+Version: 1.6.4
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -200,7 +200,7 @@ Class WPImageFlow2
 		$output .= '<b>';
 		$output .= __('Loading Images','wp-imageflow2');
 		$output .= '</b><br/>' . PHP_EOL;
-		$output .= '<img src="' . $plugin_url . '/img/loading.gif" width="208" height="13" alt="' . $loadingdiv . '" />' . PHP_EOL;
+		$output .= '<img src="' . $plugin_url . '/img/loading.gif" width="208" height="13" alt="' . $this->loadingdiv . '" />' . PHP_EOL;
 		$output .= '</div>' . PHP_EOL;
 		$output .= '<div id="' . $this->imagesdiv . '_' . $this->wpif2_instance . '" class="' . $this->imagesdiv . '">' . PHP_EOL;	
 
@@ -214,9 +214,9 @@ Class WPImageFlow2
 			if ($strict == 'true') {
 				$dir_array = parse_url($image[0]);
 				$url_path = $dir_array['path'];
-				$pic_reflected 	= $plugin_url.'/php/reflect.php?img='. urlencode($url_path) . '&bgc=' . urlencode($bgcolor);
+				$pic_reflected 	= $plugin_url.'/php/reflect.php?img='. urlencode($url_path) . '&amp;bgc=' . urlencode($bgcolor);
 			} else {
-				$pic_reflected 	= $plugin_url.'/php/reflect.php?img='. urlencode($image[0]) . '&bgc=' . urlencode($bgcolor);
+				$pic_reflected 	= $plugin_url.'/php/reflect.php?img='. urlencode($image[0]) . '&amp;bgc=' . urlencode($bgcolor);
 			}
 			$pic_original 	= $image[0];
 			$pic_large		= $image_large[0];
@@ -243,7 +243,7 @@ Class WPImageFlow2
 				$output .= '<img src="'.$pic_original.'" longdesc="'.$linkurl.'"'. $rel . $alt . ' />';
 			}
 			/* build separate thumbnail list for users with scripts disabled */
-			$noscript .= '<a href="' . $linkurl . '"><img src="' . $pic_original .'" width="100px"></a>';
+			$noscript .= '<a href="' . $linkurl . '"><img src="' . $pic_original .'" width="100px"  alt="'.$attachment->post_title.'" /></a>';
 			$i++;
 		}
 					
@@ -295,7 +295,7 @@ Class WPImageFlow2
 			$replace .= '<b>';
 			$replace .= __('Loading Images','wp-imageflow2');
 			$replace .= '</b><br/>' . PHP_EOL;
-			$replace .= '<img src="'.$plugin_url.'/img/loading.gif" width="208" height="13" alt="' . $loadingdiv . '" />' . PHP_EOL;
+			$replace .= '<img src="'.$plugin_url.'/img/loading.gif" width="208" height="13" alt="' . $this->loadingdiv . '" />' . PHP_EOL;
 			$replace .= '</div>' . PHP_EOL;
 			$replace .= '<div id="' . $this->imagesdiv . '_' . $this->wpif2_instance . '" class="' . $this->imagesdiv . '">' . PHP_EOL;	
 					
@@ -305,7 +305,7 @@ Class WPImageFlow2
 			    if (filetype($gallerypath."/".$image) != "dir" && !eregi('refl_',$image))
 			    {
 				   $pageURL = 'http';
-				   if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
+				   if (isset($_SERVER['HTTPS']) && ($_SERVER["HTTPS"] == "on")) {$pageURL .= "s";}
 				   $pageURL .= "://";
 				   if ($_SERVER["SERVER_PORT"] != "80") {
 				    $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"];
@@ -318,20 +318,20 @@ Class WPImageFlow2
 				  if ($strict == 'true') {
 					  $dir_array = parse_url($pic_original);
 					  $url_path = $dir_array['path'];
-					  $pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . urlencode($url_path) . '&bgc=' . urlencode($bgcolor);
+					  $pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . urlencode($url_path) . '&amp;bgc=' . urlencode($bgcolor);
 				  } else {
-					  $pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . urlencode($pic_original) . '&bgc=' . urlencode($bgcolor);
+					  $pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . urlencode($pic_original) . '&amp;bgc=' . urlencode($bgcolor);
 				  }
 
 				  /* Code the image with or without reflection */
 				  /* Note that IE gets confused if we put newlines after each image, so we don't */
 				  if ($reflect == 'true') {	
-					$replace .= '<img src="' . $pic_reflected . '" longdesc="' . $pic_original . '" alt="' . $image . '" rel="wpif2_lightbox"/>';
+					$replace .= '<img src="' . $pic_reflected . '" longdesc="' . $pic_original . '" alt="' . $image . '" rel="wpif2_lightbox" />';
 				  } else {
-					$replace .= '<img src="' . $pic_original . '" longdesc="' . $pic_original . '" alt="' . $image . '" rel="wpif2_lightbox"/>';
+					$replace .= '<img src="' . $pic_original . '" longdesc="' . $pic_original . '" alt="' . $image . '" rel="wpif2_lightbox" />';
 				  }
 				  /* build separate list for users with scripts disabled */
-				  $noscript .= '<a href="' . $pic_original . '"><img src="' . $pic_original .'" width="100px"></a>';
+				  $noscript .= '<a href="' . $pic_original . '"><img src="' . $pic_original .'" width="100px" alt="" /></a>';
 			    }				
 			}			
 			closedir($handle);
@@ -418,7 +418,7 @@ Class WPImageFlow2
 	
 	function wpImageFlow2AdminMenu()
 	{
-		add_options_page('WP-ImageFlow2', 'WP-ImageFlow2', 8, 'wpImageFlow2', array(&$this, 'wpImageFlow2OptionPage'));	
+		add_options_page('WP-ImageFlow2', 'WP-ImageFlow2', 'manage_options', 'wpImageFlow2', array(&$this, 'wpImageFlow2OptionPage'));	
 	}
 	
 	function wpImageFlow2OptionPage()

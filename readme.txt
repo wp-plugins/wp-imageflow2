@@ -2,8 +2,8 @@
 Author: Bev Stofko
 Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
-Tested up to: 3.0
-Version: 1.6.3
+Tested up to: 3.3.1
+Version: 1.6.4
 Requires at least: 2.8.4
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox, carousel, autorotate, automatic, rotate, media, tages
 
@@ -100,6 +100,13 @@ IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
 2. Choose the options you need. 
 
 == Changelog ==
+
+Version 1.6.4 (February 14, 2012)
+
+* Move to newer V3 reflect script to support PNG reflections
+* Update deprecated code, fix loadingdiv reference
+* Fix html validation errors on noscript images
+* Fix "&" html validation errors
 
 Version 1.6.3 (September 9, 2010)
 
