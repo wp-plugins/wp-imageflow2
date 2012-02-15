@@ -13,9 +13,9 @@ of images. This is a very light script that uses basic JQuery. Displays simple t
 
 == Description ==
 
-= Version 1.6.4 requires GD Version 2.0.1 or later for reflections. If your reflections don't work, revert to the old reflection script by renaming
+** Version 1.6.4 requires GD Version 2.0.1 or later for reflections. If your reflections don't work, revert to the old reflection script by renaming
 "php/reflect.php" to something else and renaming "php/old reflect.php" to "php/reflect.php". This will allow reflections to work but you lose support for
-transparent PNGs. =
+transparent PNGs. **
 
 Display nice looking ImageFlow galleries within posts and pages.  Link each image to either a Lightbox preview or an external URL. The Lightbox pop-up supports
 cycling through all the photos - left/right arrows appear when hovering over the photos. Supports multiple instances of the galleries on a single page.
