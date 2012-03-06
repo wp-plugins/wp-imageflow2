@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow2
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
-Version: 1.6.4
+Version: 1.6.5
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -187,6 +187,7 @@ Class WPImageFlow2
 		$width   = $options['width'];
 		$link    = $options['link'];
 		$reflect = $options['reflect'];
+		$reflect3 = $options['reflect3'];
 		$strict  = $options['strict'];
 
 		$plugin_url = get_option('siteurl') . "/" . PLUGINDIR . "/" . plugin_basename(dirname(__FILE__)); 			
@@ -211,12 +212,17 @@ Class WPImageFlow2
 		foreach ( $attachments as $id => $attachment ) {
 			$image 		= wp_get_attachment_image_src($id, "medium");
 			$image_large 	= wp_get_attachment_image_src($id, "large");
+			if ($reflect == 'true') {
+				$reflect_script = 'reflect2.php';
+			} else if ($reflect3 == 'true') {
+				$reflect_script = 'reflect3.php';
+			}
 			if ($strict == 'true') {
 				$dir_array = parse_url($image[0]);
 				$url_path = $dir_array['path'];
-				$pic_reflected 	= $plugin_url.'/php/reflect.php?img='. urlencode($url_path) . '&amp;bgc=' . urlencode($bgcolor);
+				$pic_reflected 	= $plugin_url.'/php/' . $reflect_script .'?img='. urlencode($url_path) . '&amp;bgc=' . urlencode($bgcolor);
 			} else {
-				$pic_reflected 	= $plugin_url.'/php/reflect.php?img='. urlencode($image[0]) . '&amp;bgc=' . urlencode($bgcolor);
+				$pic_reflected 	= $plugin_url.'/php/' . $reflect_script .'?img='. urlencode($image[0]) . '&amp;bgc=' . urlencode($bgcolor);
 			}
 			$pic_original 	= $image[0];
 			$pic_large		= $image_large[0];
@@ -237,7 +243,7 @@ Class WPImageFlow2
 			}
 
 			/* Note that IE gets confused if we put newlines after each image, so we don't */
-			if ($reflect == 'true') {
+			if (($reflect == 'true') || ($reflect3 == 'true')) {
 				$output .= '<img src="'.$pic_reflected.'" longdesc="'.$linkurl.'"'. $rel . $alt . ' />';
 			} else {
 				$output .= '<img src="'.$pic_original.'" longdesc="'.$linkurl.'"'. $rel . $alt . ' />';
@@ -274,6 +280,7 @@ Class WPImageFlow2
 		$slcolor = $options['slcolor'];
 		$width   = $options['width'];
 		$reflect = $options['reflect'];
+		$reflect3 = $options['reflect3'];
 		$strict  = $options['strict'];
 
 		$galleries_path = $_SERVER['DOCUMENT_ROOT'] . '/' . $this->get_path($options['gallery_url']);
@@ -315,17 +322,24 @@ Class WPImageFlow2
 				  $imagepath = $pageURL . '/' . $this->get_path($options['gallery_url']) . $attr['dir'] . '/' . $image;
 
 				  $pic_original 	= $imagepath;
+
+				  if ($reflect == 'true') {
+					$reflect_script = 'reflect2.php';
+				  } else if ($reflect3 == 'true') {
+					$reflect_script = 'reflect3.php';
+				  }
+
 				  if ($strict == 'true') {
 					  $dir_array = parse_url($pic_original);
 					  $url_path = $dir_array['path'];
-					  $pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . urlencode($url_path) . '&amp;bgc=' . urlencode($bgcolor);
+					  $pic_reflected 	= $plugin_url.'/php/' . $reflect_script .'?img=' . urlencode($url_path) . '&amp;bgc=' . urlencode($bgcolor);
 				  } else {
-					  $pic_reflected 	= $plugin_url.'/php/reflect.php?img=' . urlencode($pic_original) . '&amp;bgc=' . urlencode($bgcolor);
+					  $pic_reflected 	= $plugin_url.'/php/' . $reflect_script .'?img=' . urlencode($pic_original) . '&amp;bgc=' . urlencode($bgcolor);
 				  }
 
 				  /* Code the image with or without reflection */
 				  /* Note that IE gets confused if we put newlines after each image, so we don't */
-				  if ($reflect == 'true') {	
+				  if (($reflect == 'true') || ($reflect3 == 'true')) {	
 					$replace .= '<img src="' . $pic_reflected . '" longdesc="' . $pic_original . '" alt="' . $image . '" rel="wpif2_lightbox" />';
 				  } else {
 					$replace .= '<img src="' . $pic_original . '" longdesc="' . $pic_original . '" alt="' . $image . '" rel="wpif2_lightbox" />';
@@ -360,7 +374,8 @@ Class WPImageFlow2
 						'slcolor' => 'white',	// Slider color defaults to white
 						'link'    => 'false',	// Don't link to image description
 						'width'   => '520px',	// Width of containing div
-						'reflect' => 'true',	// True to reflect images
+						'reflect' => 'true',	// True to use V2 reflect script
+						'reflect3' => 'false',	// True to use V3 reflect script
 						'strict'  => 'false',	// True for strict servers that don't allow http:// in script args
 						'autorotate' => 'off',	// True to enable auto rotation
 						'pause' =>	'3000'	// Time to pause between auto rotations
@@ -427,7 +442,7 @@ Class WPImageFlow2
 			wp_die(__('Sorry, but you have no permission to change settings.','wp-imageflow2'));	
 			
 		$options = $this->getAdminOptions();
-		if (($_POST['save_wpimageflow2'] == 'true') && check_admin_referer('wpimageflow2_options'))
+		if (isset($_POST['save_wpimageflow2']) && ($_POST['save_wpimageflow2'] == 'true') && check_admin_referer('wpimageflow2_options'))
 		{
 			echo "<div id='message' id='updated fade'>";	
 
@@ -480,6 +495,23 @@ Class WPImageFlow2
 			} else {
 				$options['reflect'] = 'false';
 			}
+
+			/* 
+			** Look for reflect3 option
+			*/
+			if (isset ($_POST['wpimageflow2_reflect3']) && ($_POST['wpimageflow2_reflect3'] == 'reflect3')) {
+				$options['reflect3'] = 'true';
+			} else {
+				$options['reflect3'] = 'false';
+			}
+
+			/* 
+			** Only allow one reflect option
+			*/
+			if (($options['reflect3'] == 'true') && ($options['reflect'] == 'true')) {
+				$options['reflect'] = 'false';
+				echo "<p><b style='color:red;'>".__('Only one reflect script may be selected. Using V3.','wp-imageflow2')."</b></p>"; 
+			} 
 
 			/* 
 			** Look for strict option
@@ -564,10 +596,14 @@ Class WPImageFlow2
 				</tr>
 				<tr>
 					<th scope="row" valign="top">
-					<?php echo __('Check this box to have image reflections (requires gd).', 'wp-imageflow2'); ?>
+					<?php echo __('Choose your reflection script:', 'wp-imageflow2'); ?>
 					</th>
 					<td>
 					<input type="checkbox" name="wpimageflow2_reflect" value="reflect" <?php if ($options['reflect'] == 'true') echo ' CHECKED'; ?> />
+					<?php echo __('V2 (requires GD).', 'wp-imageflow2'); ?>
+					<br />
+					<input type="checkbox" name="wpimageflow2_reflect3" value="reflect3" <?php if ($options['reflect3'] == 'true') echo ' CHECKED'; ?> />
+					<?php echo __('V3. Supports transparent PNGs, GD version 2.0.28 strongly recommended.', 'wp-imageflow2'); ?>
 					</td>
 				</tr>
 				<tr>

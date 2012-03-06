@@ -3,7 +3,7 @@ Author: Bev Stofko
 Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Tested up to: 3.3.1
-Version: 1.6.4
+Version: 1.6.5
 Requires at least: 2.8.4
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox, carousel, autorotate, automatic, rotate, media, tages
 
@@ -13,24 +13,21 @@ of images. This is a very light script that uses basic JQuery. Displays simple t
 
 == Description ==
 
-** Version 1.6.4 requires GD Version 2.0.1 or later for reflections. If your reflections don't work, revert to the old reflection script by renaming
-"php/reflect.php" to something else and renaming "php/old reflect.php" to "php/reflect.php". This will allow reflections to work but you lose support for
-transparent PNGs. **
+Display nice looking ImageFlow galleries within posts and pages.  Link each image to either a Lightbox preview or an external URL. The Lightbox pop-up supports cycling through all the photos - left/right arrows appear when hovering over the photos. Supports multiple instances of the galleries on a single page.
 
-Display nice looking ImageFlow galleries within posts and pages.  Link each image to either a Lightbox preview or an external URL. The Lightbox pop-up supports
-cycling through all the photos - left/right arrows appear when hovering over the photos. Supports multiple instances of the galleries on a single page.
+This is a light script that uses the basic JQuery library;
 
-This is a very light script that uses the basic JQuery library;
-
-There are two ways to insert a WP-ImageFlow2 gallery:
+There are three ways to insert a WP-ImageFlow2 gallery:
 
 1. Use the built-in Wordpress media library use the shortcode [wp-imageflow2]
 2. Upload your pictures to a subfolder and use the shortcode [wp-imageflow2 dir=SUBFOLDER]
+3. Tag images in your media library using the Media Tags plugin by Paul Menard and use the shortcode [wp-imageflow2 mediatag=tagslug]
 
 You can configure the background color, text color, container width and choose black or white for the scrollbar. Auto-rotation of the images is now supported.
 
-When using the built in Wordpress library, the photo title will be displayed below each image. When using a subfolder gallery, the image name will 
-be displayed below each image.
+Two versions of the reflection script are provided. The default, V2, works on most servers. V3 provides PNG reflections but requires a higher version of GD that many servers don't support. You can choose which version to use (or none at all) on the settings page.
+
+When using the built in Wordpress library, the photo title will be displayed below each image. When using a subfolder gallery, the image name will be displayed below each image.
 
 For a built-in gallery, the image may link to either the large size image or an external url.
 
@@ -104,6 +101,10 @@ IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
 2. Choose the options you need. 
 
 == Changelog ==
+
+Version 1.6.5 (March 6, 2012)
+* Default to old reflect script and provide an option to select the new reflect script since the old script works on more servers
+* Fix warning in debug mode
 
 Version 1.6.4 (February 14, 2012)
 
