@@ -103,6 +103,7 @@ IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
 == Changelog ==
 
 Version 1.6.5 (March 6, 2012)
+
 * Default to old reflect script and provide an option to select the new reflect script since the old script works on more servers
 * Fix warning in debug mode
 
