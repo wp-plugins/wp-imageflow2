@@ -1,5 +1,5 @@
 /**
- *	ImageFlowPlus 1.3
+ *	ImageFlowPlus 1.5
  *
  *    This provides an ImageFlow style gallery plus the following great features:
  *    - Lightbox pop-ups when linking to an image
@@ -12,6 +12,7 @@
  *	Version 1.2 adds startimg option, longdesc may be link or text description (May 13, 2010)
  *	Version 1.3 fixes bug when gallery has only one image
  *	Version 1.4 don't display top box caption if it is the same as the top box title
+ *	Version 1.5 fix image load in lightbox and slider width calculations
  *
  *    Resources ----------------------------------------------------
  *	[1] http://www.adventuresinsoftware.com/blog/?p=104#comment-1981, Michael L. Perry's Cover Flow
@@ -63,6 +64,7 @@ this.target =		0;
 this.mem_target =		0;
 this.timer =		0;
 this.array_images =	[];
+this.ifp_slider_width =	0;
 this.new_slider_pos =	0;
 this.dragging =		false;
 this.dragobject =		null;
@@ -134,7 +136,7 @@ this.glideTo = function(new_image_id) {
 	if (this.dragging === false)
 	{
 		this.new_slider_pos = (this.scrollbar_width * (-(x*100/((this.max-1)*this.xstep))) / 100) - this.new_posx;
-		this.slider_div.style.marginLeft = (this.new_slider_pos - this.conf_ifp_slider_width) + 'px';
+		this.slider_div.style.marginLeft = (this.new_slider_pos - this.ifp_slider_width) + 'px';
 	}
 };
 
@@ -252,7 +254,7 @@ this.refresh = function(onload)
 	this.max_conf_focus = this.conf_focus * this.xstep;
 	this.size = this.images_width * 0.5;
 	this.scrollbar_width = Math.round(this.images_width * 0.6);
-	this.conf_ifp_slider_width = this.conf_ifp_slider_width * 0.5;
+	this.ifp_slider_width = this.conf_ifp_slider_width * 0.5;
 	this.max_height = Math.round(this.images_width * 0.51);
 
 	/* Change imageflow2 div properties */
@@ -490,7 +492,7 @@ this.drag = function(e)
 	if(thisObject.dragobject != null)
 	{
 		thisObject.dragging = true;
-		thisObject.new_posx = (thisObject.posx - thisObject.dragx) + thisObject.conf_ifp_slider_width;
+		thisObject.new_posx = (thisObject.posx - thisObject.dragx) + thisObject.ifp_slider_width;
 
 		/* Make sure, that the slider is moved in proper relation to previous movements by the glideTo function */
 		if(thisObject.new_posx < ( - thisObject.new_slider_pos)) thisObject.new_posx = - thisObject.new_slider_pos;
@@ -641,15 +643,21 @@ this.showTop = function(image)
 
 	// get the image actual size by preloading into 't'
 	var t = new Image();
-      t.onload = (function(){	thisObject.showImg(image, t.width, t.height); });
+      t.onload = (function(){	thisObject.showImg(image, t, t.width, t.height); });
 	t.src = image.url;
 
 	// Now wait until 't' is loaded
 };
 
 
-this.showImg = function(image, img_width, img_height) 
+this.showImg = function(image, img, img_width, img_height) 
 {	
+	// Wait for image to preload
+	if (img_width == 0 || img_height == 0) {
+		img.onload = (function(){ thisObject.showImg(image, img, img.width, img.height); });
+		return;
+	}
+
 	// Do nothing if the overlay was closed in the meantime
 	if (document.getElementById(this.ifp_overlaydiv).style.visibility == 'hidden') return;
 
@@ -672,7 +680,7 @@ this.showImg = function(image, img_width, img_height)
 				// Found one - preload and set the previous link
 				var p = new Image();
 				p.src = prev_image.url;
-				prev_div.onclick = (function(){ thisObject.showImg(prev_image, p.width, p.height); return false;});
+				prev_div.onclick = (function(){ thisObject.showImg(prev_image, p, p.width, p.height); return false;});
 				prev_div.style.visibility = 'visible';
 				break;
 			}
@@ -688,7 +696,7 @@ this.showImg = function(image, img_width, img_height)
 				// Found one - preload and set the next link
 				var n = new Image();
 				n.src = next_image.url;
-				next_div.onclick = (function(){ thisObject.showImg(next_image, n.width, n.height); return false;});
+				next_div.onclick = (function(){ thisObject.showImg(next_image, n, n.width, n.height); return false;});
 				next_div.style.visibility = 'visible';
 				break;
 			} 

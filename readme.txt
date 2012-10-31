@@ -2,9 +2,8 @@
 Author: Bev Stofko
 Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
-Tested up to: 3.3.1
-Version: 1.6.5
-Requires at least: 2.8.4
+Tested up to: 3.4.2
+Version: 1.6.6
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox, carousel, autorotate, automatic, rotate, media, tages
 
 ImageFlow style picture gallery with Lightbox popups. Uses either the built-in Wordpress gallery or an uploaded directory 
@@ -101,6 +100,11 @@ IF YOU ARE UPGRADING FROM 1.2.6 OR PRIOR, YOU MUST EDIT YOUR GALLERY SHORTCODES:
 2. Choose the options you need. 
 
 == Changelog ==
+
+Version 1.6.6 (October 31, 2012)
+
+* Fix slider width calculation (was slightly off in IE7)
+* Improve Lightbox prev/next image preloads (problem was notable when clicking rapidly through the lightbox on slow-responding servers using IE7 & 8)
 
 Version 1.6.5 (March 6, 2012)
 
