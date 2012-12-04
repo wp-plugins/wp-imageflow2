@@ -10,8 +10,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox, carousel, autorotate, automatic, rotate, media, tages
 
-ImageFlow style picture gallery with Lightbox popups. Uses either the built-in Wordpress gallery or an uploaded directory 
-of images. This is a very light script that uses basic JQuery. Displays simple thumbnail list if Javascript is disabled.
+ImageFlow style picture gallery with Lightbox popups. Uses either the Wordpress media library or an uploaded directory of images. 
 
 == Description ==
 
@@ -20,28 +19,32 @@ Now available, version 1.7.0:
 * NEW FEATURE - Support touch screen on the scroll bar to slide the images left/right
 * NEW FEATURE - Provide option to open image links in the same window
 * NEW FEATURE - Provide image link field in the image editor window rather than using the image description
-* Support secure links for the image link URL
-* Fix debug message when reflect scripts disabled
 
 = WP-Imageflow2 =
 
-Display nice looking ImageFlow galleries within posts and pages.  Link each image to either a Lightbox preview or an external URL. The Lightbox pop-up supports cycling through all the photos - left/right arrows appear when hovering over the photos. Supports multiple instances of the galleries on a single page.
+Display nice looking ImageFlow galleries within posts and pages.  Link each image to either a Lightbox preview or an external URL. The Lightbox pop-up supports cycling through all the photos - left/right arrows appear when hovering over the photos. 
 
-This is a light script that uses the basic JQuery library.
+This is a light script that uses the basic JQuery library. It will display a simple thumbnail list if Javascript is disabled in the browser.
 
-New Features:
+There are three ways to insert a WP-ImageFlow Plus gallery:
 
-* Touch control of the scrollbar
-* Link field in the image editor to link an image to a URL
-* Option to open links in the same window or a new window
-
-There are three ways to insert a WP-ImageFlow2 gallery:
-
-1. Use the built-in Wordpress media library use the shortcode [wp-imageflow2]
+1. Select the built-in Wordpress media library attached images with the shortcode [wp-imageflow2]
 2. Upload your pictures to a subfolder and use the shortcode [wp-imageflow2 dir=SUBFOLDER]
 3. Tag images in your media library using the Media Tags plugin by Paul Menard and use the shortcode [wp-imageflow2 mediatag=tagslug]
 
-You can configure the background color, text color, container width and choose black or white for the scrollbar. Auto-rotation of the images is supported.
+Features:
+
+* Multiple galleries per page
+* Configure the background color, text color, container width and choose black or white for the scrollbar. 
+* Auto-rotation of the images
+* Configure the starting slide number
+* Touch control of the scrollbar
+* Optional link field in the image editor to link an image to an URL instead of the lightbox
+* Option to open links in the same window or a new window
+* Enable/disable automatic rotation for each instance of a gallery
+* Supports full text description in the popup window of a gallery from the media library
+* Two versions of the reflection script to support more browser configurations
+* Display with or without reflections
 
 Two versions of the reflection script are provided. The default, V2, works on most servers. V3 provides PNG reflections but requires a higher version of GD that many servers don't support. You can choose which version to use (or none at all) on the settings page.
 
@@ -52,8 +55,7 @@ For a built-in gallery, the image may link to either the large size image or an 
 = Auto Rotation =
 
 When auto rotation is enabled, the images will automatically rotate through the carousel. You may configure the pause time between rotations. Once the end
-of the gallery is reached it flows back to the beginning and starts again. The rotation will pause when the mouse hovers over the bounding div. Once an image
-is clicked and expanded into the Lightbox display the auto rotation is suspended.
+of the gallery is reached it flows back to the beginning and starts again. The rotation will pause when the mouse hovers over the bounding div. Once an image is clicked and expanded into the Lightbox display the auto rotation is suspended.
 
 [Demo](http://www.stofko.ca/wp-imageflow2-wordpress-plugin/)
 
@@ -61,13 +63,13 @@ is clicked and expanded into the Lightbox display the auto rotation is suspended
 
 1. Unzip to the /wp-content/plugins/ directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Configure the gallery in Settings -> WP-ImageFlow2.
+3. Configure the gallery in Settings -> WP-ImageFlow Plus.
 
 = Using the built-in Wordpress library: =
 
 1. Upload images using the Wordpress image uploader on your post or page or into the media library. Enter a title to display, and optionally enter a description that may be used as an external link.
 2. Use the shortcode [wp-imageflow2] anywhere in the post or page
-3. If you want the image to link to an external URL, enter the address in the WP-Imageflow2 link field in the image editor (ie: http://www.website.com). If the link field does not contain a URL, the image will link to the full size popup image with the description (if any) displayed as text below the image.
+3. If you want the image to link to an external URL, enter the address in the WP-Imageflow Plus link field in the image editor (ie: http://www.website.com). If the link field does not contain a URL, the image will link to the full size popup image with the description (if any) displayed as text below the image.
 
 These standard gallery options may be used:
 
@@ -78,7 +80,7 @@ These standard gallery options may be used:
 * exclude
 * size (applies to RSS feed only)
 
-These additional WP-Imageflow2 specific options may be used:
+These additional WP-Imageflow Plus specific options may be used:
 
 * mediatag   - Corresponds to Media Tags plugin by Paul Menard. This option will pull matching media out of your media library and include it in the gallery.
 * startimg   - Gives the starting slide number to center in the gallery, the default is 1.
@@ -89,12 +91,12 @@ These additional WP-Imageflow2 specific options may be used:
 
 1. Create a folder for your galleries within your WordPress installation, wherever you want. The location has to be accessible from the internet - for example you could use wp-content/galleries.
 2. Upload your image galleries to a subfolder of this folder, for example you might upload your images under "wp-content/galleries/subfolder".
-3. Set the "Path to galleries from homepage root path" in the settings admin page for WP-ImageFlow2. Enter the path with trailing slash like: "wp-content/galleries/". NEW - alternatively you may also enter the full path like "http://www.mywebsite.com/wp-content/galleries/". Note that the gallery must reside on the same server as the blog. If you have entered the gallery path correctly you will see a list of the sub-directories on the settings page.
+3. Set the "Path to galleries from homepage root path" in the settings admin page for WP-ImageFlow Plus. Enter the path with trailing slash like: "wp-content/galleries/". NEW - alternatively you may also enter the full path like "http://www.mywebsite.com/wp-content/galleries/". Note that the gallery must reside on the same server as the blog. If you have entered the gallery path correctly you will see a list of the sub-directories on the settings page.
 4. Insert a gallery on a page by specifying the shortcode [wp-imageflow2 dir=subfolder] on your post or page.
 
 This gallery style will display the image names as the captions, and will link to the full size image.
 
-These additional WP-Imageflow2 specific options may be used:
+These additional WP-Imageflow Plus specific options may be used:
 
 * startimg   - Gives the starting slide number to center in the gallery, the default is 1.
 * rotate     - Turns on/off auto-rotation for this instance (overrides the setting from the admin panel). Values are 'on' or 'off'.
@@ -105,7 +107,17 @@ These additional WP-Imageflow2 specific options may be used:
 
 = My carousel contains broken images. What can I do? =
 
-If your reflected images don’t show up, you might have a server that generates 404 errors on the reflected images. In this case select the option in the settings for strict servers.
+If your reflected images don't show up, you might have a server that generates 404 errors on the reflected images. In this case select the option in the settings for strict servers.
+
+= Is there a way for me to place a tag in my template so that the gallery would be part of it? =
+
+You can insert any shortcode into a template using this enclosed in standard PHP tags:
+
+echo do_shortcode('[shortcode option1="value1" option2="value2"]');
+
+So for WP-Imageflow Plus, just insert something like this:
+
+echo do_shortcode('[wp-imageflow2 dir="value"]');
 
 = How can I help support this plugin? =
 
@@ -113,7 +125,7 @@ A donation to support this plugin would be greatly appreciated. I also appreciat
 
 == Screenshots ==
 
-1. WP-ImageFlow 2
+1. WP-ImageFlow Plus
 2. Choose the options you need. 
 3. Add an image link
 
