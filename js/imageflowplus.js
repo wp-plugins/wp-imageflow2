@@ -1,5 +1,5 @@
 /**
- *	ImageFlowPlus 1.5
+ *	ImageFlowPlus 1.6
  *
  *    This provides an ImageFlow style gallery plus the following great features:
  *    - Lightbox pop-ups when linking to an image
@@ -13,12 +13,14 @@
  *	Version 1.3 fixes bug when gallery has only one image
  *	Version 1.4 don't display top box caption if it is the same as the top box title
  *	Version 1.5 fix image load in lightbox and slider width calculations
+ *	Version 1.6 adds support for touch screen, conf_samewindow option, add class to centered image (Nov. 2012)
  *
  *    Resources ----------------------------------------------------
  *	[1] http://www.adventuresinsoftware.com/blog/?p=104#comment-1981, Michael L. Perry's Cover Flow
  *	[2] http://www.finnrudolph.de/, Finn Rudolph's imageflow, version 0.9 
  *	[3] http://reflection.corephp.co.uk/v2.php, Richard Daveys easyreflections in PHP
  *	[4] http://adomas.org/javascript-mouse-wheel, Adomas Paltanavicius JavaScript mouse wheel code
+ *	[5] Touch screen control derived from scripts courtesy of PADILICIOUS.COM and MACOSXAUTOMATION.COM
  *    --------------------------------------------------------------
  */
 
@@ -29,7 +31,8 @@ this.defaults =
 {
 conf_autorotate:		'off',	// Sets auto-rotate option 'on' or 'off', default is 'off'
 conf_autorotatepause: 	3000,		// Set the pause delay in the auto-rotation
-conf_startimg:		1		// Starting focused image
+conf_startimg:		1,		// Starting focused image
+conf_samewindow:		false		// Open links in same window vs the default of opening in new window
 };
 
 /* Possible future options */
@@ -81,7 +84,7 @@ var thisObject = this;
 this.init = function(options)
 {
 	/* Evaluate options */
-	var optionsArray = new Array('conf_autorotate', 'conf_autorotatepause', 'conf_startimg');
+	var optionsArray = new Array('conf_autorotate', 'conf_autorotatepause', 'conf_startimg', 'conf_samewindow');
 	var max = optionsArray.length;
 	for (var i = 0; i < max; i++)
 	{
@@ -213,18 +216,25 @@ this.moveTo = function(x)
 				zIndex = zIndex - 1;
 			}
 			
-			/* Change zIndex and onclick function of the focused image */
+			/* Change zIndex, class and onclick function of the focused image */
 			switch ( image.i == thisObject.image_id )
 			{
 				case false:
 					image.onclick = function() { thisObject.autorotate = "off"; thisObject.glideTo(this.i); return false; };
+					image.className = image.className.replace( /(?:^|\s)wpif2-centered(?!\S)/g , '' );
 					break;
 
 				default:
 					zIndex = zIndex + 1;
+
+					var pattern = new RegExp("(^| )" + "wpif2-centered" + "( |$)");
+					if (!pattern.test(image.className)) image.className += " wpif2-centered";
+
   					if (image.getAttribute("rel") && (image.getAttribute("rel") == 'wpif2_lightbox')) {
 						image.setAttribute("title",image.getAttribute('alt').replace(/\+\+.*/,''));
 						image.onclick = function () { thisObject.conf_autorotate = "off"; thisObject.showTop(this); return false; };
+					} else if (this.conf_samewindow) {
+						image.onclick = function() { window.location = this.url; return false; };
 					} else {
 						image.onclick = function() { window.open (this.url); return false; };
 					}
@@ -269,11 +279,14 @@ this.refresh = function(onload)
 	this.caption_div.style.width = this.images_width + 'px';
 	this.caption_div.style.marginTop = this.images_width * 0.03 + 'px';
 
-	/* Change scrollbar div properties */
+	/* Change and record scrollbar div properties */
 	this.scrollbar_div.style.marginTop = this.images_width * 0.02 + 'px';
 	this.scrollbar_div.style.marginLeft = this.images_width * 0.2 + 'px';
 	this.scrollbar_div.style.width = this.scrollbar_width + 'px';
 	
+	this.scrollbar_left = this.scrollbar_div.offsetLeft;
+	this.scrollbar_right = this.scrollbar_div.offsetLeft + this.scrollbar_div.offsetWidth;
+
 	/* Set slider attributes */
 	this.slider_div.onmousedown = function () { thisObject.dragstart(this); return false; };
 	this.slider_div.style.cursor = this.conf_ifp_slider_cursor;
@@ -316,7 +329,9 @@ this.refresh = function(onload)
 				image.setAttribute("title",image.getAttribute('alt').replace(/\+\+.*/,''));
 
 				image.ondblclick = function () { thisObject.conf_autorotate = 'off'; thisObject.showTop(this);return false; }
-			} else {
+			} else if (this.conf_samewindow) {
+				image.ondblclick = function() { window.location = this.url; }
+			} else { 
 				image.ondblclick = function() { window.open (this.url); }
 			}
 			/* Set image cursor type */
@@ -404,6 +419,7 @@ this.loaded = function()
 		thisObject.show(thisObject.ifp_scrollbardiv);
 		thisObject.initMouseWheel();
 		thisObject.initMouseDrag();
+		thisObject.Touch.touch_init();
 	}
 };
 
@@ -535,6 +551,150 @@ this.getKeyCode = function(event)
 	return event.keyCode;
 };
 
+
+this.Touch = {
+	// TOUCH-EVENTS SINGLE-FINGER SWIPE-SENSING JAVASCRIPT
+	// Courtesy of PADILICIOUS.COM and MACOSXAUTOMATION.COM
+	
+	// this script can be used with one or more page elements to perform actions based on them being swiped with a single finger
+
+	triggerElementID : null, // this variable is used to identity the triggering element
+	fingerCount : 0,
+	startX : 0,
+	startY : 0,
+	curX : 0,
+	curY : 0,
+	deltaX : 0,
+	deltaY : 0,
+	horzDiff : 0,
+	vertDiff : 0,
+	minLength : 10, // the shortest distance the user may swipe
+	swipeLength : 0,
+	swipeAngle : null,
+	swipeDirection : null,
+	
+	// The 4 Touch Event Handlers
+	
+	// NOTE: the touch_start handler should also receive the ID of the triggering element
+	// make sure its ID is passed in the event call placed in the element declaration, like:
+	// <div id="picture-frame" ontouchstart="touch_start(event,'picture-frame');"  
+	//	ontouchend="touch_end(event);" ontouchmove="touch_move(event);" ontouchcancel="touch_cancel(event);">
+
+	touch_init : function() { 
+		thisObject.slider_div.ontouchstart = function(event) { thisObject.Touch.touch_start(event,thisObject.ifp_sliderdiv); return false; };
+		thisObject.slider_div.ontouchend = function(event) { thisObject.Touch.touch_end(event); return false; };
+		thisObject.slider_div.ontouchmove = function(event) { thisObject.Touch.touch_move(event); return false; };
+		thisObject.slider_div.ontouchcancel = function(event) { thisObject.Touch.touch_cancel(event); return false; };
+	},
+
+	touch_start : function (event,passedName) { 
+		this.touch_reset(event);
+ 
+		// disable the standard ability to select the touched object
+		event.preventDefault();
+		// get the total number of fingers touching the screen
+		this.fingerCount = event.touches.length;
+		// since we're looking for a swipe (single finger) and not a gesture (multiple fingers),
+		// check that only one finger was used
+		if ( this.fingerCount == 1 ) {
+			// get the coordinates of the touch
+			this.startX = event.touches[0].pageX;
+			this.startY = event.touches[0].pageY;
+			// store the triggering element ID
+			this.triggerElementID = passedName;
+		} else {
+			// more than one finger touched so cancel
+			//this.touch_cancel(event);
+		}
+	},
+
+	touch_move : function (event) { 
+		event.preventDefault();
+		if ( event.touches.length == 1 ) {
+			this.curX = event.touches[0].pageX;
+			this.curY = event.touches[0].pageY;
+			this.touch_glide(event);
+		} else { 
+			//this.touch_cancel(event);
+		}
+	},	
+	
+	touch_end : function (event) { 
+		// clean up at end of swipe
+		event.preventDefault(); 
+		this.touch_glide(event);
+		//this.touch_cancel(event);
+	},
+
+	touch_glide : function (event) { 
+		// check to see if more than one finger was used and that there is an ending coordinate
+		if ( this.fingerCount == 1 && this.curX != 0 ) {
+			// use the Distance Formula to determine the length of the swipe
+			this.swipeLength = Math.round(Math.sqrt(Math.pow(this.curX - this.startX,2) + Math.pow(this.curY - this.startY,2)));
+			// if the user swiped more than the minimum length, perform the appropriate action
+			if ( this.swipeLength >= this.minLength ) { 
+				this.calculate_angle();
+				this.determine_swipe_direction();
+				this.processing_routine();
+				//this.touch_cancel(event); // reset the variables (nope - process while swiping)
+			} else { 
+				//this.touch_cancel(event); // nope - process while swiping
+			}	
+		} else { 
+			//this.touch_cancel(event);
+		}
+	},
+
+	touch_reset : function (event) {
+		// reset the variables back to default values
+		this.fingerCount = 0;
+		this.startX = 0;
+		this.startY = 0;
+		this.curX = 0;
+		this.curY = 0;
+		this.deltaX = 0;
+		this.deltaY = 0;
+		this.horzDiff = 0;
+		this.vertDiff = 0;
+		this.swipeLength = 0;
+		this.swipeAngle = null;
+		this.swipeDirection = null;
+		this.triggerElementID = null;
+	},
+	
+	calculate_angle : function () {
+		var X = this.startX-this.curX;
+		var Y = this.curY-this.startY;
+		var Z = Math.round(Math.sqrt(Math.pow(X,2)+Math.pow(Y,2))); //the distance - rounded - in pixels
+		var r = Math.atan2(Y,X); //angle in radians (Cartesian system)
+		this.swipeAngle = Math.round(r*180/Math.PI); //angle in degrees
+		if ( this.swipeAngle < 0 ) { this.swipeAngle =  360 - Math.abs(this.swipeAngle); }
+	},
+	
+	determine_swipe_direction : function () {
+		if ( (this.swipeAngle <= 45) && (this.swipeAngle >= 0) ) {
+			this.swipeDirection = 'left';
+		} else if ( (this.swipeAngle <= 360) && (this.swipeAngle >= 315) ) {
+			this.swipeDirection = 'left';
+		} else if ( (this.swipeAngle >= 135) && (this.swipeAngle <= 225) ) {
+			this.swipeDirection = 'right';
+		} else if ( (this.swipeAngle > 45) && (this.swipeAngle < 135) ) {
+			this.swipeDirection = 'down';
+		} else {
+			this.swipeDirection = 'up';
+		}
+	},
+	
+	processing_routine : function () {
+		var swipedElement = document.getElementById(this.triggerElementID);
+		if (( this.swipeDirection == 'left' ) || ( this.swipeDirection == 'right' )) {
+			var X = Math.round(thisObject.max * (this.curX - thisObject.scrollbar_left)/(thisObject.scrollbar_right - thisObject.scrollbar_left));
+			if (X < 0) X = 0;
+			if (X >= thisObject.max) X = thisObject.max - 1;
+			thisObject.glideTo(X); 
+		} 
+	}
+};
 
 this.getPageScroll = function(){
 	var xScroll, yScroll;
