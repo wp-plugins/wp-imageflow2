@@ -67,7 +67,7 @@ of the gallery is reached it flows back to the beginning and starts again. The r
 
 = Using the built-in Wordpress library: =
 
-1. Upload images using the Wordpress image uploader on your post or page or into the media library. Enter a title to display, and optionally enter a description that may be used as an external link.
+1. Upload images using the Wordpress image uploader on your post or page or into the media library. Enter a title to display, and optionally enter an external link.
 2. Use the shortcode [wp-imageflow2] anywhere in the post or page
 3. If you want the image to link to an external URL, enter the address in the WP-Imageflow Plus link field in the image editor (ie: http://www.website.com). If the link field does not contain a URL, the image will link to the full size popup image with the description (if any) displayed as text below the image.
 
