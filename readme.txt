@@ -4,7 +4,7 @@ Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Requires at least: 3.0.1
 Tested up to: 3.4.2
-Stable tag: 1.6.6
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,7 +15,7 @@ of images. This is a very light script that uses basic JQuery. Displays simple t
 
 == Description ==
 
-Now available, version 1.7.0, still in beta:
+Now available, version 1.7.0:
 
 * NEW FEATURE - Support touch screen on the scroll bar to slide the images left/right
 * NEW FEATURE - Provide option to open image links in the same window
