@@ -133,7 +133,7 @@ A donation to support this plugin would be greatly appreciated. I also appreciat
 
 Version 1.7.1 (December 17, 2012)
 
-* Remove newlines after image tags because some servers inserted <br /> 
+* Remove newlines after image tags because some servers inserted breaks
 
 Version 1.7.0 (December 4, 2012)
 
