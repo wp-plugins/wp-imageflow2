@@ -3,13 +3,13 @@
 Plugin Name: WP-ImageFlow Plus
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
-Version: 1.7.0
+Version: 1.7.1
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
 Originally based on the discontinued plugin by Sven Kubiak http://www.svenkubiak.de/wp-imageflow, but has now grown substantially.
 
-Copyright 2010 Bev Stofko
+Copyright 2013 Bev Stofko
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -259,13 +259,13 @@ Class WPImageFlow2
 			}
 
 			if ($reflect != 'none') {
-				$output .= '<img src="'.$pic_reflected.'" longdesc="'.$linkurl.'"'. $rel . $alt . ' />' . PHP_EOL;
+				$output .= '<img src="'.$pic_reflected.'" longdesc="'.$linkurl.'"'. $rel . $alt . ' />';
 			} else {
-				$output .= '<img src="'.$pic_original.'" longdesc="'.$linkurl.'"'. $rel . $alt . ' />' . PHP_EOL;
+				$output .= '<img src="'.$pic_original.'" longdesc="'.$linkurl.'"'. $rel . $alt . ' />';
 			}
 
 			/* build separate thumbnail list for users with scripts disabled */
-			$noscript .= '<a href="' . $linkurl . '"><img src="' . $pic_original .'" width="100px"  alt="'.$attachment->post_title.'" /></a>' . PHP_EOL;
+			$noscript .= '<a href="' . $linkurl . '"><img src="' . $pic_original .'" width="100px"  alt="'.$attachment->post_title.'" /></a>';
 			$i++;
 		}
 					
@@ -317,7 +317,7 @@ Class WPImageFlow2
 			$replace .= '<b>';
 			$replace .= __('Loading Images','wp-imageflow2');
 			$replace .= '</b><br/>' . PHP_EOL;
-			$replace .= '<img src="'.$plugin_url.'/img/loading.gif" width="208" height="13" alt="' . $this->loadingdiv . '" />' . PHP_EOL;
+			$replace .= '<img src="'.$plugin_url.'/img/loading.gif" width="208" height="13" alt="' . $this->loadingdiv . '" />';
 			$replace .= '</div>' . PHP_EOL;
 			$replace .= '<div id="' . $this->imagesdiv . '_' . $this->wpif2_instance . '" class="' . $this->imagesdiv . '">' . PHP_EOL;	
 					
