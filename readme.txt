@@ -4,7 +4,7 @@ Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Requires at least: 3.0.1
 Tested up to: 3.5
-Stable tag: 1.7.1
+Stable tag: 1.7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,13 +14,15 @@ ImageFlow style picture gallery with Lightbox popups. Uses either the Wordpress 
 
 == Description ==
 
-Now available, version 1.7.0:
+Now available in version 1.7.0:
 
 * NEW FEATURE - Support touch screen on the scroll bar to slide the images left/right
 * NEW FEATURE - Provide option to open image links in the same window
 * NEW FEATURE - Provide image link field in the image editor window rather than using the image description
 
 = WP-Imageflow2 =
+
+[Demo](http://www.stofko.ca/wp-imageflow2-wordpress-plugin/)
 
 Display nice looking ImageFlow galleries within posts and pages.  Link each image to either a Lightbox preview or an external URL. The Lightbox pop-up supports cycling through all the photos - left/right arrows appear when hovering over the photos. 
 
@@ -56,8 +58,6 @@ For a built-in gallery, the image may link to either the large size image or an 
 
 When auto rotation is enabled, the images will automatically rotate through the carousel. You may configure the pause time between rotations. Once the end
 of the gallery is reached it flows back to the beginning and starts again. The rotation will pause when the mouse hovers over the bounding div. Once an image is clicked and expanded into the Lightbox display the auto rotation is suspended.
-
-[Demo](http://www.stofko.ca/wp-imageflow2-wordpress-plugin/)
 
 == Installation ==
 
@@ -130,6 +130,10 @@ A donation to support this plugin would be greatly appreciated. I also appreciat
 3. Add an image link
 
 == Changelog ==
+
+Version 1.7.2 (January 18, 2012)
+
+* Update PHP code that was deprecated in 5.3
 
 Version 1.7.1 (December 17, 2012)
 
