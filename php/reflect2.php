@@ -12,7 +12,7 @@
 		This script accepts the following $_GET parameters:
 		
 		img		        required	The source image (to reflect)
-		height	        optional	Height of the reflection (% or pixel value)
+		//height	        optional	Height of the reflection (% or pixel value) - removed to prevent exploitation
 		bgc		        optional	Background colour to fade into, default = #000000
         fade_start      optional    Start the alpha fade from whch value? (% value)
         fade_end        optional    End the alpha fade from whch value? (% value)
@@ -76,15 +76,9 @@
 
         $source_image = $_SERVER['DOCUMENT_ROOT'] . $url_path;
 
-	  $image_details = getimagesize($source_image);
-	
-	  if ($image_details === false)
-	  {
-		echo 'Not a valid image supplied, or this script does not have permissions to access it.';
-		exit();
-	  }
-
-        if ($cache)
+        if (file_exists($source_image))
+        {
+	      if ($cache)
             {
                 $cache_dir = dirname($source_image);
                 $cache_base = basename($source_image);
@@ -100,6 +94,21 @@
                     exit();
                 }
             }
+
+
+	  	$image_details = getimagesize($source_image);
+	
+	  	if ($image_details === false)
+		{
+			echo 'Not a valid image supplied, or this script does not have permissions to access it.';
+			exit();
+		}
+	  }
+	  else
+	  {
+		echo 'Cannot find or read source image.';
+		exit();
+	  }
 	}
 	else
 	{
@@ -148,36 +157,36 @@
 	}
 	
 	//	height (how tall should the reflection be?)
-	if (isset($_GET['height']))
-	{
-		$output_height = $_GET['height'];
+	//if (isset($_GET['height']))
+	//{
+	//	$output_height = $_GET['height'];
 		
 		//	Have they given us a percentage?
-		if (substr($output_height, -1) == '%')
-		{
+	//	if (substr($output_height, -1) == '%')
+	//	{
 			//	Yes, remove the % sign
-			$output_height = (int) substr($output_height, 0, -1);
+	//		$output_height = (int) substr($output_height, 0, -1);
 
 			//	Gotta love auto type casting ;)
-			if ($output_height < 10)
-			{
-				$output_height = "0.0$output_height";
-			}
-			else
-			{
-				$output_height = "0.$output_height";
-			}
-		}
-		else
-		{
-			$output_height = (int) $output_height;
-		}
-	}
-	else
-	{
+	//		if ($output_height < 10)
+	//		{
+	//			$output_height = "0.0$output_height";
+	//		}
+	//		else
+	//		{
+	//			$output_height = "0.$output_height";
+	//		}
+	//	}
+	//	else
+	//	{
+	//		$output_height = (int) $output_height;
+	//	}
+	//}
+	//else
+	//{
 		//	No height was given, so default to 50% of the source images height
 		$output_height = 0.50;
-	}
+	//}
 	
 	if (isset($_GET['fade_start']))
 	{

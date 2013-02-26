@@ -4,7 +4,7 @@ Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Requires at least: 3.0.1
 Tested up to: 3.5
-Stable tag: 1.7.3
+Stable tag: 1.7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -131,11 +131,15 @@ A donation to support this plugin would be greatly appreciated. I also appreciat
 
 == Changelog ==
 
-Version 1.7.3 (January 19, 2012)
+Version 1.7.4 (January 20, 2013)
+
+* Remove potential exploitations
+
+Version 1.7.3 (January 19, 2013)
 
 * Correction to the fix in 1.7.2
 
-Version 1.7.2 (January 18, 2012)
+Version 1.7.2 (January 18, 2013)
 
 * Update PHP code that was deprecated in 5.3
 
