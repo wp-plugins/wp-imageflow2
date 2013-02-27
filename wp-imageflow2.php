@@ -492,6 +492,15 @@ Class WPImageFlow2
 			$options['width'] = $_POST['wpimageflow2_width'];
 
 			/* 
+			** Look for link to description option
+			*/
+			if (isset ($_POST['wpimageflow2_link']) && ($_POST['wpimageflow2_link'] == 'link')) {
+				$options['link'] = 'true';
+			} else {
+				$options['link'] = 'false';
+			}
+
+			/* 
 			** Look for link to new window option
 			*/
 			if (isset ($_POST['wpimageflow2_samewindow']) && ($_POST['wpimageflow2_samewindow'] == 'same')) {
