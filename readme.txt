@@ -1,6 +1,5 @@
 === WP-ImageFlow Plus ===
 Author: Bev Stofko
-Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Requires at least: 3.0.1
 Tested up to: 3.5.1
