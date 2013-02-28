@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow Plus
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
-Version: 1.8.0
+Version: 1.8.1
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -276,11 +276,11 @@ Class WPImageFlow2
 			$link_url = '';
 			if (($options['link'] == 'true') && 
 				((substr($attachment->post_content,0,7) == 'http://') || (substr($attachment->post_content,0,8) == 'https://'))) {
-				$linkurl = $attachment->post_content;
+				$link_url = $attachment->post_content;
 			}
 
 			$image_link = get_post_meta($id, '_wpif2-image-link', true);
-			if (isset($image_link) && ($image_link != '')) $linkurl = $image_link;
+			if (isset($image_link) && ($image_link != '')) $link_url = $image_link;
 
 			$image_list[] = array (
 				'small' => $small_image[0],

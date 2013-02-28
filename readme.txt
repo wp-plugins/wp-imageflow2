@@ -3,7 +3,7 @@ Author: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 1.8.0
+Stable tag: 1.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -138,6 +138,10 @@ A donation to support this plugin would be greatly appreciated. I also appreciat
 3. Add an image link
 
 == Changelog ==
+
+Version 1.8.1 (February 28, 2013)
+
+* Fix external links from carousel, broken in 1.8.0
 
 Version 1.8.0 (February 27, 2013)
 
