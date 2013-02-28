@@ -13,7 +13,7 @@ ImageFlow style picture gallery with Lightbox popups. Uses images from either th
 
 == Description ==
 
-= Description =
+= WP-Imageflow Plus =
 
 Introduced in version 1.8.0:
 
