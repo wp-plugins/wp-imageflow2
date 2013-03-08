@@ -51,7 +51,7 @@ There are three ways to insert a WP-ImageFlow Plus gallery:
 * Two versions of the reflection script to support more browser configurations
 * Display with or without reflections
 
-**BONUS FEATURES AVAILABLE WITH MINIMUM $1 DONATION**
+**BONUS FEATURES AVAILABLE WITH MINIMUM $2 DONATION**
 
 * Shortcode generator
 * NextGen gallery support
