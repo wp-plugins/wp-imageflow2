@@ -3,7 +3,8 @@
 		----------------------------------------------------------------
 		Easy Reflections by Richard Davey, Core PHP (rich@corephp.co.uk)
 		v2 - 2nd March 2007
-        Updates include changes by Monte Ohrt (monte@ohrt.com)
+	        Updates include changes by Monte Ohrt (monte@ohrt.com)
+		  Additional changes by Bev Stofko (stofko.ca) V2.BS.1
 		----------------------------------------------------------------
 		You are free to use this in any product, or on any web site.
 		Latest builds at: http://reflection.corephp.co.uk
@@ -76,9 +77,15 @@
 
         $source_image = $_SERVER['DOCUMENT_ROOT'] . $url_path;
 
-        if (file_exists($source_image))
-        {
-	      if ($cache)
+	  $image_details = getimagesize($source_image);
+	
+	  if ($image_details === false)
+	  {
+		echo 'Not a valid image supplied, or this script does not have permissions to access it.';
+		exit();
+	  }
+
+        if ($cache)
             {
                 $cache_dir = dirname($source_image);
                 $cache_base = basename($source_image);
@@ -94,21 +101,6 @@
                     exit();
                 }
             }
-
-
-	  	$image_details = getimagesize($source_image);
-	
-	  	if ($image_details === false)
-		{
-			echo 'Not a valid image supplied, or this script does not have permissions to access it.';
-			exit();
-		}
-	  }
-	  else
-	  {
-		echo 'Cannot find or read source image.';
-		exit();
-	  }
 	}
 	else
 	{

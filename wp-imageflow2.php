@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow Plus
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
-Version: 1.8.1
+Version: 1.8.2
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -715,7 +715,7 @@ border: 1px solid #aaa; margin: 20px; box-shadow: rgb(51, 51, 51) 2px 2px 8px;">
 			<p class="submit"><input class="button button-primary" name="submit" value="<?php echo __('Save Changes','wp-imageflow2'); ?>" type="submit" /></p>
 
 			<div id="message" class="updated inline">
-				<p><a href="http://stofko.ca/wp-imageflow2-wordpress-plugin/">Make a minimum $1 donation</a> to this plugin and you will receive <strong>bonus add-ons</strong> for the WP-Imageflow Plus gallery.</p>
+				<p><a href="http://stofko.ca/wp-imageflow2-wordpress-plugin/">Make a minimum donation</a> to this plugin and you will receive <strong>bonus add-ons</strong> for the WP-Imageflow Plus gallery.</p>
 				<ul class="ul-disc">
 					<li>NextGen Gallery support</li>
 				 	<li>Shortcode generator attached to your edit windows</li>
