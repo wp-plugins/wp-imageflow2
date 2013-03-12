@@ -1,26 +1,29 @@
 === WP-ImageFlow Plus ===
 Author: Bev Stofko
-Contributors: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Requires at least: 3.0.1
-Tested up to: 3.5
-Stable tag: 1.7.3
+Tested up to: 3.5.1
+Stable tag: 1.8.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox, carousel, autorotate, automatic, rotate, media, tages
 
-ImageFlow style picture gallery with Lightbox popups. Uses either the Wordpress media library or an uploaded directory of images. 
+ImageFlow style picture gallery with Lightbox popups. Uses images from either the Wordpress Media Library or an uploaded directory of images. 
 
 == Description ==
 
-Now available in version 1.7.0:
+= WP-Imageflow Plus =
+
+Introduced in version 1.8.0:
+
+* NEW FEATURE - add options to disable the captions and/or slider
+
+Introduced in version 1.7.0:
 
 * NEW FEATURE - Support touch screen on the scroll bar to slide the images left/right
 * NEW FEATURE - Provide option to open image links in the same window
 * NEW FEATURE - Provide image link field in the image editor window rather than using the image description
-
-= WP-Imageflow2 =
 
 [Demo](http://www.stofko.ca/wp-imageflow2-wordpress-plugin/)
 
@@ -30,11 +33,11 @@ This is a light script that uses the basic JQuery library. It will display a sim
 
 There are three ways to insert a WP-ImageFlow Plus gallery:
 
-1. Select the built-in Wordpress media library attached images with the shortcode [wp-imageflow2]
+1. Select the images attached to your post/page with the shortcode [wp-imageflow2]
 2. Upload your pictures to a subfolder and use the shortcode [wp-imageflow2 dir=SUBFOLDER]
 3. Tag images in your media library using the Media Tags plugin by Paul Menard and use the shortcode [wp-imageflow2 mediatag=tagslug]
 
-Features:
+= Features =
 
 * Multiple galleries per page
 * Configure the background color, text color, container width and choose black or white for the scrollbar. 
@@ -48,16 +51,22 @@ Features:
 * Two versions of the reflection script to support more browser configurations
 * Display with or without reflections
 
+**BONUS FEATURES AVAILABLE WITH MINIMUM $2 DONATION**
+
+* Shortcode generator
+* NextGen gallery support
+
+[Learn more about bonus add-ons](http://stofko.ca/wp-imageflow2-wordpress-plugin/bonus-add-ons/)
+
+= Carousel Operation =
+
 Two versions of the reflection script are provided. The default, V2, works on most servers. V3 provides PNG reflections but requires a higher version of GD that many servers don't support. You can choose which version to use (or none at all) on the settings page.
 
 When using the built in Wordpress library, the photo title will be displayed below each image. When using a subfolder gallery, the image name will be displayed below each image.
 
 For a built-in gallery, the image may link to either the large size image or an external url.
 
-= Auto Rotation =
-
-When auto rotation is enabled, the images will automatically rotate through the carousel. You may configure the pause time between rotations. Once the end
-of the gallery is reached it flows back to the beginning and starts again. The rotation will pause when the mouse hovers over the bounding div. Once an image is clicked and expanded into the Lightbox display the auto rotation is suspended.
+When auto rotation is enabled, the images will automatically rotate through the carousel. You may configure the pause time between rotations. Once the end of the gallery is reached it flows back to the beginning and starts again. The rotation will pause when the mouse hovers over the bounding div. Once an image is clicked and expanded into the Lightbox display the auto rotation is suspended.
 
 == Installation ==
 
@@ -78,7 +87,6 @@ These standard gallery options may be used:
 * orderby (default is menu_order ID)
 * include
 * exclude
-* size (applies to RSS feed only)
 
 These additional WP-Imageflow Plus specific options may be used:
 
@@ -131,11 +139,30 @@ A donation to support this plugin would be greatly appreciated. I also appreciat
 
 == Changelog ==
 
-Version 1.7.3 (January 19, 2012)
+Version 1.8.2 (March 11, 2013)
+
+* Changes made the V2 reflection script in version 1.7.4 may have caused the script to stop working on some servers. This revision fixes that issue.
+
+Version 1.8.1 (February 28, 2013)
+
+* Fix external links from carousel, broken in 1.8.0
+
+Version 1.8.0 (February 27, 2013)
+
+* NEW FEATURE - add options to disable the captions and/or slider
+* Internal code reorganization and cleanup
+* Fix JS error when image gallery is empty
+* Replace references to deprecated "longdesc" with "data-" attributes
+
+Version 1.7.4 (January 20, 2013)
+
+* Remove potential exploitations
+
+Version 1.7.3 (January 19, 2013)
 
 * Correction to the fix in 1.7.2
 
-Version 1.7.2 (January 18, 2012)
+Version 1.7.2 (January 18, 2013)
 
 * Update PHP code that was deprecated in 5.3
 
