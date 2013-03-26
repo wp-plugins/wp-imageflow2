@@ -3,7 +3,7 @@ Author: Bev Stofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 1.8.2
+Stable tag: 1.8.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -141,7 +141,7 @@ A donation to support this plugin would be greatly appreciated. I also appreciat
 
 Version 1.8.3 (March 25, 2013)
 
-* Support newlines embedded in media description
+* Support newlines, quotes and other html special characters embedded in media description
 
 Version 1.8.2 (March 11, 2013)
 
