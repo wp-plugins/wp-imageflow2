@@ -185,9 +185,8 @@ Class WPImageFlow2
 				$alt = ' alt="'.$this_image['title'].'"';
 				if ($this_image['desc'] != '') {
 					
-					$dsc = ' data-description="'.str_replace(array("\r\n", "\r", "\n"), "<br />", $this_image['desc']).'"';
+					$dsc = ' data-description="' . htmlspecialchars(str_replace(array("\r\n", "\r", "\n"), "<br />", $this_image['desc'])) . '"';
 				}
-				$alt .= '"';
 			} else {
 				/* We are linking to an external url - use the title as the alt text */
 				$alt = ' alt="'.$this_image['title'].'"';
