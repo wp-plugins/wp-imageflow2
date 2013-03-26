@@ -872,8 +872,8 @@ this.showImg = function(image, img, img_width, img_height)
 	topboximg_div.width = boxWidth;	
 
 	// Add description and include its height in the calculations
-	var description = image.getAttribute('data-description');
-	//var description = decodeURIComponent(image.getAttribute('data-description'));
+	var description = '';
+	if (image.getAttribute('data-description')) description = image.getAttribute('data-description');
 	if (description == image.getAttribute('title')) description = '';
 	if (description != '') { description = '<p>' + description + '</p>'; }
 	caption_div.innerHTML = image.getAttribute('title') + description;
