@@ -1,5 +1,5 @@
 /**
- *	ImageFlowPlus 1.7
+ *	ImageFlowPlus 1.8
  *
  *    This provides an ImageFlow style gallery plus the following great features:
  *    - Lightbox pop-ups when linking to an image
@@ -15,6 +15,7 @@
  *	Version 1.5 fix image load in lightbox and slider width calculations
  *	Version 1.6 adds support for touch screen, conf_samewindow option, add class to centered image (Nov. 2012)
  *	Version 1.7 improves support when no images are included, change longdesc to data-link and rel to data-style
+ *	Version 1.8 use data-description for passing description
  *
  *    Resources ----------------------------------------------------
  *	[1] http://www.adventuresinsoftware.com/blog/?p=104#comment-1981, Michael L. Perry's Cover Flow
@@ -132,7 +133,7 @@ this.glideTo = function(new_image_id) {
 	
 	/* Display new caption */
 	this.image_id = new_image_id;
-	var caption = this.img_div.childNodes.item(this.array_images[this.image_id]).getAttribute('alt').replace(/\+\+.*/,'');
+	var caption = this.img_div.childNodes.item(this.array_images[this.image_id]).getAttribute('alt');
 	if (caption == '') { caption = '&nbsp;'; }
 	this.caption_div.innerHTML = caption;
 
@@ -232,7 +233,7 @@ this.moveTo = function(x)
 					if (!pattern.test(image.className)) image.className += " wpif2-centered";
 
   					if (image.getAttribute("data-style") && (image.getAttribute("data-style") == 'wpif2_lightbox')) {
-						image.setAttribute("title",image.getAttribute('alt').replace(/\+\+.*/,''));
+						image.setAttribute("title",image.getAttribute('alt'));
 						image.onclick = function () { thisObject.conf_autorotate = "off"; thisObject.showTop(this); return false; };
 					} else if (this.conf_samewindow) {
 						image.onclick = function() { window.location = this.url; return false; };
@@ -327,7 +328,7 @@ this.refresh = function(onload)
 			/* Set ondblclick event */
 			image.url = image.getAttribute('data-link');
 			if (image.getAttribute("data-style") && (image.getAttribute("data-style") == 'wpif2_lightbox')) {
-				image.setAttribute("title",image.getAttribute('alt').replace(/\+\+.*/,''));
+				image.setAttribute("title",image.getAttribute('alt'));
 
 				image.ondblclick = function () { thisObject.conf_autorotate = 'off'; thisObject.showTop(this);return false; }
 			} else if (this.conf_samewindow) {
@@ -871,7 +872,8 @@ this.showImg = function(image, img, img_width, img_height)
 	topboximg_div.width = boxWidth;	
 
 	// Add description and include its height in the calculations
-	var description = image.getAttribute('alt').replace(/.*\+\+/,'');
+	var description = image.getAttribute('data-description');
+	//var description = decodeURIComponent(image.getAttribute('data-description'));
 	if (description == image.getAttribute('title')) description = '';
 	if (description != '') { description = '<p>' + description + '</p>'; }
 	caption_div.innerHTML = image.getAttribute('title') + description;

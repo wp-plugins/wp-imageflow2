@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow Plus
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
-Version: 1.8.2
+Version: 1.8.3
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -177,12 +177,16 @@ Class WPImageFlow2
 			/* What does the carousel image link to? */
 			$linkurl 		= $this_image['link'];
 			$rel 			= '';
+			$dsc			= '';
 			if ($linkurl === '') {
 				/* We are linking to the popup - use the title and description as the alt text */
 				$linkurl = $this_image['large'];
 				$rel = ' data-style="wpif2_lightbox"';
-				$alt = ' alt="'.$this_image['title'];
-				if ($this_image['desc'] != '') $alt .= "++".$this_image['desc'];
+				$alt = ' alt="'.$this_image['title'].'"';
+				if ($this_image['desc'] != '') {
+					
+					$dsc = ' data-description="'.str_replace(array("\r\n", "\r", "\n"), "<br />", $this_image['desc']).'"';
+				}
 				$alt .= '"';
 			} else {
 				/* We are linking to an external url - use the title as the alt text */
@@ -190,9 +194,9 @@ Class WPImageFlow2
 			}
 
 			if ($reflect != 'none') {
-				$output .= '<img src="'.$pic_reflected.'" data-link="'.$linkurl.'"'. $rel . $alt . ' />';
+				$output .= '<img src="'.$pic_reflected.'" data-link="'.$linkurl.'"'. $rel . $alt . $dsc . ' />';
 			} else {
-				$output .= '<img src="'.$this_image['small'].'" data-link="'.$linkurl.'"'. $rel . $alt . ' />';
+				$output .= '<img src="'.$this_image['small'].'" data-link="'.$linkurl.'"'. $rel . $alt . $dsc . ' />';
 			}
 
 			/* build separate thumbnail list for users with scripts disabled */

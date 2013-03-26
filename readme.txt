@@ -139,6 +139,10 @@ A donation to support this plugin would be greatly appreciated. I also appreciat
 
 == Changelog ==
 
+Version 1.8.3 (March 25, 2013)
+
+* Support newlines embedded in media description
+
 Version 1.8.2 (March 11, 2013)
 
 * Changes made the V2 reflection script in version 1.7.4 may have caused the script to stop working on some servers. This revision fixes that issue.
