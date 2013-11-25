@@ -1,5 +1,5 @@
 === WP-ImageFlow Plus ===
-Contributors: swdd
+Contributors: bstofko
 Donate link: http://stofko.ca/wp-imageflow2-wordpress-plugin/
 Requires at least: 3.0.1
 Tested up to: 3.7.1
@@ -7,9 +7,9 @@ Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox, carousel, autorotate, automatic, rotate, media, tages
+Tags: picture, pictures, gallery, galleries, imageflow, coverflow, flow, image, images, flow, lightbox, carousel, autorotate, automatic, rotate, media, tags
 
-ImageFlow style picture gallery with Lightbox popups. Uses images from either the Wordpress Media Library or an uploaded directory of images. 
+Flow style gallery with Lightbox popups. Uses images from either the Wordpress Media Library or an uploaded directory of images. 
 
 == Description ==
 
