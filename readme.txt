@@ -15,23 +15,14 @@ ImageFlow style picture gallery with Lightbox popups. Uses images from either th
 
 = WP-Imageflow Plus =
 
-Introduced in version 1.8.0:
-
-* NEW FEATURE - add options to disable the captions and/or slider
-
-Introduced in version 1.7.0:
-
-* NEW FEATURE - Support touch screen on the scroll bar to slide the images left/right
-* NEW FEATURE - Provide option to open image links in the same window
-* NEW FEATURE - Provide image link field in the image editor window rather than using the image description
-
-[Demo](http://www.stofko.ca/wp-imageflow2-wordpress-plugin/)
 
 Display nice looking ImageFlow galleries within posts and pages.  Link each image to either a Lightbox preview or an external URL. The Lightbox pop-up supports cycling through all the photos - left/right arrows appear when hovering over the photos. 
 
 This is a light script that uses the basic JQuery library. It will display a simple thumbnail list if Javascript is disabled in the browser.
 
-There are three ways to insert a WP-ImageFlow Plus gallery:
+[Demo](http://www.stofko.ca/wp-imageflow2-wordpress-plugin/)
+
+There are several ways to select the images to include in your WP-ImageFlow Plus gallery:
 
 1. Select the images attached to your post/page with the shortcode [wp-imageflow2]
 2. Upload your pictures to a subfolder and use the shortcode [wp-imageflow2 dir=SUBFOLDER]
