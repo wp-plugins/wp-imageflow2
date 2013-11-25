@@ -3,7 +3,7 @@
 Plugin Name: WP-ImageFlow Plus
 Plugin URI: http://www.stofko.ca/wp-imageflow2-wordpress-plugin/
 Description: WordPress implementation of the picture gallery ImageFlow with Lightbox. 
-Version: 1.7.3
+Version: 1.8.3
 Author: Bev Stofko
 Author URI: http://www.stofko.ca
 
@@ -33,7 +33,6 @@ if(!defined("PHP_EOL")){define("PHP_EOL", strtoupper(substr(PHP_OS,0,3) == "WIN"
 if (!class_exists("WPImageFlow2")) {
 Class WPImageFlow2
 {
-	var $isrss = false;
 	var $adminOptionsName = 'wpimageflow2_options';
 
 	/* html div ids */
@@ -55,19 +54,14 @@ Class WPImageFlow2
 			return;
 		}	
 		
-		add_action('init', array(&$this, 'isRssFeed'));
-
-		if ($this->isrss == true)
-			return;
-
-			
 		register_activation_hook( __FILE__, array(&$this, 'activate'));
 		register_deactivation_hook( __FILE__, array(&$this, 'deactivate'));
 		add_action('init', array(&$this, 'addScripts'));	
-		add_action('admin_menu', array(&$this, 'wpImageFlow2AdminMenu'));
+		add_action('admin_menu', array(&$this, 'add_settings_page'));
 		add_shortcode('wp-imageflow2', array(&$this, 'flow_func'));	
 		add_filter("attachment_fields_to_edit", array(&$this, "image_links"), null, 2);
 		add_filter("attachment_fields_to_save", array(&$this, "image_links_save"), null , 2);
+
 	}
 	
 	function activate()
@@ -86,14 +80,16 @@ Class WPImageFlow2
 	
 	function flow_func($attr) {
 		/*
-		** ImageFlow2 gallery shortcode handler
+		** WP-ImageFlow2 gallery shortcode handler
 		*/
+
+		/* Increment the instance to support multiple galleries on a single page */
 		$this->wpif2_instance ++;
 
-		/* First produce the Javascript for this instance */
+		/* Load scripts, get options */
 		$options = $this->getAdminOptions();
 
-		// start the javascript output
+		/* Produce the Javascript for this instance */
 		$js  = "\n".'<script type="text/javascript">'."\n";
 		$js .= 'jQuery(document).ready(function() { '."\n".'var imageflow2_' . $this->wpif2_instance . ' = new imageflowplus('.$this->wpif2_instance.');'."\n";
 		$js .= 'imageflow2_' . $this->wpif2_instance . '.init( {';
@@ -119,17 +115,116 @@ Class WPImageFlow2
 		$js .= '});'."\n";
 		$js .= "</script>\n\n";
 
-		/* Now produce the gallery html */
-	 	if ( !isset ($attr['dir']) ) {
-			return $js . $this->galleryBuiltin($attr);
+		/* Get the list of images */
+		$image_list = apply_filters ('wpif2_image_list', array(), $attr);
+		if (empty($image_list)) {
+		 	if ( !isset ($attr['dir']) ) {
+				$image_list = $this->images_from_library($attr, $options);
+			} else {
+				$image_list = $this->images_from_dir($attr, $options);
+	  		}
+		}
+
+		/* Prepare options */
+		$bgcolor = $options['bgcolor'];
+		$txcolor = $options['txcolor'];
+		$slcolor = $options['slcolor'];
+		$width   = $options['width'];
+		$link    = $options['link'];
+		$reflect = $options['reflect'];
+		$strict  = $options['strict'];
+
+		$plugin_url = plugins_url( '', __FILE__ );
+
+		/**
+		* Start output
+		*/
+		$noscript = '<noscript><div id="' . $this->noscriptdiv . '_' . $this->wpif2_instance . '" class="' . $this->noscriptdiv . '">';	
+		$output  = '<div id="' . $this->imageflow2div . '_' . $this->wpif2_instance . '" class="' . $this->imageflow2div . '" style="background-color: ' . $bgcolor . '; color: ' . $txcolor . '; width: ' . $width . '">' . PHP_EOL; 
+		$output .= '<div id="' . $this->loadingdiv . '_' . $this->wpif2_instance . '" class="' . $this->loadingdiv . '" style="color: ' . $txcolor . ';">' . PHP_EOL;
+		$output .= '<b>';
+		$output .= __('Loading Images','wp-imageflow2');
+		$output .= '</b><br/>' . PHP_EOL;
+		$output .= '<img src="' . $plugin_url . '/img/loading.gif" width="208" height="13" alt="' . $this->loadingdiv . '" />' . PHP_EOL;
+		$output .= '</div>' . PHP_EOL;
+		$output .= '<div id="' . $this->imagesdiv . '_' . $this->wpif2_instance . '" class="' . $this->imagesdiv . '">' . PHP_EOL;	
+
+		/* Determine reflection script to use */
+		if ($reflect == 'v2') {
+			$reflect_script = 'reflect2.php';
+		} else if ($reflect == 'v3') {
+			$reflect_script = 'reflect3.php';
 		} else {
-			return $js . $this->galleryFromDir($attr);
-	  	}
+			$reflect_script = '';
+		}
+
+		/**
+		* Add images
+		*/
+		if (!empty ($image_list) ) {
+		    $i = 0;
+		    foreach ( $image_list as $this_image ) {
+
+			/* Provide 2 methods of passing the image name to the reflection script to account for different server configurations */
+			if ($strict == 'true') {
+				$dir_array = parse_url($this_image['small']);
+				$url_path = $dir_array['path'];
+				$pic_reflected 	= $plugin_url.'/php/' . $reflect_script .'?img='. urlencode($url_path) . '&amp;bgc=' . urlencode($bgcolor);
+			} else {
+				$pic_reflected 	= $plugin_url.'/php/' . $reflect_script .'?img='. urlencode($this_image['small']) . '&amp;bgc=' . urlencode($bgcolor);
+			}
+
+			/* What does the carousel image link to? */
+			$linkurl 		= $this_image['link'];
+			$rel 			= '';
+			$dsc			= '';
+			if ($linkurl === '') {
+				/* We are linking to the popup - use the title and description as the alt text */
+				$linkurl = $this_image['large'];
+				$rel = ' data-style="wpif2_lightbox"';
+				$alt = ' alt="'.$this_image['title'].'"';
+				if ($this_image['desc'] != '') {
+					
+					$dsc = ' data-description="' . htmlspecialchars(str_replace(array("\r\n", "\r", "\n"), "<br />", $this_image['desc'])) . '"';
+				}
+			} else {
+				/* We are linking to an external url - use the title as the alt text */
+				$alt = ' alt="'.$this_image['title'].'"';
+			}
+
+			if ($reflect != 'none') {
+				$output .= '<img src="'.$pic_reflected.'" data-link="'.$linkurl.'"'. $rel . $alt . $dsc . ' />';
+			} else {
+				$output .= '<img src="'.$this_image['small'].'" data-link="'.$linkurl.'"'. $rel . $alt . $dsc . ' />';
+			}
+
+			/* build separate thumbnail list for users with scripts disabled */
+			$noscript .= '<a href="' . $linkurl . '"><img src="' . $this_image['small'] .'" width="100"  alt="'.$this_image['title'].'" /></a>';
+			$i++;
+		    }
+		}
+					
+		
+		$output .= '</div>' . PHP_EOL;
+		$output .= '<div id="' . $this->captionsdiv . '_' . $this->wpif2_instance . '" class="' . $this->captionsdiv . '"';
+		if ($options['nocaptions']) $output .= ' style="display:none !important;"';
+		$output .= '></div>' . PHP_EOL;
+		$output .= '<div id="' . $this->scrollbardiv . '_' . $this->wpif2_instance . '" class="' . $this->scrollbardiv;
+		if ($slcolor == "black") $output .= ' black';
+		$output .= '"';
+		if ($options['noslider']) $output .= ' style="display:none !important;"';
+		$output .= '><div id="' . $this->sliderdiv . '_' . $this->wpif2_instance . '" class="' . $this->sliderdiv . '">' . PHP_EOL;
+		$output .= '</div>';
+		$output .= '</div>' . PHP_EOL;
+		$output .= $noscript . '</div></noscript></div>';	
+
+		return $js . $output;
+
 	}
 
-	function galleryBuiltin($attr) {
+	function images_from_library ($attr, $options) {
 		/*
-		** Use the built-in gallery images
+		** Generate a list of the images we are using from the Media Library
 		*/
 		if ( isset( $attr['orderby'] ) ) {
 			$attr['orderby'] = sanitize_sql_orderby( $attr['orderby'] );
@@ -145,7 +240,6 @@ Class WPImageFlow2
 				'order'      => 'ASC',
 				'orderby'    => 'menu_order ID',
 				'id'         => $post->ID,
-				'size'       => 'thumbnail',
 				'include'    => '',
 				'exclude'    => '',
 				'mediatag'	 => '',	// corresponds to Media Tags plugin by Paul Menard
@@ -176,129 +270,39 @@ Class WPImageFlow2
 			$attachments = get_children( array('post_parent' => $id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $order, 'orderby' => $orderby) );
 		}
 
-		if ( empty($attachments) )
-			return '';
-
-		if ( is_feed() ) {
-			$output = "\n";
-			foreach ( $attachments as $att_id => $attachment )
-				$output .= wp_get_attachment_link($att_id, $size, true) . "\n";
-			return $output;
-		}
-
-		/*
-		** Get options for ImageFlow2 gallery display
-		*/
-		$options = $this->getAdminOptions();
-		$bgcolor = $options['bgcolor'];
-		$txcolor = $options['txcolor'];
-		$slcolor = $options['slcolor'];
-		$width   = $options['width'];
-		$link    = $options['link'];
-		$reflect = $options['reflect'];
-		$strict  = $options['strict'];
-
-		$plugin_url = get_option('siteurl') . "/" . PLUGINDIR . "/" . plugin_basename(dirname(__FILE__)); 			
-
-		/**
-		* Start output
-		*/
-		$noscript = '<noscript><div id="' . $this->noscriptdiv . '_' . $this->wpif2_instance . '" class="' . $this->noscriptdiv . '">';	
-		$output  = '<div id="' . $this->imageflow2div . '_' . $this->wpif2_instance . '" class="' . $this->imageflow2div . '" style="background-color: ' . $bgcolor . '; color: ' . $txcolor . '; width: ' . $width . '">' . PHP_EOL; 
-		$output .= '<div id="' . $this->loadingdiv . '_' . $this->wpif2_instance . '" class="' . $this->loadingdiv . '" style="color: ' . $txcolor . ';">' . PHP_EOL;
-		$output .= '<b>';
-		$output .= __('Loading Images','wp-imageflow2');
-		$output .= '</b><br/>' . PHP_EOL;
-		$output .= '<img src="' . $plugin_url . '/img/loading.gif" width="208" height="13" alt="' . $this->loadingdiv . '" />' . PHP_EOL;
-		$output .= '</div>' . PHP_EOL;
-		$output .= '<div id="' . $this->imagesdiv . '_' . $this->wpif2_instance . '" class="' . $this->imagesdiv . '">' . PHP_EOL;	
-
-		/**
-		* Add images
-		*/
-		$i = 0;
+		$image_list = array();
 		foreach ( $attachments as $id => $attachment ) {
-			$image 		= wp_get_attachment_image_src($id, "medium");
-			$image_large 	= wp_get_attachment_image_src($id, "large");
-			if ($reflect == 'v2') {
-				$reflect_script = 'reflect2.php';
-			} else if ($reflect == 'v3') {
-				$reflect_script = 'reflect3.php';
-			} else {
-				$reflect_script = '';
-			}
-			if ($strict == 'true') {
-				$dir_array = parse_url($image[0]);
-				$url_path = $dir_array['path'];
-				$pic_reflected 	= $plugin_url.'/php/' . $reflect_script .'?img='. urlencode($url_path) . '&amp;bgc=' . urlencode($bgcolor);
-			} else {
-				$pic_reflected 	= $plugin_url.'/php/' . $reflect_script .'?img='. urlencode($image[0]) . '&amp;bgc=' . urlencode($bgcolor);
-			}
-			$pic_original 	= $image[0];
-			$pic_large		= $image_large[0];
-			$linkurl 		= '';
-			$rel 			= '';
+			$small_image = wp_get_attachment_image_src($id, "medium");
+			$large_image = wp_get_attachment_image_src($id, "large");
 
 			/* If the media description contains an url and the link option is enabled, use the media description as the linkurl */
-			if (($link == 'true') && 
+			$link_url = '';
+			if (($options['link'] == 'true') && 
 				((substr($attachment->post_content,0,7) == 'http://') || (substr($attachment->post_content,0,8) == 'https://'))) {
-				$linkurl = $attachment->post_content;
+				$link_url = $attachment->post_content;
 			}
 
 			$image_link = get_post_meta($id, '_wpif2-image-link', true);
-			if (isset($image_link) && ($image_link != '')) $linkurl = $image_link;
+			if (isset($image_link) && ($image_link != '')) $link_url = $image_link;
 
-			if ($linkurl === '') {
-				/* We are linking to the popup - use the title and description as the alt text */
-				$linkurl = $pic_large;
-				$rel = ' rel="wpif2_lightbox"';
-				$alt = ' alt="'.$attachment->post_title."++".$attachment->post_content.'"';
-			} else {
-				/* We are linking to an external url - use the title as the alt text */
-				$alt = ' alt="'.$attachment->post_title.'"';
-			}
-
-			if ($reflect != 'none') {
-				$output .= '<img src="'.$pic_reflected.'" longdesc="'.$linkurl.'"'. $rel . $alt . ' />';
-			} else {
-				$output .= '<img src="'.$pic_original.'" longdesc="'.$linkurl.'"'. $rel . $alt . ' />';
-			}
-
-			/* build separate thumbnail list for users with scripts disabled */
-			$noscript .= '<a href="' . $linkurl . '"><img src="' . $pic_original .'" width="100px"  alt="'.$attachment->post_title.'" /></a>';
-			$i++;
+			$image_list[] = array (
+				'small' => $small_image[0],
+				'large' => $large_image[0],
+				'link'  => $link_url,
+				'title' => $attachment->post_title,
+				'desc'  => $attachment->post_content,
+			);
 		}
-					
-		
-		$output .= '</div>' . PHP_EOL;
-		$output .= '<div id="' . $this->captionsdiv . '_' . $this->wpif2_instance . '" class="' . $this->captionsdiv . '"></div>' . PHP_EOL;
-		$output .= '<div id="' . $this->scrollbardiv . '_' . $this->wpif2_instance . '" class="' . $this->scrollbardiv;
-		if ($slcolor == "black") {
-			$output .= ' black';
-		}
-		$output .= '"><div id="' . $this->sliderdiv . '_' . $this->wpif2_instance . '" class="' . $this->sliderdiv . '">' . PHP_EOL;
-		$output .= '</div>';
-		$output .= '</div>' . PHP_EOL;
-		$output .= $noscript . '</div></noscript></div>';	
-
-		return $output;
+		return $image_list;
 	}
 
-	function galleryFromDir($attr)
-	{
+	function images_from_dir ($attr, $options) {
 		/*
-		** ImageFlow2 gallery with images taken from a directory
+		** Generate the image list by reading a folder
 		*/
-		$replace = '';
-		$options = $this->getAdminOptions();
-		$bgcolor = $options['bgcolor'];
-		$txcolor = $options['txcolor'];
-		$slcolor = $options['slcolor'];
-		$width   = $options['width'];
-		$reflect = $options['reflect'];
-		$strict  = $options['strict'];
+		$image_list = array();
 
-		$galleries_path = $_SERVER['DOCUMENT_ROOT'] . '/' . $this->get_path($options['gallery_url']);
+		$galleries_path = rtrim($_SERVER['DOCUMENT_ROOT'], '/') . '/' . $this->get_path($options['gallery_url']);
 		if (!file_exists($galleries_path))
 			return '';
 
@@ -308,78 +312,35 @@ Class WPImageFlow2
 		$plugin_url = get_option('siteurl') . "/" . PLUGINDIR . "/" . plugin_basename(dirname(__FILE__)); 			
 			
 		$gallerypath = $galleries_path . $attr['dir'];
-					
 		if (file_exists($gallerypath))
 		{	
-			$noscript = '<noscript><div id="' . $this->noscriptdiv .'" class="' . $this->noscriptdiv . '">';	
-			$replace  = '<div id="' . $this->imageflow2div . '_' . $this->wpif2_instance . '" class="' . $this->imageflow2div . '" style="background-color: ' . $bgcolor . '; color: ' . $txcolor . '; width: ' . $width .'">' . PHP_EOL; 
-			$replace .= '<div id="' . $this->loadingdiv . '_' . $this->wpif2_instance . '" class="' . $this->loadingdiv . '" style="color: ' . $txcolor . ';">' . PHP_EOL;
-			$replace .= '<b>';
-			$replace .= __('Loading Images','wp-imageflow2');
-			$replace .= '</b><br/>' . PHP_EOL;
-			$replace .= '<img src="'.$plugin_url.'/img/loading.gif" width="208" height="13" alt="' . $this->loadingdiv . '" />';
-			$replace .= '</div>' . PHP_EOL;
-			$replace .= '<div id="' . $this->imagesdiv . '_' . $this->wpif2_instance . '" class="' . $this->imagesdiv . '">' . PHP_EOL;	
-					
 			$handle = opendir($gallerypath);
-			while ($image=readdir($handle))
-			{
-			    if (filetype($gallerypath."/".$image) != "dir" && !preg_match('/refl_/',$image))
-			    {
-				   $pageURL = 'http';
-				   if (isset($_SERVER['HTTPS']) && ($_SERVER["HTTPS"] == "on")) {$pageURL .= "s";}
-				   $pageURL .= "://";
-				   if ($_SERVER["SERVER_PORT"] != "80") {
-				    $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"];
-				   } else {
-				    $pageURL .= $_SERVER["SERVER_NAME"];
-				   }
-				  $imagepath = $pageURL . '/' . $this->get_path($options['gallery_url']) . $attr['dir'] . '/' . $image;
-
-				  $pic_original 	= $imagepath;
-
-				  if ($reflect == 'v2') {
-					$reflect_script = 'reflect2.php';
-				  } else if ($reflect == 'v3') {
-					$reflect_script = 'reflect3.php';
-				  } else {
-					$reflect_script = '';
-				  }
-
-				  if ($strict == 'true') {
-					  $dir_array = parse_url($pic_original);
-					  $url_path = $dir_array['path'];
-					  $pic_reflected 	= $plugin_url.'/php/' . $reflect_script .'?img=' . urlencode($url_path) . '&amp;bgc=' . urlencode($bgcolor);
-				  } else {
-					  $pic_reflected 	= $plugin_url.'/php/' . $reflect_script .'?img=' . urlencode($pic_original) . '&amp;bgc=' . urlencode($bgcolor);
-				  }
-
-				  /* Code the image with or without reflection */
-				  /* Note that IE gets confused if we put newlines after each image, so we don't */
-				  if ($reflect != 'none') {	
-					$replace .= '<img src="' . $pic_reflected . '" longdesc="' . $pic_original . '" alt="' . $image . '" rel="wpif2_lightbox" />';
-				  } else {
-					$replace .= '<img src="' . $pic_original . '" longdesc="' . $pic_original . '" alt="' . $image . '" rel="wpif2_lightbox" />';
-				  }
-				  /* build separate list for users with scripts disabled */
-				  $noscript .= '<a href="' . $pic_original . '"><img src="' . $pic_original .'" width="100px" alt="" /></a>';
-			    }				
-			}			
-			closedir($handle);
-			
-			$replace .= '</div>' . PHP_EOL;
-			$replace .= '<div id="' . $this->captionsdiv . '_' . $this->wpif2_instance . '" class="' . $this->captionsdiv . '"></div>' . PHP_EOL;
-			$replace .= '<div id="' . $this->scrollbardiv . '_' . $this->wpif2_instance . '" class="' . $this->scrollbardiv;
-			if ($slcolor == "black") {
-				$replace .= ' black';
+			while ($image=readdir($handle)) {
+				if (filetype($gallerypath."/".$image) != "dir" && !preg_match('/refl_/',$image)) {
+					$pageURL = 'http';
+					if (isset($_SERVER['HTTPS']) && ($_SERVER["HTTPS"] == "on")) {$pageURL .= "s";}
+					$pageURL .= "://";
+					if ($_SERVER["SERVER_PORT"] != "80") {
+				   	$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"];
+				} else {
+				   	$pageURL .= $_SERVER["SERVER_NAME"];
+				}
+				$imagepath = $pageURL . '/' . $this->get_path($options['gallery_url']) . $attr['dir'] . '/' . $image;
+				$image_list[] = array (
+					'small' => $imagepath,
+					'large' => $imagepath,
+					'link'  => '',
+					'title' => $image,
+					'desc'  => '',
+			);
+			    }
 			}
-			$replace .= '"><div id="' . $this->sliderdiv . '_' . $this->wpif2_instance . '" class="' . $this->sliderdiv . '">';
-			$replace .= '</div>';
-			$replace .= '</div>' . PHP_EOL;
-			$replace .= $noscript . '</div></noscript></div>';	
+			closedir($handle);
 		}
-		return $replace;	
+
+		return $image_list;
 	}
+
 
 	function getAdminOptions() {
 		/*
@@ -395,7 +356,9 @@ Class WPImageFlow2
 						'strict'  => 'false',	// True for strict servers that don't allow http:// in script args
 						'autorotate' => 'off',	// True to enable auto rotation
 						'pause' =>	'3000',	// Time to pause between auto rotations
-						'samewindow' => false	// True to open links in same window rather than new window
+						'samewindow' => false,	// True to open links in same window rather than new window
+						'nocaptions' => false,	// True to hide captions in the carousel
+						'noslider' => false	// True to hide the scrollbar
 					);
 		$saved_options = get_option($this->adminOptionsName);
 		if (!empty($saved_options)) {
@@ -438,12 +401,11 @@ Class WPImageFlow2
 
 	function addScripts()
 	{
-		$plugin_url = get_option('siteurl') . "/" . PLUGINDIR . "/" . plugin_basename(dirname(__FILE__)); 			
 		if (!is_admin()) {
-			wp_enqueue_style( 'wpimageflow2css', $plugin_url.'/css/screen.css');
-			wp_enqueue_script('wpif2_imageflow2', $plugin_url.'/js/imageflowplus.js', array('jquery'));
+			wp_enqueue_style( 'wpimageflow2css',  plugins_url('css/screen.css', __FILE__));
+			wp_enqueue_script('wpif2_imageflow2', plugins_url('js/imageflowplus.js', __FILE__), array('jquery'), '1.7');
 		} else {
-			wp_enqueue_script('colorcode_validate', $plugin_url.'/js/colorcode_validate.js');
+			wp_enqueue_script('wpif2_utility_js', plugins_url('js/wpif2_utility.js', __FILE__));
 		}
 	}	
 
@@ -467,34 +429,13 @@ Class WPImageFlow2
 		return $post;
 	}
 
-	function isRssFeed()
-	{
-		switch (basename($_SERVER['PHP_SELF']))
-		{
-			case 'wp-rss.php':
-				$this->isrss = true;
-			break;
-			case 'wp-rss2.php':
-				$this->isrss = true;
-			break;
-			case 'wp-atom.php':
-				$this->isrss = true;
-			break;
-			case 'wp-rdf.php':
-				$this->isrss = true;
-			break;
-			default:
-				$this->isrss = false;	
-		}		
+	function add_settings_page() {
+		add_options_page('WP-ImageFlow Plus Options', 'WP-ImageFlow Plus', 'manage_options', 'wpImageFlow2', array(&$this, 'settings_page'));
 	}
-	
-	function wpImageFlow2AdminMenu()
-	{
-		add_options_page('WP-ImageFlow Plus Options', 'WP-ImageFlow Plus', 'manage_options', 'wpImageFlow2', array(&$this, 'wpImageFlow2OptionPage'));	
-	}
-	
-	function wpImageFlow2OptionPage()
-	{		
+
+	function settings_page() {
+		global $options_page;
+
 		if (!current_user_can('manage_options'))
 			wp_die(__('Sorry, but you have no permission to change settings.','wp-imageflow2'));	
 			
@@ -521,6 +462,15 @@ Class WPImageFlow2
 			echo "<p><b style='color:red;'>".__('Invalid text color, not saved.','wp-imageflow2'). " - " . $_POST['wpimageflow2_txc'] ."</b></p>";	
 			}
 
+			/* 
+			** Look for disable captions option
+			*/
+			if (isset ($_POST['wpimageflow2_nocaptions']) && ($_POST['wpimageflow2_nocaptions'] == 'nocaptions')) {
+				$options['nocaptions'] = true;
+			} else {
+				$options['nocaptions'] = false;
+			}
+
 			/*
 			** Validate the slider color
 			*/
@@ -528,6 +478,15 @@ Class WPImageFlow2
 				$options['slcolor'] = $_POST['wpimageflow2_slc'];
 			} else {
 			echo "<p><b style='color:red;'>".__('Invalid slider color, not saved.','wp-imageflow2'). " - " . $_POST['wpimageflow2_slc'] ."</b></p>";	
+			}
+
+			/* 
+			** Look for disable slider option
+			*/
+			if (isset ($_POST['wpimageflow2_noslider']) && ($_POST['wpimageflow2_noslider'] == 'noslider')) {
+				$options['noslider'] = true;
+			} else {
+				$options['noslider'] = false;
 			}
 
 			/*
@@ -594,65 +553,71 @@ Class WPImageFlow2
 		?>
 					
 		<div class="wrap">
-			<h2>WP-ImageFlow Plus</h2>
+			<div id="icon-wpif2-setup" class="icon32" style="background: transparent url(<?php echo plugins_url( '', __FILE__ ); ?>/img/wpif2-32.png) 0 0 no-repeat;">
+				<br />
+			</div>
+			<h2>WP-ImageFlow Plus Settings</h2>
 			<form action="options-general.php?page=wpImageFlow2" method="post">
-	    		<h3><?php echo __('Settings','wp-imageflow2'); ?></h3>
+	    		<h3><?php echo __('Formatting','wp-imageflow2'); ?></h3>
+
 	    		<table class="form-table">
 				<tr>
-					<td class="row_title" valign="top" style="width:300px;">
-					<?php echo __('Background color', 'wp-imageflow2'); ?>
+					<th scope="row">
+					<label for="wpimageflow2_bgc"><?php echo __('Background color', 'wp-imageflow2'); ?></label>
 					</td>
 					<td>
-					<input type="text" name="wpimageflow2_bgc" onkeyup="colorcode_validate(this, this.value);" value="<?php echo $options['bgcolor']; ?>"> 
+					<input type="text" name="wpimageflow2_bgc" id="wpimageflow2_bgc" onkeyup="colorcode_validate(this, this.value);" value="<?php echo $options['bgcolor']; ?>">
+					&nbsp;<em>Hex value or "transparent"</em>
 					</td>
 				</tr>
 				<tr>
-					<td class="row_title" valign="top">
-					<?php echo __('Text color', 'wp-imageflow2'); ?>
+					<th scope="row">
+					<label for="wpimageflow2_txc"><?php echo __('Text color', 'wp-imageflow2'); ?></label>
 					</td>
 					<td>
-					<input type="text" name="wpimageflow2_txc" onkeyup="colorcode_validate(this, this.value);" value="<?php echo $options['txcolor']; ?>"> 
+					<input type="text" name="wpimageflow2_txc" onkeyup="colorcode_validate(this, this.value);" value="<?php echo $options['txcolor']; ?>">
+					&nbsp;<label for="wpimageflow2_nocaptions">Disable captions: </label>
+					<input type="checkbox" name="wpimageflow2_nocaptions" id="wpimageflow2_nocaptions" value="nocaptions" <?php if ($options['nocaptions'] == 'true') echo ' CHECKED'; ?> />
 					</td>
 				</tr>
 				<tr>
-					<td class="row_title" valign="top">
-					<?php echo __('Slider color', 'wp-imageflow2'); ?>
+					<th scope="row">
+					<label for="wpimageflow2_txc"><?php echo __('Slider color', 'wp-imageflow2'); ?></label>
 					</td>
 					<td>
 					<select name="wpimageflow2_slc">
 					<option value="white"<?php if ($options['slcolor'] == 'white') echo ' SELECTED'; echo __('>White', 'wp-imageflow2'); ?></option>
 					<option value="black"<?php if ($options['slcolor'] == 'black') echo ' SELECTED'; echo __('>Black', 'wp-imageflow2'); ?></option>
 					</select>
+					&nbsp;<label for="wpimageflow2_noslider">Disable slider: </label>
+					<input type="checkbox" name="wpimageflow2_noslider" id="wpimageflow2_noslider" value="noslider" <?php if ($options['noslider'] == 'true') echo ' CHECKED'; ?> />
 					</td>
 				</tr>
 				<tr>
-					<td class="row_title" valign="top">
+					<th scope="row">
 					<?php echo __('Container width CSS', 'wp-imageflow2'); ?>
 					</td>
 					<td>
 					<input type="text" name="wpimageflow2_width" value="<?php echo $options['width']; ?>"> 
 					</td>
 				</tr>
+			</table>
+
+	    		<h3><?php echo __('Behaviour','wp-imageflow2'); ?></h3>
+			<p>The images in the carousel will by default link to a Lightbox enlargement of the image. Alternatively, you may specify
+a URL to link to each image. This link address should be configured in the image uploader/editor of the Media Library.</p>
+	    		<table class="form-table">
 				<tr>
-					<td class="row_title" valign="top">
-					<?php echo __('Check this box to have the built in gallery use the description field as an external link from the image thumbnail.', 'wp-imageflow2'); ?>
+					<th scope="row">
+					<?php echo __('Open URL links in same window', 'wp-imageflow2'); ?>
 					</td>
 					<td>
-					<input type="checkbox" name="wpimageflow2_link" value="link" <?php if ($options['link'] == 'true') echo ' CHECKED'; ?> />
-					<p style="font-style:italic;font-weight:bold;">NOTE: This option is deprecated and will be removed in the future. Instead use the new image link field in the Wordpress image editor to specify a link from the carousel</p>
+					<input type="checkbox" name="wpimageflow2_samewindow" value="same" <?php if ($options['samewindow'] == 'true') echo ' CHECKED'; ?> /> <em>The default is to open links in a new window</em>
 					</td>
 				</tr>
 				<tr>
-					<td class="row_title" valign="top">
-					<?php echo __('Check this box to have links from an image open in the same window.', 'wp-imageflow2'); ?>
-					</td>
-					<td>
-					<input type="checkbox" name="wpimageflow2_samewindow" value="same" <?php if ($options['samewindow'] == 'true') echo ' CHECKED'; ?> />
-					</td>
-				</tr>
-				<tr>
-					<td class="row_title" valign="top">
-					<?php echo __('Choose your reflection script:', 'wp-imageflow2'); ?>
+					<th scope="row">
+					<?php echo __('Choose a reflection script', 'wp-imageflow2'); ?>
 					</td>
 					<td>
 					<input type="radio" name="wpimageflow2_reflect" value="v2" <?php if ($options['reflect'] == 'v2') echo ' CHECKED'; ?> />
@@ -666,61 +631,71 @@ Class WPImageFlow2
 					</td>
 				</tr>
 				<tr>
-					<td class="row_title" valign="top">
-					<?php echo __('Check this box if your server is strict and serves a 404 error on reflected images.', 'wp-imageflow2'); ?>
+					<th scope="row">
+					<?php echo __('Strict Mode', 'wp-imageflow2'); ?>
 					</td>
 					<td>
-					<input type="checkbox" name="wpimageflow2_strict" value="strict" <?php if ($options['strict'] == 'true') echo ' CHECKED'; ?> />
+					<input type="checkbox" name="wpimageflow2_strict" value="strict" <?php if ($options['strict'] == 'true') echo ' CHECKED'; ?> /> <em>Check this box if your server is strict and serves a 404 error on reflected images</em>
 					</td>
 				</tr>
 				<tr>
-					<td class="row_title" valign="top">
-					<?php echo __('Enable auto rotation.', 'wp-imageflow2'); ?>
+					<th scope="row">
+					<?php echo __('Enable auto rotation', 'wp-imageflow2'); ?>
 					</td>
 					<td>
-					<input type="checkbox" name="wpimageflow2_autorotate" value="autorotate" <?php if ($options['autorotate'] == 'on') echo ' CHECKED'; ?> />
+					<input type="checkbox" name="wpimageflow2_autorotate" value="autorotate" <?php if ($options['autorotate'] == 'on') echo ' CHECKED'; ?> /> <em>This may be overridden in the shortcode</em>
 					</td>
 				</tr>
 				<tr>
-					<td class="row_title" valign="top">
-					<?php echo __('Auto rotation pause between images', 'wp-imageflow2'); ?>
+					<th scope="row">
+					<?php echo __('Auto rotation pause', 'wp-imageflow2'); ?>
 					</td>
 					<td>
 					<input type="text" name="wpimageflow2_pause" value="<?php echo $options['pause']; ?>"> 
 					</td>
 				</tr>
+			</table>
+
+	    		<h3><?php echo __('Galleries Based on Folders','wp-imageflow2'); ?></h3>
+			  <a style="cursor:pointer;" title="Click for help" onclick="toggleVisibility('detailed_display_tip');">Click to toggle detailed help</a>
+			  <div id="detailed_display_tip" style="display:none; width: 600px; background-color: #eee; padding: 8px;
+border: 1px solid #aaa; margin: 20px; box-shadow: rgb(51, 51, 51) 2px 2px 8px;">
+				<p>You can upload a collection of images to a folder and have WP-Imageflow Plus read the folder and gather the images, without the need to upload through the Wordpress image uploader. Using this method provides fewer features in the gallery since there are no titles, links, or descriptions stored with the images. This is provided as a quick and easy way to display an image carousel.</p>
+				<p>The folder structure should resemble the following:</p>
+				<p>
+- wp-content<br />
+&nbsp;&nbsp;&nbsp;- galleries<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- gallery1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- image1.jpg<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- image2.jpg<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- image3.jpg<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- gallery2<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- image4.jpg<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- image5.jpg<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- image6.jpg</p>
+
+				<p>With this structure you would enter "wp-content/galleries/" as the folder path below.</p>
+</div>
+
+	    		<table class="form-table">
 	    			<tr>
-					<td class="row_title" valign="top">
-					<?php echo __('Enter a value here if you wish to upload images to a directory.','wp-imageflow2'); ?>	
+					<th scope="row">
+					<?php echo __('Folder Path','wp-imageflow2'); ?>	
 					</td>
 					<td>
-					<?php echo __('Path to galleries from homepage root path or full url.','wp-imageflow2'); ?>
+					<?php echo __('This should be the path to galleries from homepage root path, or full url including http://.','wp-imageflow2'); ?>
 					<br /><input type="text" size="35" name="wpimageflow2_path" value="<?php echo $options['gallery_url']; ?>">
 					<br /><?php echo __('e.g.','wp-imageflow2'); ?> wp-content/galleries/
 					<br /><?php echo __('Ending slash, but NO starting slash','wp-imageflow2'); ?>
 					</td>
 				</tr>
-				<tr>
-					<td class="row_title" valign="top">&nbsp;</td>
-					<td>
-					<input type="hidden" value="true" name="save_wpimageflow2">
-					<?php
-					if ( function_exists('wp_nonce_field') )
-						wp_nonce_field('wpimageflow2_options');
-					?>
-					<input class="button bold" name="submit" value="<?php echo __('Save','wp-imageflow2'); ?>" type="submit" />			
-					</td>
-				</tr>				
-			</table>
-			</form>				
-	    		<table class="form-table">
 	    			<tr>
-					<td class="row_title" valign="top"  style="width:300px;">
-					<?php echo __('Subdirectory galleries found:','wp-imageflow2'); ?>	
+					<th scope="row">
+					<?php echo __('These folder galleries were found:','wp-imageflow2'); ?>	
 					</th>
 					<td>
 					<?php
-						$galleries_path = $_SERVER['DOCUMENT_ROOT'] . '/' . $this->get_path($options['gallery_url']);
+						$galleries_path = rtrim($_SERVER['DOCUMENT_ROOT'], '/') . '/' . $this->get_path($options['gallery_url']);
 						if (file_exists($galleries_path)) {
 							$handle	= opendir($galleries_path);
 							while ($dir=readdir($handle))
@@ -738,7 +713,38 @@ Class WPImageFlow2
 					?>
 					</td>
 				</tr>
-			</table>		
+			</table>
+
+			<p class="submit"><input class="button button-primary" name="submit" value="<?php echo __('Save Changes','wp-imageflow2'); ?>" type="submit" /></p>
+
+			<div id="message" class="updated inline">
+				<p><a href="http://stofko.ca/wp-imageflow2-wordpress-plugin/">Make a minimum donation</a> to this plugin and you will receive <strong>bonus add-ons</strong> for the WP-Imageflow Plus gallery.</p>
+				<ul class="ul-disc">
+					<li>NextGen Gallery support</li>
+				 	<li>Shortcode generator attached to your edit windows</li>
+				</ul>
+			</div>
+
+	    		<h3><?php echo __('Deprecated','wp-imageflow2'); ?></h3>
+			<p>NOTE: The following option is deprecated and will be removed in the future. </p>
+	    		<table class="form-table">
+				<tr>
+					<th scope="row">
+					<?php echo __('Image Link in Description', 'wp-imageflow2'); ?>
+					</td>
+					<td>
+					<input type="checkbox" name="wpimageflow2_link" value="link" <?php if ($options['link'] == 'true') echo ' CHECKED'; ?> /> Check this box to have images from the Media Library use the description field as an external link from the image thumbnail. <em><b>This option is now deprecated, instead use the new image link field in the Wordpress image editor to specify a link from the carousel</b></em>
+					</td>
+				</tr>
+			</table>
+
+			<input type="hidden" value="true" name="save_wpimageflow2">
+			<?php
+			if ( function_exists('wp_nonce_field') )
+				wp_nonce_field('wpimageflow2_options');
+			?>
+			</form>				
+
 		</div>
 		
 		<?php			
