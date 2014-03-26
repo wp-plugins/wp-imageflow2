@@ -177,7 +177,8 @@
 	//else
 	//{
 		//	No height was given, so default to 50% of the source images height
-		$output_height = 0.50;
+		//$output_height = 0.50;
+		$output_height = 1;
 	//}
 	
 	if (isset($_GET['fade_start']))
@@ -237,7 +238,8 @@
 	$mime = $image_details['mime'];
 	
 	//	Calculate the height of the output image
-	if ($output_height < 1)
+	//if ($output_height < 1)
+	if ($output_height < 2)
 	{
 		//	The output height is a percentage
 		$new_height = $height * $output_height;
