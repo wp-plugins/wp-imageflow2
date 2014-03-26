@@ -61,7 +61,7 @@ As a quick test, perform the following steps:
 1. Install the plugin
 2. Open up a post/page edit window
 3. Upload some images into the post
-4. Insert the [wp-imageflow2] shortcode
+4. Insert the [wp-flowplus] shortcode
 5. Preview the post
 
 == Screenshots ==
