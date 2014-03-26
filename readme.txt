@@ -72,7 +72,7 @@ As a quick test, perform the following steps:
 
 == Changelog ==
 
-Version 2.0.0 ()
+Version 2.0.0 (March 26, 2014)
 
 * Rename to WP Flow Plus
 * Drop support for PHP 4
