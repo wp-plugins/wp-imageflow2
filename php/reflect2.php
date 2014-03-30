@@ -3,7 +3,8 @@
 		----------------------------------------------------------------
 		Easy Reflections by Richard Davey, Core PHP (rich@corephp.co.uk)
 		v2 - 2nd March 2007
-        Updates include changes by Monte Ohrt (monte@ohrt.com)
+	        Updates include changes by Monte Ohrt (monte@ohrt.com)
+		  Additional changes by Bev Stofko (stofko.ca) V2.BS.1
 		----------------------------------------------------------------
 		You are free to use this in any product, or on any web site.
 		Latest builds at: http://reflection.corephp.co.uk
@@ -12,7 +13,7 @@
 		This script accepts the following $_GET parameters:
 		
 		img		        required	The source image (to reflect)
-		height	        optional	Height of the reflection (% or pixel value)
+		//height	        optional	Height of the reflection (% or pixel value) - removed to prevent exploitation
 		bgc		        optional	Background colour to fade into, default = #000000
         fade_start      optional    Start the alpha fade from whch value? (% value)
         fade_end        optional    End the alpha fade from whch value? (% value)
@@ -148,36 +149,37 @@
 	}
 	
 	//	height (how tall should the reflection be?)
-	if (isset($_GET['height']))
-	{
-		$output_height = $_GET['height'];
+	//if (isset($_GET['height']))
+	//{
+	//	$output_height = $_GET['height'];
 		
 		//	Have they given us a percentage?
-		if (substr($output_height, -1) == '%')
-		{
+	//	if (substr($output_height, -1) == '%')
+	//	{
 			//	Yes, remove the % sign
-			$output_height = (int) substr($output_height, 0, -1);
+	//		$output_height = (int) substr($output_height, 0, -1);
 
 			//	Gotta love auto type casting ;)
-			if ($output_height < 10)
-			{
-				$output_height = "0.0$output_height";
-			}
-			else
-			{
-				$output_height = "0.$output_height";
-			}
-		}
-		else
-		{
-			$output_height = (int) $output_height;
-		}
-	}
-	else
-	{
+	//		if ($output_height < 10)
+	//		{
+	//			$output_height = "0.0$output_height";
+	//		}
+	//		else
+	//		{
+	//			$output_height = "0.$output_height";
+	//		}
+	//	}
+	//	else
+	//	{
+	//		$output_height = (int) $output_height;
+	//	}
+	//}
+	//else
+	//{
 		//	No height was given, so default to 50% of the source images height
-		$output_height = 0.50;
-	}
+		//$output_height = 0.50;
+		$output_height = 1;
+	//}
 	
 	if (isset($_GET['fade_start']))
 	{
@@ -236,7 +238,8 @@
 	$mime = $image_details['mime'];
 	
 	//	Calculate the height of the output image
-	if ($output_height < 1)
+	//if ($output_height < 1)
+	if ($output_height < 2)
 	{
 		//	The output height is a percentage
 		$new_height = $height * $output_height;
