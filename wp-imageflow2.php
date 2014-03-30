@@ -3,7 +3,7 @@
 Plugin Name: WP Flow Plus
 Plugin URI: http://www.sunnythemes.com/plugins/wp-flow-plus
 Description: Flow style carousel with Lightbox popups
-Version: 2.0.0
+Version: 2.0.1
 Author: Sunny Themes
 Author URI: http://www.sunnythemes.com
 
@@ -204,7 +204,7 @@ Class WPFlowPlus
 											. '&amp;fade_start=30';
 					} else {
 						$theImageSrc = $this_image['small'];
-						if ( isset($blog_id) && $blog_id > 0 && $blog_id != BLOG_ID_CURRENT_SITE ) {
+						if ( function_exists ('get_blog_details') && isset($blog_id) && $blog_id > 0 && $blog_id != BLOG_ID_CURRENT_SITE ) {
 							/* WPMU image path must be corrected if not the root blog */
 							$imageParts = explode(get_blog_details($blog_id)->path, $this_image['small']);
 							if (isset($imageParts[1])) {
@@ -461,7 +461,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#00' . substr(
 		wp_enqueue_style( 'wpflowpluscss',  plugins_url('css/screen.css', __FILE__));
 		wp_enqueue_style( 'wpflowplus-ie8', plugins_url('css/ie8.css', __FILE__));
 		$wp_styles->add_data( 'wpflowplus-ie8', 'conditional', 'IE 8' );
-		wp_enqueue_script('wpif2_flowplus', plugins_url('js/imageflowplus.js', __FILE__), array('jquery'), '1.7');
+		wp_enqueue_script('wpif2_flowplus', plugins_url('js/imageflowplus.js', __FILE__), array('jquery'), '2.0');
 	}	
 
 	function addAdminScripts() {

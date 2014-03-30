@@ -72,12 +72,17 @@ As a quick test, perform the following steps:
 
 == Changelog ==
 
+Version 2.0.1 (March 30, 2014)
+
+* Bug fix - WPMU support corrected
+
 Version 2.0.0 (March 26, 2014)
 
 * Rename to WP Flow Plus
 * Drop support for PHP 4
 * NEW FEATURE - CSS reflections
 * NEW FEATURE - configure carousel image size
+* NEW FEATURE - WPMU support
 
 Version 1.8.3 (March 25, 2013)
 
