@@ -72,6 +72,10 @@ As a quick test, perform the following steps:
 
 == Changelog ==
 
+Version 2.0.2 (April 22, 2014)
+
+* Bug fix - Fix links to URL from device touchscreen taps
+
 Version 2.0.1 (March 30, 2014)
 
 * Bug fix - WPMU support corrected

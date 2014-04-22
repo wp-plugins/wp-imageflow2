@@ -1,5 +1,5 @@
 /**
- *	ImageFlowPlus 2.0
+ *	ImageFlowPlus 2.1
  *
  *    This provides an Flow style gallery plus the following great features:
  *    - Lightbox pop-ups when linking to an image
@@ -775,9 +775,11 @@ function flowplus(instance) {
 					thisObject.autoRotate = "off"; 
 					thisObject.showTop(image_block);
 				} else if (thisObject.sameWindow) {
-					window.location = image.url;
+					window.location = image.getAttribute('data-link')
+					//window.location = image.url;
 				} else {
-					window.open (image.url);
+					window.open (image.getAttribute('data-link'));
+					//window.open (image.url);
 				}
 			}
 			

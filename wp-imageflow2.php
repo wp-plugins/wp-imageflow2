@@ -3,7 +3,7 @@
 Plugin Name: WP Flow Plus
 Plugin URI: http://www.sunnythemes.com/plugins/wp-flow-plus
 Description: Flow style carousel with Lightbox popups
-Version: 2.0.1
+Version: 2.0.2
 Author: Sunny Themes
 Author URI: http://www.sunnythemes.com
 
@@ -461,7 +461,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#00' . substr(
 		wp_enqueue_style( 'wpflowpluscss',  plugins_url('css/screen.css', __FILE__));
 		wp_enqueue_style( 'wpflowplus-ie8', plugins_url('css/ie8.css', __FILE__));
 		$wp_styles->add_data( 'wpflowplus-ie8', 'conditional', 'IE 8' );
-		wp_enqueue_script('wpif2_flowplus', plugins_url('js/imageflowplus.js', __FILE__), array('jquery'), '2.0');
+		wp_enqueue_script('wpif2_flowplus', plugins_url('js/imageflowplus.js', __FILE__), array('jquery'), '2.1');
 	}	
 
 	function addAdminScripts() {
