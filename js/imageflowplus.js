@@ -6,7 +6,7 @@
  *    - Optional linking to an external url rather than an image
  *	- Supports multiple instances and avoid collisions with other scripts by using object-oriented code
  *
- *    Copyright Bev Stofko http://www.stofko.ca
+ *    Copyright Sunny Themes http://www.sunnythemes.com
  *
  *	Version 1.1 adds auto-rotation option (May 3, 2010)
  *	Version 1.2 adds startimg option, longdesc may be link or text description (May 13, 2010)
