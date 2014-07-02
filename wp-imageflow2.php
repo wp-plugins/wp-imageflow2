@@ -3,7 +3,7 @@
 Plugin Name: WP Flow Plus
 Plugin URI: http://www.sunnythemes.com/plugins/wp-flow-plus
 Description: Flow style carousel with Lightbox popups
-Version: 2.0.2
+Version: 2.1.0
 Author: Sunny Themes
 Author URI: http://www.sunnythemes.com
 
@@ -55,6 +55,7 @@ Class WPFlowPlus
 			return;
 		}	
 		
+		add_action('init', array($this, 'init_action'));
 		register_activation_hook( __FILE__, array($this, 'activate'));
 		register_deactivation_hook( __FILE__, array($this, 'deactivate'));
 		add_action('wp_enqueue_scripts', array($this, 'addScripts'));	
@@ -79,6 +80,11 @@ Class WPFlowPlus
 		*/
 	}			
 	
+	function init_action() {
+		// Localization
+		load_plugin_textdomain('wp-flow-plus', false, basename( dirname( __FILE__ ) ) . '/languages' );
+	}
+
 	function flow_func($attr) {
 		/*
 		** Shortcode handler
