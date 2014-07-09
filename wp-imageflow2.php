@@ -169,7 +169,7 @@ Class WPFlowPlus
 		$output  = '<div id="' . $this->flowplusdiv . '_' . $this->wpif2_instance . '" class="' . $this->flowplusdiv . '" style="background-color: ' . $bgcolor . '; color: ' . $txcolor . '; width: ' . $width . '">' . PHP_EOL; 
 		$output .= '<div id="' . $this->loadingdiv . '_' . $this->wpif2_instance . '" class="' . $this->loadingdiv . '" style="color: ' . $txcolor . ';">' . PHP_EOL;
 		$output .= '<b>';
-		$output .= __('Loading Images','wp-flowplus');
+		$output .= __('Loading Images','wp-flow-plus');
 		$output .= '</b><br/>' . PHP_EOL;
 		$output .= '<img src="' . WPIF2_PLUGIN_URL . '/img/loading.gif" width="208" height="13" alt="' . $this->loadingdiv . '" />' . PHP_EOL;
 		$output .= '</div>' . PHP_EOL;
@@ -477,7 +477,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#00' . substr(
 
 	function image_links($form_fields, $post) {
 		$form_fields["wpif2-image-link"] = array(
-			"label" => __("WP Flow Plus Link"),
+			"label" => __("WP Flow Plus Link", 'wp-flow-plus'),
 			"input" => "", // this is default if "input" is omitted
 			"value" => get_post_meta($post->ID, "_wpif2-image-link", true),
       	 	"helps" => __("To be used with carousel added via [wp-flowplus] shortcode."),
@@ -700,7 +700,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#00' . substr(
 				</tr>
 				<tr>
 					<th scope="row">
-					<?php echo __('Carousel image size', 'wp-flowplus'); ?>
+					<?php echo __('Carousel image size', 'wp-flow-plus'); ?>
 					</td>
 					<td>
 					<?php $image_sizes = get_intermediate_image_sizes(); ?>

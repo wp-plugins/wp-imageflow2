@@ -2,7 +2,7 @@
 Contributors: SunnyThemes
 Requires at least: 3.0.1
 Tested up to: 3.9
-Stable tag: 2.0.2
+Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -75,6 +75,7 @@ As a quick test, perform the following steps:
 Version 2.1.0 (July 2, 2014)
 
 * Language support added
+* Spanish and Russian translation courtesy of Ogi Djuraskovic, FirstSiteGuide.com
 
 Version 2.0.2 (April 22, 2014)
 
