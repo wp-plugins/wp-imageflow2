@@ -52,57 +52,69 @@ This is a light script that uses the basic JQuery library. It will display a sim
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Configure the gallery in Settings -> WP Flow Plus.
 
-## Shortcode
+= Shortcode =
 
 `[wp-flowplus]`
 
-##The following basic options are supported
+= The following basic options are supported =
 
 **orderby**
-:specify how to sort the display thumbnails. The default is "menu_order". This supports the standard WordPress options: menu_order, title, post_date, rand, ID
+
+Specify how to sort the display thumbnails. The default is "menu_order". This supports the standard WordPress options: menu_order, title, post_date, rand, ID
 
 **order**
-: specify the sort order used to display thumbnails. ASC or DESC. For example, to sort by ID, DESC:
+
+Specify the sort order used to display thumbnails. ASC or DESC. For example, to sort by ID, DESC:
 
 `[wp-flowplus order="DESC" orderby="ID"]`
 
 **id**
-: specify the post ID. The gallery will display images which are attached to that post. The default behavior, if no ID is specified, is to display images attached to the current post. For example, to display images attached to post 123:
+
+Specify the post ID. The gallery will display images which are attached to that post. The default behavior, if no ID is specified, is to display images attached to the current post. For example, to display images attached to post 123:
 
 `[wp-flowplus id="123"]`
 
 **include**
-: comma separated attachment IDs to show only the images from these attachments.
+
+Comma separated attachment IDs to show only the images from these attachments.
 
 `[wp-flowplus include="23,39,45"]`
 
 **exclude**
-: comma separated attachment IDs excludes the images from these attachments. Please note that include and exclude cannot be used together.
+
+Comma separated attachment IDs excludes the images from these attachments. Please note that include and exclude cannot be used together.
 
 `[wp-flowplus exclude="21,32,43"]`
 
 **dir**
-: specify a subdirectory name. The path to the subdirectory must be configured on the settings page.
+
+Specify a subdirectory name. The path to the subdirectory must be configured on the settings page.
 
 **mediatag**
-: works with the Media Tags plugin by Paul Menard. This option will pull matching media out of your media library and include it in the gallery. Specify the media slug to select. Example use:  mediatag=mymedia
+
+Works with the Media Tags plugin by Paul Menard. This option will pull matching media out of your media library and include it in the gallery. Specify the media slug to select. Example use:  mediatag=mymedia
 
 **startimg**
-: gives the starting slide number to center in the gallery, the default is 1.
+
+Gives the starting slide number to center in the gallery, the default is 1.
 
 **rotate**
-: turns on/off auto-rotation for this instance (overrides the setting from the admin panel). Values are 'on' or 'off'.
+
+Turns on/off auto-rotation for this instance (overrides the setting from the admin panel). Values are 'on' or 'off'.
 
 **samewindow**
-: specifies if links open in the same window or a new window. Set true or false, overrides the default value from the settings page.
 
-## The following options are available with the bonus add-ons:
+Specifies if links open in the same window or a new window. Set true or false, overrides the default value from the settings page.
+
+= The following options are available with the bonus add-ons =
 
 **category**
-: select featured posts by category. The featured image of each post will be placed in the carousel, and each image will link to the post. If a post has no featured image, the first image found attached to the post will be used instead, if there is no attached image a default image will be used.
+
+Select featured posts by category. The featured image of each post will be placed in the carousel, and each image will link to the post. If a post has no featured image, the first image found attached to the post will be used instead, if there is no attached image a default image will be used.
 
 **ngg_id**
-: create carousel from a NextGen gallery. With the NextGen plugin you can perform bulk image resizing, and regenerate thumbnails in any size. The WP Flow Plus carousel will use the thumbnail size for the carousel images, and the full size for the Lightbox images.
+
+Create carousel from a NextGen gallery. With the NextGen plugin you can perform bulk image resizing, and regenerate thumbnails in any size. The WP Flow Plus carousel will use the thumbnail size for the carousel images, and the full size for the Lightbox images.
 
 == FAQ ==
 
