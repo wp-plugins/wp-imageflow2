@@ -56,10 +56,10 @@ This is a light script that uses the basic JQuery library. It will display a sim
 
 `[wp-flowplus]`
 
-## The following basic options are supported
+##The following basic options are supported
 
 **orderby**
-: specify how to sort the display thumbnails. The default is "menu_order". This supports the standard WordPress options: menu_order, title, post_date, rand, ID
+:specify how to sort the display thumbnails. The default is "menu_order". This supports the standard WordPress options: menu_order, title, post_date, rand, ID
 
 **order**
 : specify the sort order used to display thumbnails. ASC or DESC. For example, to sort by ID, DESC:
