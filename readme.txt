@@ -1,7 +1,7 @@
 === WP Flow Plus ===
-Contributors: SunnyThemes
+Contributors: wp-flow-plus
 Requires at least: 3.0.1
-Tested up to: 4.0
+Tested up to: 4.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -14,17 +14,17 @@ Flow style gallery with Lightbox popups. Uses images from the Wordpress Media Li
 
 = WP Flow Plus =
 
-Display attractive Flow style carousel galleries.  Each image links to either a Lightbox preview or to a URL. The Lightbox pop-up supports cycling through all the photos - left/right arrows appear when hovering over the photos. 
+Display attractive flow style carousel galleries with or without reflections.  Each image links to either a Lightbox preview or to a URL. The Lightbox pop-up supports cycling through all the photos - left/right arrows appear when hovering over the photos. 
 
 This is a light script that uses the basic JQuery library. It will display a simple thumbnail list if Javascript is disabled in the browser.
 
-[Demo and Documentation](http://www.sunnythemes.com/plugins/wp-flow-plus/)
+[Demo and Documentation](http://www.wpflowplus.com)
 
 = Features =
 
-* NEW with V2.0.0! CSS reflections
-* NEW with V2.0.0! Configure carousel image size
-* NEW with V2.0.0! Configure carousel aspect ratio
+* CSS reflections
+* Configure carousel image size
+* Configure carousel aspect ratio
 * Multiple galleries per page
 * Configure the background color, text color, container width and choose black or white for the scrollbar. 
 * Auto-rotation of the images
@@ -44,7 +44,7 @@ This is a light script that uses the basic JQuery library. It will display a sim
 * Shortcode generator
 * NextGen gallery support
 
-[Learn more about bonus add-ons](http://www.sunnythemes.com/plugins/wp-flow-plus/bonus-add-ons/)
+[Learn more about bonus add-ons](http://www.wpflowplus.com/plugins/wp-flow-plus/bonus-add-ons/)
 
 == Installation ==
 
