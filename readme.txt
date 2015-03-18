@@ -132,8 +132,9 @@ As a quick test, perform the following steps:
 == Screenshots ==
 
 1. WP Flow Plus
-2. Choose the options you need. 
-3. Add an image link
+2. General options
+3. Format options
+4. Add an image link
 
 == Changelog ==
 
