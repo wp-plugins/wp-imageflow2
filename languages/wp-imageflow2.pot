@@ -1,201 +1,174 @@
-# Copyright (C) 2014 WP Flow Plus
+# Copyright (C) 2015 WP Flow Plus
 # This file is distributed under the same license as the WP Flow Plus package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Flow Plus 2.1.0\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-imageflow2\n"
-"POT-Creation-Date: 2014-07-03 19:14:01+00:00\n"
+"Project-Id-Version: WP Flow Plus 2.2.0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-imageflow2\n"
+"POT-Creation-Date: 2015-03-18 16:20:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: wp-imageflow2.php:172
-msgid "Loading Images"
+#: views/admin-settings-promo.php:11
+msgid "Make a minimum donation"
 msgstr ""
 
-#: wp-imageflow2.php:480
-msgid "WP Flow Plus Link"
+#: views/admin-settings-promo.php:11
+msgid ""
+"to this plugin and you will receive bonus add-ons and technical support for "
+"the WP Flow Plus gallery"
 msgstr ""
 
-#: wp-imageflow2.php:483
-msgid "To be used with carousel added via [wp-flowplus] shortcode."
+#: views/admin-settings-promo.php:13
+msgid "CSS arrow styles"
 msgstr ""
 
-#: wp-imageflow2.php:500
-msgid "Settings"
+#: views/admin-settings-promo.php:14
+msgid "Featured Post Gallery integration"
 msgstr ""
 
-#: wp-imageflow2.php:506
-msgid "WP Flow Plus requires at least WordPress 2.8.4"
+#: views/admin-settings-promo.php:15
+msgid "NextGen Gallery integration"
 msgstr ""
 
-#: wp-imageflow2.php:510
-msgid "WP Flow Plus Options"
+#: views/admin-settings-promo.php:16
+msgid "Shortcode generator attached to your edit window"
 msgstr ""
 
-#. #-#-#-#-#  plugin.pot (WP Flow Plus 2.1.0)  #-#-#-#-#
-#. Plugin Name of the plugin/theme
-#: wp-imageflow2.php:510
-msgid "WP Flow Plus"
-msgstr ""
-
-#: wp-imageflow2.php:518
-msgid "Sorry, but you have no permission to change settings."
-msgstr ""
-
-#: wp-imageflow2.php:531
-msgid "Invalid background color, not saved."
-msgstr ""
-
-#: wp-imageflow2.php:540
-msgid "Invalid text color, not saved."
-msgstr ""
-
-#: wp-imageflow2.php:558
-msgid "Invalid slider color, not saved."
-msgstr ""
-
-#: wp-imageflow2.php:638
-msgid "Settings were saved."
-msgstr ""
-
-#: wp-imageflow2.php:647
-msgid "WP Flow Plus Settings"
-msgstr ""
-
-#: wp-imageflow2.php:649
-msgid "Formatting"
-msgstr ""
-
-#: wp-imageflow2.php:654
+#: views/admin-settings-tab-format.php:14
 msgid "Background color"
 msgstr ""
 
-#: wp-imageflow2.php:658
+#: views/admin-settings-tab-format.php:18
 msgid ""
 "Hex value or \"transparent\". Do not use transparent with CSS reflections."
 msgstr ""
 
-#: wp-imageflow2.php:663
+#: views/admin-settings-tab-format.php:23
 msgid "Text color"
 msgstr ""
 
-#: wp-imageflow2.php:667
+#: views/admin-settings-tab-format.php:27
 msgid "Disable captions"
 msgstr ""
 
-#: wp-imageflow2.php:673
+#: views/admin-settings-tab-format.php:33
 msgid "Slider color"
 msgstr ""
 
-#: wp-imageflow2.php:677
+#: views/admin-settings-tab-format.php:37
 msgid ">White"
 msgstr ""
 
-#: wp-imageflow2.php:678
+#: views/admin-settings-tab-format.php:38
 msgid ">Black"
 msgstr ""
 
-#: wp-imageflow2.php:680
+#: views/admin-settings-tab-format.php:40
 msgid "Disable slider"
 msgstr ""
 
-#: wp-imageflow2.php:686
+#: views/admin-settings-tab-format.php:46
 msgid "Container width CSS"
 msgstr ""
 
-#: wp-imageflow2.php:694
+#: views/admin-settings-tab-format.php:54
 msgid "Container aspect ratio"
 msgstr ""
 
-#: wp-imageflow2.php:698
+#: views/admin-settings-tab-format.php:58
 msgid "Default 1.9. Higher numbers result in shorter height and vice versa."
 msgstr ""
 
-#: wp-imageflow2.php:703
+#: views/admin-settings-tab-format.php:63
 msgid "Carousel image size"
 msgstr ""
 
-#: wp-imageflow2.php:714
+#: views/admin-settings-tab-format.php:74
 msgid "Applies to images taken from the Media Library only."
 msgstr ""
 
-#: wp-imageflow2.php:719
-msgid "Behaviour"
+#: views/admin-settings-tab-format.php:79
+#: views/admin-settings-tab-general.php:129
+msgid "Save Changes"
 msgstr ""
 
-#: wp-imageflow2.php:720
+#: views/admin-settings-tab-general.php:11
+msgid "Options for all Galleries"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:12
 msgid ""
 "The images in the carousel will by default link to a Lightbox enlargement of "
-"the image. Alternatively, you may specify\r\n"
+"the image. Alternatively, you may specify\n"
 "a URL to link to each image from the Media Library. This link address should "
 "be configured in the image uploader/editor of the Media Library."
 msgstr ""
 
-#: wp-imageflow2.php:725
+#: views/admin-settings-tab-general.php:17
 msgid "Open URL links in same window"
 msgstr ""
 
-#: wp-imageflow2.php:729
+#: views/admin-settings-tab-general.php:21
 msgid "The default is to open links in a new window"
 msgstr ""
 
-#: wp-imageflow2.php:734
+#: views/admin-settings-tab-general.php:26
 msgid "Choose a reflection script"
 msgstr ""
 
-#: wp-imageflow2.php:738
+#: views/admin-settings-tab-general.php:30
 msgid "CSS reflections, supported by all modern browsers (including IE8+)."
 msgstr ""
 
-#: wp-imageflow2.php:741
+#: views/admin-settings-tab-general.php:33
 msgid "V2 (requires GD)."
 msgstr ""
 
-#: wp-imageflow2.php:744
+#: views/admin-settings-tab-general.php:36
 msgid ""
 "V3. Recommended only if you need transparent PNGs, GD version 2.0.28 "
 "strongly recommended."
 msgstr ""
 
-#: wp-imageflow2.php:747
+#: views/admin-settings-tab-general.php:39
 msgid "Disable reflections"
 msgstr ""
 
-#: wp-imageflow2.php:752
+#: views/admin-settings-tab-general.php:44
 msgid "Strict Mode"
 msgstr ""
 
-#: wp-imageflow2.php:756
+#: views/admin-settings-tab-general.php:48
 msgid ""
 "Check this box if your server is strict and serves a 404 error on reflected "
 "images"
 msgstr ""
 
-#: wp-imageflow2.php:761
+#: views/admin-settings-tab-general.php:53
 msgid "Enable auto rotation"
 msgstr ""
 
-#: wp-imageflow2.php:765
+#: views/admin-settings-tab-general.php:57
 msgid "This may be overridden in the shortcode"
 msgstr ""
 
-#: wp-imageflow2.php:770
+#: views/admin-settings-tab-general.php:62
 msgid "Auto rotation pause"
 msgstr ""
 
-#: wp-imageflow2.php:778
+#: views/admin-settings-tab-general.php:70
 msgid "Galleries Based on Folders"
 msgstr ""
 
-#: wp-imageflow2.php:779
+#: views/admin-settings-tab-general.php:71
 msgid "Click to toggle detailed help"
 msgstr ""
 
-#: wp-imageflow2.php:782
+#: views/admin-settings-tab-general.php:74
 msgid ""
 ">You can upload a collection of images to a folder and have WP Flow Plus "
 "read the folder and gather the images, without the need to upload through "
@@ -205,74 +178,52 @@ msgid ""
 "carousel."
 msgstr ""
 
-#: wp-imageflow2.php:783
+#: views/admin-settings-tab-general.php:75
 msgid "The folder structure should resemble the following"
 msgstr ""
 
-#: wp-imageflow2.php:796
+#: views/admin-settings-tab-general.php:88
 msgid ""
 "With this structure you would enter \"wp-content/galleries/\" as the folder "
 "path below"
 msgstr ""
 
-#: wp-imageflow2.php:802
+#: views/admin-settings-tab-general.php:94
 msgid "Folder Path"
 msgstr ""
 
-#: wp-imageflow2.php:805
+#: views/admin-settings-tab-general.php:97
 msgid ""
 "This should be the path to galleries from homepage root path, or full url "
 "including http://."
 msgstr ""
 
-#: wp-imageflow2.php:807
+#: views/admin-settings-tab-general.php:99
 msgid "e.g."
 msgstr ""
 
-#: wp-imageflow2.php:808
+#: views/admin-settings-tab-general.php:100
 msgid "Ending slash, but NO starting slash"
 msgstr ""
 
-#: wp-imageflow2.php:813
+#: views/admin-settings-tab-general.php:105
 msgid "These folder galleries were found:"
 msgstr ""
 
-#: wp-imageflow2.php:837
-msgid "Save Changes"
-msgstr ""
-
-#: wp-imageflow2.php:840
-msgid "Make a minimum donation"
-msgstr ""
-
-#: wp-imageflow2.php:840
-msgid ""
-"to this plugin and you will receive bonus add-ons and technical support for "
-"the WP Flow Plus gallery"
-msgstr ""
-
-#: wp-imageflow2.php:842
-msgid "NextGen Gallery support"
-msgstr ""
-
-#: wp-imageflow2.php:843
-msgid "Shortcode generator attached to your edit windows"
-msgstr ""
-
-#: wp-imageflow2.php:847
+#: views/admin-settings-tab-general.php:135
 msgid "Deprecated"
 msgstr ""
 
-#: wp-imageflow2.php:848
+#: views/admin-settings-tab-general.php:136
 msgid ""
 "NOTE: The following option is deprecated and will be removed in the future"
 msgstr ""
 
-#: wp-imageflow2.php:852
+#: views/admin-settings-tab-general.php:140
 msgid "Image Link in Description"
 msgstr ""
 
-#: wp-imageflow2.php:855
+#: views/admin-settings-tab-general.php:143
 msgid ""
 "Check this box to have images from the Media Library use the description "
 "field as an external link from the image thumbnail. <em><b>This option is "
@@ -280,18 +231,93 @@ msgid ""
 "editor to specify a link from the carousel"
 msgstr ""
 
+#: views/admin-settings.php:12
+msgid "WP Flow Plus Settings"
+msgstr ""
+
+#: wp-imageflow2.php:203
+msgid "Loading Images"
+msgstr ""
+
+#: wp-imageflow2.php:376
+msgid "WP Flow Plus Link"
+msgstr ""
+
+#: wp-imageflow2.php:379
+msgid "To be used with carousel added via [wp-flowplus] shortcode."
+msgstr ""
+
+#: wp-imageflow2.php:517
+msgid "Settings"
+msgstr ""
+
+#: wp-imageflow2.php:523
+msgid "WP Flow Plus Options"
+msgstr ""
+
+#. #-#-#-#-#  plugin.pot (WP Flow Plus 2.2.0)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#. #-#-#-#-#  plugin.pot (WP Flow Plus 2.2.0)  #-#-#-#-#
+#. Author of the plugin/theme
+#: wp-imageflow2.php:523
+msgid "WP Flow Plus"
+msgstr ""
+
+#: wp-imageflow2.php:535
+msgid "Sorry, but you have no permission to change settings."
+msgstr ""
+
+#: wp-imageflow2.php:557
+msgid "General"
+msgstr ""
+
+#: wp-imageflow2.php:558
+msgid "Format"
+msgstr ""
+
+#: wp-imageflow2.php:559
+msgid "Help"
+msgstr ""
+
+#: wp-imageflow2.php:605
+msgid "Invalid background color, not saved."
+msgstr ""
+
+#: wp-imageflow2.php:617
+msgid "Invalid text color, not saved."
+msgstr ""
+
+#: wp-imageflow2.php:638
+msgid "Invalid slider color, not saved."
+msgstr ""
+
+#: wp-imageflow2.php:760
+msgid "Settings were saved."
+msgstr ""
+
+#: wp-imageflow2.php:764
+msgid "The above setting was not saved."
+msgstr ""
+
+#: wp-imageflow2.php:766
+msgid "The above settings were not saved."
+msgstr ""
+
+#: wp-imageflow2.php:768
+msgid " Other settings were successfully saved."
+msgstr ""
+
+#: wp-imageflow2.php:773
+msgid "WP Flow Plus requires at least WordPress 2.8.4"
+msgstr ""
+
+#. #-#-#-#-#  plugin.pot (WP Flow Plus 2.2.0)  #-#-#-#-#
 #. Plugin URI of the plugin/theme
-msgid "http://www.sunnythemes.com/plugins/wp-flow-plus"
+#. #-#-#-#-#  plugin.pot (WP Flow Plus 2.2.0)  #-#-#-#-#
+#. Author URI of the plugin/theme
+msgid "http://www.wpflowplus.com"
 msgstr ""
 
 #. Description of the plugin/theme
 msgid "Flow style carousel with Lightbox popups"
-msgstr ""
-
-#. Author of the plugin/theme
-msgid "Sunny Themes"
-msgstr ""
-
-#. Author URI of the plugin/theme
-msgid "http://www.sunnythemes.com"
 msgstr ""
