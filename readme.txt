@@ -40,7 +40,8 @@ This is a light script that uses the basic JQuery library. It will display a sim
 
 **BONUS FEATURES AVAILABLE WITH MINIMUM $10 DONATION**
 
-* Featured post support (NEW)
+* Lightbox arrow options (NEW)
+* Featured post support
 * Shortcode generator
 * NextGen gallery support
 
