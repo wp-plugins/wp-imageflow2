@@ -1,15 +1,15 @@
 <?php
 /*
 Plugin Name: WP Flow Plus
-Plugin URI: http://www.sunnythemes.com/plugins/wp-flow-plus
+Plugin URI: http://www.wpflowplus.com
 Description: Flow style carousel with Lightbox popups
-Version: 2.1.0
-Author: Sunny Themes
-Author URI: http://www.sunnythemes.com
+Version: 2.2.0
+Author: WP Flow Plus
+Author URI: http://www.wpflowplus.com
 
-Originally based on the discontinued plugin by Sven Kubiak http://www.svenkubiak.de/wp-imageflow.
+Originally based on the discontinued plugin by Sven Kubiak
 
-Copyright 2014 Sunny Themes
+Copyright 2015 
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,6 +25,10 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
+
 global $wp_version;
 define('WPFLOWPLUSVERSION', version_compare($wp_version, '2.8.4', '>='));
 define ('WPIF2_PLUGIN_URL', plugin_dir_url( __FILE__ ));
@@ -47,7 +51,7 @@ Class WPFlowPlus
 	var $noscriptdiv  = 'wpif2_flowplus_noscript';
 
 	var $wpif2_instance = 0;
-
+	
 	public function __construct() {
 		if (!WPFLOWPLUSVERSION)
 		{
@@ -55,16 +59,27 @@ Class WPFlowPlus
 			return;
 		}	
 		
-		add_action('init', array($this, 'init_action'));
+		add_action('init', array($this, 'action_on_init'));
 		register_activation_hook( __FILE__, array($this, 'activate'));
 		register_deactivation_hook( __FILE__, array($this, 'deactivate'));
 		add_action('wp_enqueue_scripts', array($this, 'addScripts'));	
 		add_action('admin_enqueue_scripts', array($this, 'addAdminScripts'));	
-		add_action('admin_menu', array($this, 'add_settings_page'));
+		
+		add_action('admin_menu', array($this, 'settings_page_add'));
+		add_filter('wpflowplus_settings_tabs_array', array($this, 'settings_tabs_array_default'));
+		add_action('wpfp_settings_tab_general', array($this, 'settings_tab_general'));
+		add_action('wpfp_settings_update_general', array($this, 'settings_update_general'));
+		add_action('wpfp_settings_tab_format', array($this, 'settings_tab_format'));
+		add_action('wpfp_settings_update_format', array($this, 'settings_update_format'));
+		add_action('wpfp_settings_tab_help', array($this, 'settings_tab_help'));
+		add_action('wpfp_settings_update_help', array($this, 'settings_update_help'));
+		
 		add_shortcode('wp-imageflow2', array($this, 'flow_func'));
 		add_shortcode('wp-flowplus', array($this, 'flow_func'));	
+
 		add_filter("attachment_fields_to_edit", array($this, 'image_links'), null, 2);
 		add_filter("attachment_fields_to_save", array($this, 'image_links_save'), null , 2);
+
 		add_filter("plugin_action_links_".plugin_basename(__FILE__), array($this, 'plugin_settings_link' ) );
 	}
 	
@@ -80,10 +95,26 @@ Class WPFlowPlus
 		*/
 	}			
 	
-	function init_action() {
+	function action_on_init() {
 		// Localization
 		load_plugin_textdomain('wp-flow-plus', false, basename( dirname( __FILE__ ) ) . '/languages' );
 	}
+	
+	function addAdminScripts() {
+		
+		wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_script('wpif2_utility_js', plugins_url('js/wpif2_utility.js', __FILE__), array('wp-color-picker', 'jquery'));
+	}	
+
+	function addScripts() {
+		
+		global $wp_styles;
+	
+		wp_enqueue_style( 'wpflowpluscss',  plugins_url('css/screen.css', __FILE__));
+		wp_enqueue_style( 'wpflowplus-ie8', plugins_url('css/ie8.css', __FILE__));
+		$wp_styles->add_data( 'wpflowplus-ie8', 'conditional', 'IE 8' );
+		wp_enqueue_script('wpif2_flowplus', plugins_url('js/imageflowplus.js', __FILE__), array('jquery'), '2.1');
+	}		
 
 	function flow_func($attr) {
 		/*
@@ -94,7 +125,7 @@ Class WPFlowPlus
 		/* Increment the instance to support multiple galleries on a single page */
 		$this->wpif2_instance ++;
 
-		/* Load scripts, get options */
+		/* Get options */
 		$options = $this->getAdminOptions();
 
 		/* Prepare options */
@@ -267,6 +298,45 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#00' . substr(
 
 	}
 
+	function getAdminOptions() {
+		/*
+		** Merge default options with the saved values
+		*/
+		$use_options = array(	'gallery_url' => '0', 	// Path to gallery folders when not using built in gallery shortcode
+						'bgcolor' 	 => '#000000',	// Background color defaults to black
+						'txcolor' 	 => '#ffffff',	// Text color defaults to white
+						'slcolor' 	 => 'white',	// Slider color defaults to white
+						'link'    	 => 'false',	// Don't link to image description
+						'width'   	 => '520px',	// Width of containing div
+						'aspect'  	 => '1.9',		// Aspect ratio of containing div
+						'reflect' 	 => 'CSS',		// v2, v3, CSS, or none
+						'strict'  	 => 'false',	// True for strict servers that don't allow http:// in script args
+						'autorotate' => 'off',		// True to enable auto rotation
+						'pause'  	 =>'3000',		// Time to pause between auto rotations
+						'samewindow' => false,		// True to open links in same window rather than new window
+						'nocaptions' => false,		// True to hide captions in the carousel
+						'noslider'	 => false,		// True to hide the scrollbar
+						'imgsize'	 => 'medium'	// Default carousel image size
+					);
+		$saved_options = get_option($this->adminOptionsName);
+		if (!empty($saved_options)) {
+			foreach ($saved_options as $key => $option)
+				$use_options[$key] = $option;
+		}
+
+		return $use_options;
+	}
+
+	function get_path($gallery_url) {
+		/*
+		** Determine the path to prepend with DOCUMENT_ROOT
+		*/
+		if (substr($gallery_url, 0, 7) != "http://") return $gallery_url;
+
+		$dir_array = parse_url($gallery_url);
+		return $dir_array['path'];
+	}
+
 	/* Convert hexdec color string to rgb(a) string */
 	function hex2rgba($color, $opacity) {
 		$default = 'rgb(0,0,0)';
@@ -301,6 +371,26 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#00' . substr(
         return $output;
 	}
 	
+	function image_links($form_fields, $post) {	// @DEPRECATED
+		$form_fields["wpif2-image-link"] = array(
+			"label" => __("WP Flow Plus Link", 'wp-flow-plus'),
+			"input" => "", // this is default if "input" is omitted
+			"value" => get_post_meta($post->ID, "_wpif2-image-link", true),
+      	 	"helps" => __("To be used with carousel added via [wp-flowplus] shortcode."),
+		);
+	   return $form_fields;
+	}
+
+	function image_links_save($post, $attachment) {	// @DEPRECATED
+		// $attachment part of the form $_POST ($_POST[attachments][postID])
+      	// $post['post_type'] == 'attachment'
+		if( isset($attachment['wpif2-image-link']) ){
+			// update_post_meta(postID, meta_key, meta_value);
+			update_post_meta($post['ID'], '_wpif2-image-link', $attachment['wpif2-image-link']);
+		}
+		return $post;
+	}
+
 	function images_from_library ($attr, $options) {
 		/*
 		** Generate a list of the images we are using from the Media Library
@@ -329,10 +419,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#00' . substr(
 			$orderby = 'none';
 
 		if ( !empty($mediatag) ) {
-			$mediaList = get_attachments_by_media_tags("media_tags=$mediatag&orderby=$orderby&order=$order");
 			$attachments = array();
-			foreach ($mediaList as $key => $val) {
-				$attachments[$val->ID] = $mediaList[$key];
+			if ( function_exists('get_attachments_by_media_tags') ) {
+				$mediaList = get_attachments_by_media_tags("media_tags=$mediatag&orderby=$orderby&order=$order");
+				foreach ($mediaList as $key => $val) {
+					$attachments[$val->ID] = $mediaList[$key];
+				}
 			}
 		} elseif ( !empty($include) ) {
 			$include = preg_replace( '/[^0-9,]+/', '', $include );
@@ -420,81 +512,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#00' . substr(
 		return $image_list;
 	}
 
-
-	function getAdminOptions() {
-		/*
-		** Merge default options with the saved values
-		*/
-		$use_options = array(	'gallery_url' => '0', 	// Path to gallery folders when not using built in gallery shortcode
-						'bgcolor' 	 => '#000000',	// Background color defaults to black
-						'txcolor' 	 => '#ffffff',	// Text color defaults to white
-						'slcolor' 	 => 'white',	// Slider color defaults to white
-						'link'    	 => 'false',	// Don't link to image description
-						'width'   	 => '520px',	// Width of containing div
-						'aspect'  	 => '1.9',		// Aspect ratio of containing div
-						'reflect' 	 => 'v2',		// v2, v3, or none
-						'strict'  	 => 'false',	// True for strict servers that don't allow http:// in script args
-						'autorotate' => 'off',		// True to enable auto rotation
-						'pause'  	 =>'3000',		// Time to pause between auto rotations
-						'samewindow' => false,		// True to open links in same window rather than new window
-						'nocaptions' => false,		// True to hide captions in the carousel
-						'noslider'	 => false,		// True to hide the scrollbar
-						'imgsize'	 => 'medium'	// Default carousel image size
-					);
-		$saved_options = get_option($this->adminOptionsName);
-		if (!empty($saved_options)) {
-			foreach ($saved_options as $key => $option)
-				$use_options[$key] = $option;
-		}
-
-		return $use_options;
-	}
-
-	function get_path($gallery_url) {
-		/*
-		** Determine the path to prepend with DOCUMENT_ROOT
-		*/
-		if (substr($gallery_url, 0, 7) != "http://") return $gallery_url;
-
-		$dir_array = parse_url($gallery_url);
-		return $dir_array['path'];
-	}
-
-	function addScripts() {
-		
-		global $wp_styles;
-	
-		wp_enqueue_style( 'wpflowpluscss',  plugins_url('css/screen.css', __FILE__));
-		wp_enqueue_style( 'wpflowplus-ie8', plugins_url('css/ie8.css', __FILE__));
-		$wp_styles->add_data( 'wpflowplus-ie8', 'conditional', 'IE 8' );
-		wp_enqueue_script('wpif2_flowplus', plugins_url('js/imageflowplus.js', __FILE__), array('jquery'), '2.1');
-	}	
-
-	function addAdminScripts() {
-		
-		wp_enqueue_script('wpif2_utility_js', plugins_url('js/wpif2_utility.js', __FILE__), array('jquery'));
-	}	
-
-	function image_links($form_fields, $post) {
-		$form_fields["wpif2-image-link"] = array(
-			"label" => __("WP Flow Plus Link", 'wp-flow-plus'),
-			"input" => "", // this is default if "input" is omitted
-			"value" => get_post_meta($post->ID, "_wpif2-image-link", true),
-      	 	"helps" => __("To be used with carousel added via [wp-flowplus] shortcode."),
-		);
-	   return $form_fields;
-	}
-
-	function image_links_save($post, $attachment) {
-		// $attachment part of the form $_POST ($_POST[attachments][postID])
-      	// $post['post_type'] == 'attachment'
-		if( isset($attachment['wpif2-image-link']) ){
-			// update_post_meta(postID, meta_key, meta_value);
-			update_post_meta($post['ID'], '_wpif2-image-link', $attachment['wpif2-image-link']);
-		}
-		return $post;
-	}
-
 	// Add settings link on plugin page
 	function plugin_settings_link($links = array()) { 
 		$settings_link = '<a href="options-general.php?page=wpFlowPlus">'.__('Settings', 'wp-flow-plus').'</a>';
@@ -502,372 +519,260 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#00' . substr(
 		return $links;
 	}
 	
-	function version_error () {
-		echo '<div class="error">' . __('WP Flow Plus requires at least WordPress 2.8.4','wp-flow-plus') . '</div>';
-	}
-
-	function add_settings_page() { 
+	function settings_page_add() { 
 		add_options_page( __('WP Flow Plus Options', 'wp-flow-plus'), __('WP Flow Plus', 'wp-flow-plus'), 
-					'manage_options', 'wpFlowPlus', array($this, 'settings_page'));
+					'manage_options', 'wpFlowPlus', array($this, 'settings_page_output'));
 	}
 
-	function settings_page() {
+	/*
+	** Construct the admin settings page for the plugin
+	*/
+	function settings_page_output() {
 		global $options_page;
 
+		// verify user has permission
 		if (!current_user_can('manage_options'))
 			wp_die(__('Sorry, but you have no permission to change settings.','wp-flow-plus'));	
 			
-		$options = $this->getAdminOptions();
-		if (isset($_POST['save_wpflowplus']) && ($_POST['save_wpflowplus'] == 'true') && check_admin_referer('update_wpflowplus_options'))
-		{
-			echo "<div id='message' class='updated fade'>";	
+		// update the settings for the current tab
+		if ( isset($_POST['save_wpflowplus']) && ($_POST['save_wpflowplus'] == 'true') && 
+					check_admin_referer('update_wpflowplus_options')) {
+			$current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general';
+			do_action ( 'wpfp_settings_update_' . $current_tab);
+		}
 
-			/*
-			** Validate the background colour
-			*/
+		// Get tabs for the settings page
+		$tabs = apply_filters( 'wpflowplus_settings_tabs_array', array() );
+		
+		// proceed with the settings form
+		$options = $this->getAdminOptions();
+		include 'views/admin-settings.php';
+	}
+	
+	/*
+	** Add the default tabs to the settings tab array
+	*/
+	function settings_tabs_array_default ($settings_tabs ) {
+		$default_tabs = array (
+							'general' =>  __( 'General', 'wp-flow-plus' ),
+							'format' => __( 'Format', 'wp-flow-plus' ),
+							'help' => __( 'Help', 'wp-flow-plus' ));
+		
+        //print_r($default_tabs + $settings_tabs);
+		return $default_tabs + $settings_tabs;
+	}
+	
+	/*
+	** Output the admin settings page for the "Format" tab
+	*/
+	function settings_tab_format() {
+		$options = $this->getAdminOptions();
+		include 'views/admin-settings-tab-format.php';
+	}
+	
+	/*
+	** Output the admin settings page for the "General" tab
+	*/
+	function settings_tab_general() {
+		$options = $this->getAdminOptions();
+		include 'views/admin-settings-tab-general.php';
+	}
+
+	/*
+	** Output the admin settings page for the "Help" tab
+	*/
+	function settings_tab_help() {
+		$options = $this->getAdminOptions();
+		include 'views/admin-settings-tab-help.php';
+	}
+	
+	/*
+	** Save the "Format" tab updates
+	*/
+	function settings_update_format() {
+		$options = $this->getAdminOptions();
+		$errors = '';
+		$error_count = 0;
+
+		/*
+		** Validate the background colour
+		*/
+		if (isset($_POST['wpimageflow2_bgc'])) {
 			if ((preg_match('/^#[a-f0-9]{6}$/i', $_POST['wpimageflow2_bgc'])) || ($_POST['wpimageflow2_bgc'] == 'transparent')) {
 				$options['bgcolor'] = $_POST['wpimageflow2_bgc'];
 			} else {
-			echo "<p><b style='color:red;'>".__('Invalid background color, not saved.','wp-flow-plus'). " - " . $_POST['wpimageflow2_bgc'] ."</b></p>";	
+				$error_count++;
+				$errors .= "<p>".__('Invalid background color, not saved.','wp-flow-plus'). " - " . $_POST['wpimageflow2_bgc'] ."</p>";	
 			}
-
-			/*
-			** Validate the text colour
-			*/
+		}
+		
+		/*
+		** Validate the text colour
+		*/
+		if (isset($_POST['wpimageflow2_txc'])) {
 			if (preg_match('/^#[a-f0-9]{6}$/i', $_POST['wpimageflow2_txc'])) {
 				$options['txcolor'] = $_POST['wpimageflow2_txc'];
 			} else {
-			echo "<p><b style='color:red;'>".__('Invalid text color, not saved.','wp-flow-plus'). " - " . $_POST['wpimageflow2_txc'] ."</b></p>";	
+				$error_count++;
+				$errors .= "<p>".__('Invalid text color, not saved.','wp-flow-plus'). " - " . $_POST['wpimageflow2_txc'] ."</p>";	
 			}
-
-			/* 
-			** Look for disable captions option
-			*/
-			if (isset ($_POST['wpimageflow2_nocaptions']) && ($_POST['wpimageflow2_nocaptions'] == 'nocaptions')) {
-				$options['nocaptions'] = true;
-			} else {
-				$options['nocaptions'] = false;
-			}
-
-			/*
-			** Validate the slider color
-			*/
+		}
+		
+		/* 
+		** Look for disable captions option
+		*/
+		if (isset($_POST['wpimageflow2_nocaptions']) && ($_POST['wpimageflow2_nocaptions'] == 'nocaptions')) {
+			$options['nocaptions'] = true;
+		} else {
+			$options['nocaptions'] = false;
+		}
+		
+		/*
+		** Validate the slider color
+		*/
+		if (isset($_POST['wpimageflow2_slc'])) {
 			if (($_POST['wpimageflow2_slc'] == 'black') || ($_POST['wpimageflow2_slc'] == 'white')) {
 				$options['slcolor'] = $_POST['wpimageflow2_slc'];
 			} else {
-			echo "<p><b style='color:red;'>".__('Invalid slider color, not saved.','wp-flow-plus'). " - " . $_POST['wpimageflow2_slc'] ."</b></p>";	
+				$error_count++;
+				$errors .= "<p>".__('Invalid slider color, not saved.','wp-flow-plus'). " - " . $_POST['wpimageflow2_slc'] ."</p>";	
 			}
-
-			/* 
-			** Look for disable slider option
-			*/
-			if (isset ($_POST['wpimageflow2_noslider']) && ($_POST['wpimageflow2_noslider'] == 'noslider')) {
-				$options['noslider'] = true;
-			} else {
-				$options['noslider'] = false;
-			}
-
-			/*
-			** Accept the container width
-			*/
-			$options['width'] = $_POST['wpimageflow2_width'];
-
-			/*
-			** Accept the container aspect ratio
-			*/
-			$options['aspect'] = $_POST['wpimageflow2_aspect'];
-
-			/*
-			** Accept the carousel image size
-			*/
-			$options['imgsize'] = $_POST['wpimageflow2_image_size'];
-
-			/* 
-			** Look for link to description option
-			*/
-			if (isset ($_POST['wpimageflow2_link']) && ($_POST['wpimageflow2_link'] == 'link')) {
-				$options['link'] = 'true';
-			} else {
-				$options['link'] = 'false';
-			}
-
-			/* 
-			** Look for link to new window option
-			*/
-			if (isset ($_POST['wpimageflow2_samewindow']) && ($_POST['wpimageflow2_samewindow'] == 'same')) {
-				$options['samewindow'] = true;
-			} else {
-				$options['samewindow'] = false;
-			}
-
-			/* 
-			** Look for reflect option
-			*/
-			if (isset ($_POST['wpimageflow2_reflect'])) {
-				$options['reflect'] =  $_POST['wpimageflow2_reflect'];
-			}
-
-			/* 
-			** Look for strict option
-			*/
-			if (isset ($_POST['wpimageflow2_strict']) && ($_POST['wpimageflow2_strict'] == 'strict')) {
-				$options['strict'] = 'true';
-			} else {
-				$options['strict'] = 'false';
-			}
-
-			/* 
-			** Look for auto rotate option
-			*/
-			if (isset ($_POST['wpimageflow2_autorotate']) && ($_POST['wpimageflow2_autorotate'] == 'autorotate')) {
-				$options['autorotate'] = 'on';
-			} else {
-				$options['autorotate'] = 'off';
-			}
-
-			/*
-			** Accept the pause value
-			*/
-			$options['pause'] = $_POST['wpimageflow2_pause'];
-
-			/*
-			** Done validation, update whatever was accepted
-			*/
-			$options['gallery_url'] = trim($_POST['wpimageflow2_path']);
-			update_option($this->adminOptionsName, $options);
-			echo '<p>'.__('Settings were saved.','wp-flow-plus').'</p></div>';	
 		}
-			
-		?>
-					
-		<div class="wrap">
-			<div id="icon-wpif2-setup" class="icon32" style="background: transparent url(<?php echo plugins_url( '', __FILE__ ); ?>/img/wpif2-32.png) 0 0 no-repeat;">
-				<br />
-			</div>
-			<h2><?php _e('WP Flow Plus Settings', 'wp-flow-plus'); ?></h2>
-			<form action="options-general.php?page=wpFlowPlus" method="post">
-	    		<h3><?php echo __('Formatting','wp-flow-plus'); ?></h3>
-
-	    		<table class="form-table">
-				<tr>
-					<th scope="row">
-					<label for="wpimageflow2_bgc"><?php echo __('Background color', 'wp-flow-plus'); ?></label>
-					</td>
-					<td>
-					<input type="text" name="wpimageflow2_bgc" id="wpimageflow2_bgc" onkeyup="colorcode_validate(this, this.value);" value="<?php echo $options['bgcolor']; ?>">
-					&nbsp;<em><?php _e('Hex value or "transparent". Do not use transparent with CSS reflections.', 'wp-flow-plus'); ?></em>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-					<label for="wpimageflow2_txc"><?php echo __('Text color', 'wp-flow-plus'); ?></label>
-					</td>
-					<td>
-					<input type="text" name="wpimageflow2_txc" onkeyup="colorcode_validate(this, this.value);" value="<?php echo $options['txcolor']; ?>">
-					&nbsp;<label for="wpimageflow2_nocaptions"><?php _e('Disable captions', 'wp-flow-plus'); ?>: </label>
-					<input type="checkbox" name="wpimageflow2_nocaptions" id="wpimageflow2_nocaptions" value="nocaptions" <?php if ($options['nocaptions'] == 'true') echo ' CHECKED'; ?> />
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-					<label for="wpimageflow2_txc"><?php echo __('Slider color', 'wp-flow-plus'); ?></label>
-					</td>
-					<td>
-					<select name="wpimageflow2_slc">
-					<option value="white"<?php if ($options['slcolor'] == 'white') echo ' SELECTED'; echo __('>White', 'wp-flow-plus'); ?></option>
-					<option value="black"<?php if ($options['slcolor'] == 'black') echo ' SELECTED'; echo __('>Black', 'wp-flow-plus'); ?></option>
-					</select>
-					&nbsp;<label for="wpimageflow2_noslider"><?php _e('Disable slider', 'wp-flow-plus'); ?>: </label>
-					<input type="checkbox" name="wpimageflow2_noslider" id="wpimageflow2_noslider" value="noslider" <?php if ($options['noslider'] == 'true') echo ' CHECKED'; ?> />
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-					<?php echo __('Container width CSS', 'wp-flow-plus'); ?>
-					</td>
-					<td>
-					<input type="text" name="wpimageflow2_width" value="<?php echo $options['width']; ?>"> 
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-					<?php echo __('Container aspect ratio', 'wp-flow-plus'); ?>
-					</td>
-					<td>
-					<input type="text" name="wpimageflow2_aspect" value="<?php echo $options['aspect']; ?>">
-					&nbsp;<em><?php _e('Default 1.9. Higher numbers result in shorter height and vice versa.', 'wp-flow-plus'); ?></em>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-					<?php echo __('Carousel image size', 'wp-flow-plus'); ?>
-					</td>
-					<td>
-					<?php $image_sizes = get_intermediate_image_sizes(); ?>
-					<select name="wpimageflow2_image_size">
-					  <?php foreach ($image_sizes as $size_name): ?>
-						<?php $selected = ''; ?>
-						<?php if ($size_name == $options['imgsize']) $selected = ' selected'; ?>
-						<option <?php echo 'value = "' . $size_name . '"' . $selected; ?>><?php echo $size_name; ?></option>
-					  <?php endforeach; ?>
-					</select>
-					&nbsp;<em><?php _e('Applies to images taken from the Media Library only.', 'wp-flow-plus'); ?></em>
-					</td>
-				</tr>
-			</table>
-
-	    		<h3><?php echo __('Behaviour','wp-flow-plus'); ?></h3>
-			<p><?php _e('The images in the carousel will by default link to a Lightbox enlargement of the image. Alternatively, you may specify
-a URL to link to each image from the Media Library. This link address should be configured in the image uploader/editor of the Media Library.', 'wp-flow-plus'); ?></p>
-	    		<table class="form-table">
-				<tr>
-					<th scope="row">
-					<?php echo __('Open URL links in same window', 'wp-flow-plus'); ?>
-					</td>
-					<td>
-					<input type="checkbox" name="wpimageflow2_samewindow" value="same" <?php if ($options['samewindow'] == 'true') echo ' CHECKED'; ?> /> 
-						<em><?php _e('The default is to open links in a new window', 'wp-flow-plus'); ?></em>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-					<?php echo __('Choose a reflection script', 'wp-flow-plus'); ?>
-					</td>
-					<td>
-					<input type="radio" name="wpimageflow2_reflect" value="CSS" <?php if ($options['reflect'] == 'CSS') echo ' CHECKED'; ?> />
-					<?php echo __('CSS reflections, supported by all modern browsers (including IE8+).', 'wp-flow-plus'); ?>
-					<br />
-					<input type="radio" name="wpimageflow2_reflect" value="v2" <?php if ($options['reflect'] == 'v2') echo ' CHECKED'; ?> />
-					<?php echo __('V2 (requires GD).', 'wp-flow-plus'); ?>
-					<br />
-					<input type="radio" name="wpimageflow2_reflect" value="v3" <?php if ($options['reflect'] == 'v3') echo ' CHECKED'; ?> />
-					<?php echo __('V3. Recommended only if you need transparent PNGs, GD version 2.0.28 strongly recommended.', 'wp-flow-plus'); ?>
-					<br />
-					<input type="radio" name="wpimageflow2_reflect" value="none" <?php if ($options['reflect'] == 'none') echo ' CHECKED'; ?> />
-					<?php echo __('Disable reflections', 'wp-flow-plus'); ?>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-					<?php echo __('Strict Mode', 'wp-flow-plus'); ?>
-					</td>
-					<td>
-					<input type="checkbox" name="wpimageflow2_strict" value="strict" <?php if ($options['strict'] == 'true') echo ' CHECKED'; ?> /> 
-						<em><?php _e('Check this box if your server is strict and serves a 404 error on reflected images', 'wp-flow-plus'); ?></em>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-					<?php echo __('Enable auto rotation', 'wp-flow-plus'); ?>
-					</td>
-					<td>
-					<input type="checkbox" name="wpimageflow2_autorotate" value="autorotate" <?php if ($options['autorotate'] == 'on') echo ' CHECKED'; ?> /> 
-						<em><?php _e('This may be overridden in the shortcode', 'wp-flow-plus'); ?></em>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-					<?php echo __('Auto rotation pause', 'wp-flow-plus'); ?>
-					</td>
-					<td>
-					<input type="text" name="wpimageflow2_pause" value="<?php echo $options['pause']; ?>"> 
-					</td>
-				</tr>
-			</table>
-
-	    		<h3><?php echo __('Galleries Based on Folders','wp-flow-plus'); ?></h3>
-			  <a style="cursor:pointer;" title="Click for help" onclick="toggleVisibility('detailed_display_tip');"><?php _e('Click to toggle detailed help', 'wp-flow-plus'); ?></a>
-			  <div id="detailed_display_tip" style="display:none; width: 600px; background-color: #eee; padding: 8px;
-border: 1px solid #aaa; margin: 20px; box-shadow: rgb(51, 51, 51) 2px 2px 8px;">
-				<p<?php _e('>You can upload a collection of images to a folder and have WP Flow Plus read the folder and gather the images, without the need to upload through the Wordpress image uploader. Using this method provides fewer features in the gallery since there are no titles, links, or descriptions stored with the images. This is provided as a quick and easy way to display an image carousel.', 'wp-flow-plus'); ?></p>
-				<p><?php _e('The folder structure should resemble the following', 'wp-flow-plus'); ?>:</p>
-				<p>
-- wp-content<br />
-&nbsp;&nbsp;&nbsp;- galleries<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- gallery1<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- image1.jpg<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- image2.jpg<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- image3.jpg<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- gallery2<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- image4.jpg<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- image5.jpg<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- image6.jpg</p>
-
-				<p><?php _e('With this structure you would enter "wp-content/galleries/" as the folder path below', 'wp-flow-plus'); ?>.</p>
-</div>
-
-	    		<table class="form-table">
-	    			<tr>
-					<th scope="row">
-					<?php _e('Folder Path','wp-flow-plus'); ?>	
-					</td>
-					<td>
-					<?php _e('This should be the path to galleries from homepage root path, or full url including http://.','wp-flow-plus'); ?>
-					<br /><input type="text" size="35" name="wpimageflow2_path" value="<?php echo $options['gallery_url']; ?>">
-					<br /><?php echo __('e.g.','wp-flow-plus'); ?> wp-content/galleries/
-					<br /><?php echo __('Ending slash, but NO starting slash','wp-flow-plus'); ?>
-					</td>
-				</tr>
-	    			<tr>
-					<th scope="row">
-					<?php echo __('These folder galleries were found:','wp-flow-plus'); ?>	
-					</th>
-					<td>
-					<?php
-						$galleries_path = rtrim($_SERVER['DOCUMENT_ROOT'], '/') . '/' . $this->get_path($options['gallery_url']);
-						if (file_exists($galleries_path)) {
-							$handle	= opendir($galleries_path);
-							while ($dir=readdir($handle))
-							{
-								if ($dir != "." && $dir != "..")
-								{									
-									echo "[wp-imageflow2 dir=".$dir."]";
-									echo "<br />";
-								}
-							}
-							closedir($handle);								
-						} else {
-							echo "Gallery path doesn't exist";
-						}					
-					?>
-					</td>
-				</tr>
-			</table>
-
-			<p class="submit"><input class="button button-primary" name="submit" value="<?php echo __('Save Changes','wp-flow-plus'); ?>" type="submit" /></p>
-
-			<div id="message" class="updated inline">
-				<p><a href="http://sunnythemes.com"><?php _e('Make a minimum donation', 'wp-flow-plus'); ?></a> <?php _e('to this plugin and you will receive bonus add-ons and technical support for the WP Flow Plus gallery', 'wp-flow-plus'); ?>.</p>
-				<ul class="ul-disc">
-					<li><?php _e('NextGen Gallery support', 'wp-flow-plus'); ?></li>
-				 	<li><?php _e('Shortcode generator attached to your edit windows', 'wp-flow-plus'); ?></li>
-				</ul>
-			</div>
-
-	    		<h3><?php echo __('Deprecated','wp-flow-plus'); ?></h3>
-			<p><?php _e('NOTE: The following option is deprecated and will be removed in the future', 'wp-flow-plus'); ?>. </p>
-	    		<table class="form-table">
-				<tr>
-					<th scope="row">
-					<?php echo __('Image Link in Description', 'wp-flow-plus'); ?>
-					</td>
-					<td>
-					<input type="checkbox" name="wpimageflow2_link" value="link" <?php if ($options['link'] == 'true') echo ' CHECKED'; ?> /> <?php _e('Check this box to have images from the Media Library use the description field as an external link from the image thumbnail. <em><b>This option is now deprecated, instead use the new image link field in the Wordpress image editor to specify a link from the carousel', 'wp-flow-plus'); ?></b></em>
-					</td>
-				</tr>
-			</table>
-
-			<input type="hidden" value="true" name="save_wpflowplus">
-			<?php
-			if ( function_exists('wp_nonce_field') )
-				wp_nonce_field('update_wpflowplus_options');
-			?>
-			</form>				
-
-		</div>
 		
-		<?php			
-	}		
+		/* 
+		** Look for disable slider option
+		*/
+		if (isset($_POST['wpimageflow2_noslider']) && ($_POST['wpimageflow2_noslider'] == 'noslider')) {
+			$options['noslider'] = true;
+		} else {
+			$options['noslider'] = false;
+		}
+		
+		/*
+		** Accept the container width
+		*/
+		if (isset($_POST['wpimageflow2_width'])) {
+			$options['width'] = $_POST['wpimageflow2_width'];
+		}
+		
+		/*
+		** Accept the container aspect ratio
+		*/
+		if (isset($_POST['wpimageflow2_aspect'])) {
+			$options['aspect'] = $_POST['wpimageflow2_aspect'];
+		}
+		
+		/*
+		** Accept the carousel image size
+		*/
+		if (isset($_POST['wpimageflow2_image_size'])) {
+			$options['imgsize'] = $_POST['wpimageflow2_image_size'];
+		}
+				
+		/*
+		** Done validation, update whatever was accepted
+		*/
+		$this->settings_update_save ($options, $errors, $error_count);
+	}
+
+	/*
+	** Save the "General" tab updates
+	*/
+	function settings_update_general() {
+		$options = $this->getAdminOptions();
+		$errors = '';
+		$error_count = 0;
+		
+		/* 
+		** Look for link to description option @DEPRECATED
+		*/
+		if (isset($_POST['wpimageflow2_link']) && ($_POST['wpimageflow2_link'] == 'link')) {
+			$options['link'] = 'true';
+		} else {
+			$options['link'] = 'false';
+		}
+
+		/* 
+		** Look for link to new window option
+		*/
+		if (isset($_POST['wpimageflow2_samewindow']) && ($_POST['wpimageflow2_samewindow'] == 'same')) {
+			$options['samewindow'] = true;
+		} else {
+			$options['samewindow'] = false;
+		}
+		
+		/* 
+		** Look for reflect option
+		*/
+		if (isset ($_POST['wpimageflow2_reflect'])) {
+			$options['reflect'] =  $_POST['wpimageflow2_reflect'];
+		}
+
+		/* 
+		** Look for strict option
+		*/
+		if (isset($_POST['wpimageflow2_strict']) && ($_POST['wpimageflow2_strict'] == 'strict')) {
+			$options['strict'] = 'true';
+		} else {
+			$options['strict'] = 'false';
+		}
+		
+		/* 
+		** Look for auto rotate option
+		*/
+		if (isset ($_POST['wpimageflow2_autorotate']) && ($_POST['wpimageflow2_autorotate'] == 'autorotate')) {
+			$options['autorotate'] = 'on';
+		} else {
+			$options['autorotate'] = 'off';
+		}
+
+		/*
+		** Accept the pause value
+		*/
+		if (isset($_POST['wpimageflow2_pause'])) {
+			$options['pause'] = $_POST['wpimageflow2_pause'];
+		}
+		
+		/*
+		** Accept the path URL
+		*/
+		if (isset($_POST['wpimageflow2_path'])) {
+			$options['gallery_url'] = trim($_POST['wpimageflow2_path']);
+		}
+		
+		/*
+		** Done validation, update whatever was accepted
+		*/
+		$this->settings_update_save ($options, $errors, $error_count);
+	}
+	
+		/*
+	** Save the "Help" tab updates
+	*/
+	function settings_update_help() {
+		// the help tab has no settings to update
+	}
+	
+function settings_update_save($options, $errors = '', $error_count = 0) {
+		update_option($this->adminOptionsName, $options);
+		if ($errors == '') {
+			echo "<div id='message' class='updated'>";	
+			echo '<p>'.__('Settings were saved.','wp-flow-plus').'</p></div>';	
+		} else {
+			echo "<div id='message' class='error'>" . $errors;	
+			if ($error_count == 1) {
+				echo '<p>'.__('The above setting was not saved.','wp-flow-plus');
+			} else {
+				echo '<p>'.__('The above settings were not saved.','wp-flow-plus');
+			}
+			echo __(' Other settings were successfully saved.','wp-flow-plus').'</p></div>';
+		}
+	}
+	
+	function version_error () {
+		echo '<div class="error">' . __('WP Flow Plus requires at least WordPress 2.8.4','wp-flow-plus') . '</div>';
+	}
+	
 }
 
 }

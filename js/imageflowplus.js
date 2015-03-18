@@ -17,6 +17,7 @@
  *	Version 1.7 improves support when no images are included, change longdesc to data-link and rel to data-style
  *	Version 1.8 use data-description for passing description
  *	Version 2.0 move to image block format, swipe on image support
+ *  Version 2.1 modify tap to open data-link instead of image URL
  *
  *    Resources ----------------------------------------------------
  *	[1] http://www.adventuresinsoftware.com/blog/?p=104#comment-1981, Michael L. Perry's Cover Flow

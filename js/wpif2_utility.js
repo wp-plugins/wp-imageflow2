@@ -1,6 +1,12 @@
 /*
 **	WP-Imageflow Plus utility scripts on admin pages
+**
+**  Version 1.1 - Use WP colorpicker
 */
+
+jQuery(document).ready(function($){
+    $('.wpif2-color-field').wpColorPicker();
+});
 
 // Validate Hex color code of given colorcode, background turns red if invalid
 function colorcode_validate(element, colorcode) {

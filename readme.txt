@@ -136,11 +136,15 @@ As a quick test, perform the following steps:
 
 == Changelog ==
 
+Version 2.2.0 (March 18, 2015)
+
+* Improve admin area layout
+* Swedish translation courtesy of Kenneth Andersson
+
 Version 2.1.0 (July 2, 2014)
 
 * Language support added
-*
-Spanish and Serbian translation courtesy of [Ogi Djuraskovic](http://FirstSiteGuide.com)
+* Spanish and Serbian translation courtesy of [Ogi Djuraskovic](http://FirstSiteGuide.com)
 
 Version 2.0.2 (April 22, 2014)
 
