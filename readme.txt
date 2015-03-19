@@ -138,6 +138,10 @@ As a quick test, perform the following steps:
 
 == Changelog ==
 
+Version 2.2.1 (March 18, 2015)
+
+* Remove potential XSS vulnerability
+
 Version 2.2.0 (March 18, 2015)
 
 * Improve admin area layout

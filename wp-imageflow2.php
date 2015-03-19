@@ -3,7 +3,7 @@
 Plugin Name: WP Flow Plus
 Plugin URI: http://www.wpflowplus.com
 Description: Flow style carousel with Lightbox popups
-Version: 2.2.0
+Version: 2.2.1
 Author: WP Flow Plus
 Author URI: http://www.wpflowplus.com
 
@@ -602,7 +602,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#00' . substr(
 				$options['bgcolor'] = $_POST['wpimageflow2_bgc'];
 			} else {
 				$error_count++;
-				$errors .= "<p>".__('Invalid background color, not saved.','wp-flow-plus'). " - " . $_POST['wpimageflow2_bgc'] ."</p>";	
+				$errors .= "<p>".__('Invalid background color, not saved.','wp-flow-plus')."</p>";	
 			}
 		}
 		
@@ -614,7 +614,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#00' . substr(
 				$options['txcolor'] = $_POST['wpimageflow2_txc'];
 			} else {
 				$error_count++;
-				$errors .= "<p>".__('Invalid text color, not saved.','wp-flow-plus'). " - " . $_POST['wpimageflow2_txc'] ."</p>";	
+				$errors .= "<p>".__('Invalid text color, not saved.','wp-flow-plus')."</p>";	
 			}
 		}
 		
@@ -635,7 +635,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#00' . substr(
 				$options['slcolor'] = $_POST['wpimageflow2_slc'];
 			} else {
 				$error_count++;
-				$errors .= "<p>".__('Invalid slider color, not saved.','wp-flow-plus'). " - " . $_POST['wpimageflow2_slc'] ."</p>";	
+				$errors .= "<p>".__('Invalid slider color, not saved.','wp-flow-plus')."</p>";	
 			}
 		}
 		
