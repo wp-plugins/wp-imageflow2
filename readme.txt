@@ -30,11 +30,11 @@ This is a light script that uses the basic JQuery library. It will display a sim
 * Auto-rotation of the images
 * Configure the starting slide number
 * Touch control of the scrollbar
-* Optional link field in the image editor to link an image to an URL instead of the lightbox
+* Optional link field in the image editor to link an image to a URL instead of the lightbox
 * Option to open links in the same window or a new window
 * Enable/disable automatic rotation for each instance of a gallery
 * Supports full text description in the popup window of a gallery from the media library
-* Two versions of the PHP reflection script to support more browser configurations (CSS reflections is the recommended method)
+* Two versions of the PHP reflection script to support more server configurations (CSS reflections is the recommended method)
 * Display with or without reflections
 * Gallery based on images from the Media Library or a simple folder of images
 
@@ -119,7 +119,7 @@ Create carousel from a NextGen gallery. With the NextGen plugin you can perform 
 
 == FAQ ==
 
-[Please visit the plugin website for complete documentation and Knowledge Base articles] (http://www.sunnythemes.com/plugins/wp-flow-plus/)
+[Please visit the plugin website for complete documentation and Knowledge Base articles] (http://www.wpflowplus.com)
 
 As a quick test, perform the following steps:
 
@@ -140,7 +140,7 @@ As a quick test, perform the following steps:
 
 Version 2.2.1 (March 18, 2015)
 
-* Remove potential XSS vulnerability
+* Remove potential vulnerability
 
 Version 2.2.0 (March 18, 2015)
 
