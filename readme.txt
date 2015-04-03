@@ -119,7 +119,7 @@ Create carousel from a NextGen gallery. With the NextGen plugin you can perform 
 
 == FAQ ==
 
-[Please visit the plugin website for complete documentation and Knowledge Base articles] (http://www.wpflowplus.com)
+[Please visit the plugin website for complete documentation and Knowledge Base articles](http://www.wpflowplus.com)
 
 As a quick test, perform the following steps:
 
