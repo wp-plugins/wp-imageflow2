@@ -1,0 +1,324 @@
+# Copyright (C) 2014 WP Flow Plus
+# This file is distributed under the same license as the WP Flow Plus package.
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Flow Plus 2.1.0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-imageflow2\n"
+"POT-Creation-Date: 2014-07-03 19:14:01+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-07-08 14:02+0100\n"
+"Last-Translator: Borisa Djuraskovic <borisad@webhostinghub.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: Poedit 1.5.7\n"
+
+#: wp-imageflow2.php:172
+msgid "Loading Images"
+msgstr "Učitavanje slike"
+
+#: wp-imageflow2.php:480
+msgid "WP Flow Plus Link"
+msgstr "WP Flow Plus Link"
+
+#: wp-imageflow2.php:483
+msgid "To be used with carousel added via [wp-flowplus] shortcode."
+msgstr "Da se koristi sa karuselom dodato via [wp-flowplus] shortcode."
+
+#: wp-imageflow2.php:500
+msgid "Settings"
+msgstr "Postavke"
+
+#: wp-imageflow2.php:506
+msgid "WP Flow Plus requires at least WordPress 2.8.4"
+msgstr "WP Flow Plus zahteva najmanje WordPress 2.8.4"
+
+#: wp-imageflow2.php:510
+msgid "WP Flow Plus Options"
+msgstr "WP Flow Plus Options"
+
+#. #-#-#-#-#  plugin.pot (WP Flow Plus 2.1.0)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: wp-imageflow2.php:510
+msgid "WP Flow Plus"
+msgstr "WP Flow Plus"
+
+#: wp-imageflow2.php:518
+msgid "Sorry, but you have no permission to change settings."
+msgstr "Nemate dozvolu da promenite postavke."
+
+#: wp-imageflow2.php:531
+msgid "Invalid background color, not saved."
+msgstr "Nepostojeća boja pozadine, nije sačuvano."
+
+#: wp-imageflow2.php:540
+msgid "Invalid text color, not saved."
+msgstr "Nepostojeća boja teksta, nije sačuvano."
+
+#: wp-imageflow2.php:558
+msgid "Invalid slider color, not saved."
+msgstr "Nepostojeća boja slajdera, nije sačuvano."
+
+#: wp-imageflow2.php:638
+msgid "Settings were saved."
+msgstr "Postavke su sačuvane."
+
+#: wp-imageflow2.php:647
+msgid "WP Flow Plus Settings"
+msgstr "WP Flow Plus potavke"
+
+#: wp-imageflow2.php:649
+msgid "Formatting"
+msgstr "Formatiranje"
+
+#: wp-imageflow2.php:654
+msgid "Background color"
+msgstr "Boja pozadine"
+
+#: wp-imageflow2.php:658
+msgid ""
+"Hex value or \"transparent\". Do not use transparent with CSS reflections."
+msgstr ""
+"Hex vrednost ili  \"transparent\". Nemojte da koristite transparent sa CSS "
+"reflekcijama."
+
+#: wp-imageflow2.php:663
+msgid "Text color"
+msgstr "Boja teksta"
+
+#: wp-imageflow2.php:667
+msgid "Disable captions"
+msgstr "Onemogućti kadar"
+
+#: wp-imageflow2.php:673
+msgid "Slider color"
+msgstr "Boja slajdera"
+
+#: wp-imageflow2.php:677
+msgid ">White"
+msgstr ">Belo"
+
+#: wp-imageflow2.php:678
+msgid ">Black"
+msgstr ">Crno"
+
+#: wp-imageflow2.php:680
+msgid "Disable slider"
+msgstr "Onemogući slajder"
+
+#: wp-imageflow2.php:686
+msgid "Container width CSS"
+msgstr "CSS širina sadržaja"
+
+#: wp-imageflow2.php:694
+msgid "Container aspect ratio"
+msgstr "Aspekt racio sadržaj"
+
+#: wp-imageflow2.php:698
+msgid "Default 1.9. Higher numbers result in shorter height and vice versa."
+msgstr "Default 1.9. Rezultat većih brojeva manje visine i obrnuto.  "
+
+#: wp-imageflow2.php:703
+msgid "Carousel image size"
+msgstr "Karosel veličina slike"
+
+#: wp-imageflow2.php:714
+msgid "Applies to images taken from the Media Library only."
+msgstr "Primenjuje se slikama uzetim iz Media Library."
+
+#: wp-imageflow2.php:719
+msgid "Behaviour"
+msgstr "Ponašanje"
+
+#: wp-imageflow2.php:720
+msgid ""
+"The images in the carousel will by default link to a Lightbox enlargement of "
+"the image. Alternatively, you may specify\r\n"
+"a URL to link to each image from the Media Library. This link address should "
+"be configured in the image uploader/editor of the Media Library."
+msgstr ""
+"Slike u karuselu  po defaultu linka ka Lightbok proširenju slike . "
+"Alternativno , možete da odredite\r\n"
+"URL adresu da se povežete na svakoj slici iz Media Librari . Ova adresa  "
+"treba da bude konfigurisan u Image Uploader / urednika medija biblioteke ."
+
+#: wp-imageflow2.php:725
+msgid "Open URL links in same window"
+msgstr "Otvoren URL link u istom prozoru"
+
+#: wp-imageflow2.php:729
+msgid "The default is to open links in a new window"
+msgstr "Podrazumevano je da otvori link u novom prozoru"
+
+#: wp-imageflow2.php:734
+msgid "Choose a reflection script"
+msgstr "Izaberite refleksiju skripte"
+
+#: wp-imageflow2.php:738
+msgid "CSS reflections, supported by all modern browsers (including IE8+)."
+msgstr ""
+"CSS refleksija , podržana od strane svih modernih brovsera (uključujući IE8 "
+"+)."
+
+#: wp-imageflow2.php:741
+msgid "V2 (requires GD)."
+msgstr "V2 (requires GD)."
+
+#: wp-imageflow2.php:744
+msgid ""
+"V3. Recommended only if you need transparent PNGs, GD version 2.0.28 "
+"strongly recommended."
+msgstr ""
+"V3 . Preporučena samo ako vam je potrebna transparentna PNGs , GD verzija "
+"2.0.28 snažno preporučujemo ."
+
+#: wp-imageflow2.php:747
+msgid "Disable reflections"
+msgstr "onesposobiti refleksije"
+
+#: wp-imageflow2.php:752
+msgid "Strict Mode"
+msgstr "Strog rezim"
+
+#: wp-imageflow2.php:756
+msgid ""
+"Check this box if your server is strict and serves a 404 error on reflected "
+"images"
+msgstr ""
+"Čekirati ovu kućicu ako je vaš server strog i servira 404 grešku na "
+"reflektovanim slikama"
+
+#: wp-imageflow2.php:761
+msgid "Enable auto rotation"
+msgstr "Omogućiti auto rotaciju"
+
+#: wp-imageflow2.php:765
+msgid "This may be overridden in the shortcode"
+msgstr "Ovo može biti prepisano u shortcode"
+
+#: wp-imageflow2.php:770
+msgid "Auto rotation pause"
+msgstr "Auto pauza rotacije"
+
+#: wp-imageflow2.php:778
+msgid "Galleries Based on Folders"
+msgstr "Galerije baziran na folderima"
+
+#: wp-imageflow2.php:779
+msgid "Click to toggle detailed help"
+msgstr "Klik za toggle detaljnu pomoć"
+
+#: wp-imageflow2.php:782
+msgid ""
+">You can upload a collection of images to a folder and have WP Flow Plus "
+"read the folder and gather the images, without the need to upload through "
+"the Wordpress image uploader. Using this method provides fewer features in "
+"the gallery since there are no titles, links, or descriptions stored with "
+"the images. This is provided as a quick and easy way to display an image "
+"carousel."
+msgstr ""
+"> Možete da uploadujete kolekciju slika u folderu WP Flow Plus čita folder i "
+"skuplja slike, bez potrebe da se otpremili preko WordPress Image Upload . "
+"Koristeći ovaj metod pruža manje mogućnosti u galeriji jer ne postoje "
+"naslovi , linkovi ili opisi uskladištenih sa slikama . Ovo je omogućeno kao "
+"brz i lak način da se prikaže slika karusela ."
+
+#: wp-imageflow2.php:783
+msgid "The folder structure should resemble the following"
+msgstr "The folder structure should resemble the following"
+
+#: wp-imageflow2.php:796
+msgid ""
+"With this structure you would enter \"wp-content/galleries/\" as the folder "
+"path below"
+msgstr ""
+"Sa ovom strukturom unećete \"wp-content/galleries/\"  kao putanju foldera"
+
+#: wp-imageflow2.php:802
+msgid "Folder Path"
+msgstr "Putanja foldera"
+
+#: wp-imageflow2.php:805
+msgid ""
+"This should be the path to galleries from homepage root path, or full url "
+"including http://."
+msgstr ""
+"Ovo bi trebala da ude putanja za galerije sa početne stranice root path, ili "
+"ceo url uključujući i  http://."
+
+#: wp-imageflow2.php:807
+msgid "e.g."
+msgstr "e.g."
+
+#: wp-imageflow2.php:808
+msgid "Ending slash, but NO starting slash"
+msgstr "Krajni slashing, ali bez početnog"
+
+#: wp-imageflow2.php:813
+msgid "These folder galleries were found:"
+msgstr "Ove galerije foldera su pronadjene:"
+
+#: wp-imageflow2.php:837
+msgid "Save Changes"
+msgstr "Sačuvati promene"
+
+#: wp-imageflow2.php:840
+msgid "Make a minimum donation"
+msgstr "Minimum donacija"
+
+#: wp-imageflow2.php:840
+msgid ""
+"to this plugin and you will receive bonus add-ons and technical support for "
+"the WP Flow Plus gallery"
+msgstr ""
+"na ovaj plugin i dobićete bonus dodatke i tehničku podršku za UP Protok Plus "
+"galeriju"
+
+#: wp-imageflow2.php:842
+msgid "NextGen Gallery support"
+msgstr "NextGen Gallery podrska"
+
+#: wp-imageflow2.php:843
+msgid "Shortcode generator attached to your edit windows"
+msgstr "Shortcode generator dodat na vaš edit prozor"
+
+#: wp-imageflow2.php:847
+msgid "Deprecated"
+msgstr "Negodovanje"
+
+#: wp-imageflow2.php:848
+msgid ""
+"NOTE: The following option is deprecated and will be removed in the future"
+msgstr "BELEŠKA: Sledeća opcija je negodovana i biće uklonjena u budućnosti"
+
+#: wp-imageflow2.php:852
+msgid "Image Link in Description"
+msgstr "Link slike u opisu"
+
+#: wp-imageflow2.php:855
+msgid ""
+"Check this box to have images from the Media Library use the description "
+"field as an external link from the image thumbnail. <em><b>This option is "
+"now deprecated, instead use the new image link field in the Wordpress image "
+"editor to specify a link from the carousel"
+msgstr ""
+"Popunite ovu kućicu da biste imali slike iz Media Library koristite opis "
+"terena i spoljni link od slike thumbnaila . <em> <b> Ova opcija je sada "
+"zastarela , umesto toga koristite polje sa novim linkom slike u Wordpress "
+"editoru slike da navedete link sa karusela"
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.sunnythemes.com/plugins/wp-flow-plus"
+msgstr "http://www.sunnythemes.com/plugins/wp-flow-plus"
+
+#. Description of the plugin/theme
+msgid "Flow style carousel with Lightbox popups"
+msgstr "Protoka karusel stila  sa Lightbox popups"
+
+#. Author of the plugin/theme
+msgid "Sunny Themes"
+msgstr "Sunny Themes"
+
+#. Author URI of the plugin/theme
+msgid "http://www.sunnythemes.com"
+msgstr "http://www.sunnythemes.com"
