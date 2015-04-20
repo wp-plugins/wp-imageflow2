@@ -138,6 +138,10 @@ As a quick test, perform the following steps:
 
 == Changelog ==
 
+Version 2.2.2 ( April 20, 2015)
+
+* Fix RAND orderby option that stopped working due to changes in WP core
+
 Version 2.2.1 (March 18, 2015)
 
 * Remove potential vulnerability

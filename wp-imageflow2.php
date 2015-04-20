@@ -3,7 +3,7 @@
 Plugin Name: WP Flow Plus
 Plugin URI: http://www.wpflowplus.com
 Description: Flow style carousel with Lightbox popups
-Version: 2.2.1
+Version: 2.2.2
 Author: WP Flow Plus
 Author URI: http://www.wpflowplus.com
 
@@ -415,8 +415,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#00' . substr(
 		  ), $attr));
 	
 		$id = intval($id);
-		if ( 'RAND' == $order )
-			$orderby = 'none';
 
 		if ( !empty($mediatag) ) {
 			$attachments = array();
