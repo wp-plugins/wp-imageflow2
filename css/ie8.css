@@ -1,0 +1,7 @@
+/*
+ ** WP Flow Plus CSS Styles for IE8
+*/
+
+.wpif2_reflection img {
+	-ms-filter: "FlipV alpha(opacity='30')";
+}

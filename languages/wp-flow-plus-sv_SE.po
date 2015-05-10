@@ -1,0 +1,324 @@
+# Copyright (C) 2014 WP Flow Plus
+# This file is distributed under the same license as the WP Flow Plus package.
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Flow Plus 2.0.2\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-imageflow2\n"
+"POT-Creation-Date: 2014-06-13 14:34:12+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-08-14 16:01+0100\n"
+"Last-Translator: Kenneth Andersson <kenneth.andersson@vanneberga.com>\n"
+"Language-Team: LANGUAGE <kenneth.andersson@vanneberga.com>\n"
+"X-Generator: Poedit 1.6.7\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: sv_SE\n"
+
+#: wp-imageflow2.php:166
+msgid "Loading Images"
+msgstr "Laddar bilder"
+
+#: wp-imageflow2.php:474
+msgid "WP Flow Plus Link"
+msgstr "WP Flow Plus Länk"
+
+#: wp-imageflow2.php:477
+msgid "To be used with carousel added via [wp-flowplus] shortcode."
+msgstr "Att användas med karusell tillagd via [wp-flowplus] shortcode."
+
+#: wp-imageflow2.php:494
+msgid "Settings"
+msgstr "Inställningar"
+
+#: wp-imageflow2.php:500
+msgid "WP Flow Plus requires at least WordPress 2.8.4"
+msgstr "WP Flow Plus kräver minst WordPress 2.8.4"
+
+#: wp-imageflow2.php:504
+msgid "WP Flow Plus Options"
+msgstr "WP Flow Plus Alternativ"
+
+#. Plugin Name of the plugin/theme
+#: wp-imageflow2.php:504
+msgid "WP Flow Plus"
+msgstr "WP Flow Plus"
+
+#: wp-imageflow2.php:512
+msgid "Sorry, but you have no permission to change settings."
+msgstr "Tyvärr har du inga rättigheter att ändra inställningar."
+
+#: wp-imageflow2.php:525
+msgid "Invalid background color, not saved."
+msgstr "Ogiltig bakgrundsfärg, sparades ej."
+
+#: wp-imageflow2.php:534
+msgid "Invalid text color, not saved."
+msgstr "Ogiltig textfärg, sparades ej."
+
+#: wp-imageflow2.php:552
+msgid "Invalid slider color, not saved."
+msgstr "Ogiltig sliderfärg, sparades ej."
+
+#: wp-imageflow2.php:632
+msgid "Settings were saved."
+msgstr "Inställningarna sparade."
+
+#: wp-imageflow2.php:641
+msgid "WP Flow Plus Settings"
+msgstr "WP Flow Plus Inställningar"
+
+#: wp-imageflow2.php:643
+msgid "Formatting"
+msgstr "Formatering"
+
+#: wp-imageflow2.php:648
+msgid "Background color"
+msgstr "Bakgrundsfärg"
+
+#: wp-imageflow2.php:652
+msgid ""
+"Hex value or \"transparent\". Do not use transparent with CSS reflections."
+msgstr ""
+"Hex värde eller \"transparent\". Använd inte transparent med CSS "
+"reflektioner."
+
+#: wp-imageflow2.php:657
+msgid "Text color"
+msgstr "Textfärg"
+
+#: wp-imageflow2.php:661
+msgid "Disable captions"
+msgstr "Avaktivera texter"
+
+#: wp-imageflow2.php:667
+msgid "Slider color"
+msgstr "Slider färg"
+
+#: wp-imageflow2.php:671
+msgid ">White"
+msgstr ">Vit"
+
+#: wp-imageflow2.php:672
+msgid ">Black"
+msgstr ">Svart"
+
+#: wp-imageflow2.php:674
+msgid "Disable slider"
+msgstr "Avaktivera slider"
+
+#: wp-imageflow2.php:680
+msgid "Container width CSS"
+msgstr "Container med CSS"
+
+#: wp-imageflow2.php:688
+msgid "Container aspect ratio"
+msgstr "Container sidförhållande"
+
+#: wp-imageflow2.php:692
+msgid "Default 1.9. Higher numbers result in shorter height and vice versa."
+msgstr "Standard 1.9. Högre nummer resulterar i lägre höjd och vice versa.."
+
+#: wp-imageflow2.php:697
+msgid "Carousel image size"
+msgstr "Karusellbild storlek"
+
+#: wp-imageflow2.php:708
+msgid "Applies to images taken from the Media Library only."
+msgstr "Gäller enbart för bilder tagna från Media Library."
+
+#: wp-imageflow2.php:713
+msgid "Behaviour"
+msgstr "Uppförande"
+
+#: wp-imageflow2.php:714
+msgid ""
+"The images in the carousel will by default link to a Lightbox enlargement of "
+"the image. Alternatively, you may specify\r\n"
+"a URL to link to each image from the Media Library. This link address should "
+"be configured in the image uploader/editor of the Media Library."
+msgstr ""
+"Bilderna i karusellen länkas som standard till en Lightboxförstoring av "
+"bilden. Alternativt kan du specificera\r\n"
+"en URL som länkar varje bild från Media Library. Denna länk ska konfigureras "
+"i bild uploader/editor i Media Library."
+
+#: wp-imageflow2.php:719
+msgid "Open URL links in same window"
+msgstr "Öppna URL-länkar i samma fönster"
+
+#: wp-imageflow2.php:723
+msgid "The default is to open links in a new window"
+msgstr "Som standard öppnas länkar i ett nytt fönster"
+
+#: wp-imageflow2.php:728
+msgid "Choose a reflection script"
+msgstr "Välj ett reflektionsscript"
+
+#: wp-imageflow2.php:732
+msgid "CSS reflections, supported by all modern browsers (including IE8+)."
+msgstr "CSS reflektioner, stödda av alla moderna webläsare (inklusive IE8+)."
+
+#: wp-imageflow2.php:735
+msgid "V2 (requires GD)."
+msgstr "V2 (kräver GD)."
+
+#: wp-imageflow2.php:738
+msgid ""
+"V3. Recommended only if you need transparent PNGs, GD version 2.0.28 "
+"strongly recommended."
+msgstr ""
+"V3. Rekommenderas bara om du behöver transparenta PNGs, GD version 2.0.28 "
+"rekommenderas starkt."
+
+#: wp-imageflow2.php:741
+msgid "Disable reflections"
+msgstr "Avaktivera reflektioner"
+
+#: wp-imageflow2.php:746
+msgid "Strict Mode"
+msgstr "Strikt mode"
+
+#: wp-imageflow2.php:750
+msgid ""
+"Check this box if your server is strict and serves a 404 error on reflected "
+"images"
+msgstr ""
+"Kryssa i denna ruta om din server är strikt och stödjer 404 error på "
+"reflekterade bilder"
+
+#: wp-imageflow2.php:755
+msgid "Enable auto rotation"
+msgstr "Slå på autorotation"
+
+#: wp-imageflow2.php:759
+msgid "This may be overridden in the shortcode"
+msgstr "Detta kan åsidosättas i shortcoden"
+
+#: wp-imageflow2.php:764
+msgid "Auto rotation pause"
+msgstr "Autorotation pausas"
+
+#: wp-imageflow2.php:772
+msgid "Galleries Based on Folders"
+msgstr "Galleri baserat på mappar"
+
+#: wp-imageflow2.php:773
+msgid "Click to toggle detailed help"
+msgstr "Klicka för att skifta detaljerad hjälp"
+
+#: wp-imageflow2.php:776
+msgid ""
+">You can upload a collection of images to a folder and have WP Flow Plus "
+"read the folder and gather the images, without the need to upload through "
+"the Wordpress image uploader. Using this method provides fewer features in "
+"the gallery since there are no titles, links, or descriptions stored with "
+"the images. This is provided as a quick and easy way to display an image "
+"carousel."
+msgstr ""
+">Du kan ladda upp en samling bilder till en mapp och låta WP Flow Plus läsa "
+"i mappen och samla bilderna, utan att behöva ladda upp genom Wordpress image "
+"uploader. Användning av den här metoden ger färre finesser i galleriet "
+"eftersom det saknas titlar, länkar och beskrivningar lagrade med bilderna. "
+"Detta tillhandahålls som ett snabbt och enkelt sätt att visa en bildkarusell."
+
+#: wp-imageflow2.php:777
+msgid "The folder structure should resemble the following"
+msgstr "Mappstrukturen bör likna följande"
+
+#: wp-imageflow2.php:790
+msgid ""
+"With this structure you would enter \"wp-content/galleries/\" as the folder "
+"path below"
+msgstr ""
+"Med denna struktur ska du ange \"wp-content/galleries/\" som mappsökväg nedan"
+
+#: wp-imageflow2.php:796
+msgid "Folder Path"
+msgstr "Mappsökväg"
+
+#: wp-imageflow2.php:799
+msgid ""
+"This should be the path to galleries from homepage root path, or full url "
+"including http://."
+msgstr ""
+"Detta ska vara sökvägen till gallerierna från hemsidans rotsökväg, eller en "
+"full URL inklusive http://."
+
+#: wp-imageflow2.php:801
+msgid "e.g."
+msgstr "t ex"
+
+#: wp-imageflow2.php:802
+msgid "Ending slash, but NO starting slash"
+msgstr "Avslutande slash, men INGEN inledande slash"
+
+#: wp-imageflow2.php:807
+msgid "These folder galleries were found:"
+msgstr "Dessa gallerimappar hittades:"
+
+#: wp-imageflow2.php:831
+msgid "Save Changes"
+msgstr "Spara ändringar"
+
+#: wp-imageflow2.php:834
+msgid "Make a minimum donation"
+msgstr "Donera ett mindre belopp"
+
+#: wp-imageflow2.php:834
+msgid ""
+"to this plugin and you will receive bonus add-ons and technical support for "
+"the WP Flow Plus gallery"
+msgstr ""
+"till denna plugin och du får tillgång till bonustillägg och teknisk support "
+"för WP Flow Plus Galleriet"
+
+#: wp-imageflow2.php:836
+msgid "NextGen Gallery support"
+msgstr "Support för NextGen Gallery"
+
+#: wp-imageflow2.php:837
+msgid "Shortcode generator attached to your edit windows"
+msgstr "Shortcode generator kopplad till dina redigeringsfönster"
+
+#: wp-imageflow2.php:841
+msgid "Deprecated"
+msgstr "Föråldrad"
+
+#: wp-imageflow2.php:842
+msgid ""
+"NOTE: The following option is deprecated and will be removed in the future"
+msgstr ""
+"OBS: Detta alternativ är föråldrat och kommer att försvinna i framtiden"
+
+#: wp-imageflow2.php:846
+msgid "Image Link in Description"
+msgstr "Bildlänk i beskrivningen"
+
+#: wp-imageflow2.php:849
+msgid ""
+"Check this box to have images from the Media Library use the description "
+"field as an external link from the image thumbnail. <em><b>This option is "
+"now deprecated, instead use the new image link field in the Wordpress image "
+"editor to specify a link from the carousel"
+msgstr ""
+"Klicka i denna ruta för att bilder från Media Library ska använda "
+"beskrivningsfältet som en extern länk från bildens thumbnail. <em><b> Detta "
+"alternativ är nu föråldrat, använd istället det nya bildlänkfältet i "
+"Wordpress bildeditor för att specificera en länk från karusellen"
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.sunnythemes.com/plugins/wp-flow-plus"
+msgstr "http://www.sunnythemes.com/plugins/wp-flow-plus"
+
+#. Description of the plugin/theme
+msgid "Flow style carousel with Lightbox popups"
+msgstr "Flödande karusell med Lightbox popups"
+
+#. Author of the plugin/theme
+msgid "Sunny Themes"
+msgstr "Sunny Themes"
+
+#. Author URI of the plugin/theme
+msgid "http://www.sunnythemes.com"
+msgstr "http://www.sunnythemes.com"
