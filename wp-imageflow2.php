@@ -3,7 +3,7 @@
 Plugin Name: WP Flow Plus
 Plugin URI: http://www.wpflowplus.com
 Description: Flow style carousel with Lightbox popups
-Version: 2.2.2
+Version: 2.2.3
 Author: WP Flow Plus
 Author URI: http://www.wpflowplus.com
 
@@ -113,7 +113,7 @@ Class WPFlowPlus
 		wp_enqueue_style( 'wpflowpluscss',  plugins_url('css/screen.css', __FILE__));
 		wp_enqueue_style( 'wpflowplus-ie8', plugins_url('css/ie8.css', __FILE__));
 		$wp_styles->add_data( 'wpflowplus-ie8', 'conditional', 'IE 8' );
-		wp_enqueue_script('wpif2_flowplus', plugins_url('js/imageflowplus.js', __FILE__), array('jquery'), '2.1');
+		wp_enqueue_script('wpif2_flowplus', plugins_url('js/imageflowplus.js', __FILE__), array('jquery'), '2.2');
 	}		
 
 	function flow_func($attr) {

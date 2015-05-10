@@ -1,5 +1,5 @@
 /**
- *	ImageFlowPlus 2.1
+ *	ImageFlowPlus 2.2
  *
  *    This provides an Flow style gallery plus the following great features:
  *    - Lightbox pop-ups when linking to an image
@@ -18,6 +18,7 @@
  *	Version 1.8 use data-description for passing description
  *	Version 2.0 move to image block format, swipe on image support
  *  Version 2.1 modify tap to open data-link instead of image URL
+ *  Version 2.2 fix issue when mobile device resize runs before initial onload
  *
  *    Resources ----------------------------------------------------
  *	[1] http://www.adventuresinsoftware.com/blog/?p=104#comment-1981, Michael L. Perry's Cover Flow
@@ -81,6 +82,7 @@ function flowplus(instance) {
 	this.xstep =		150;
 	this.autorotate = 	'off';
 	this.rotatestarted = 	'false';
+	this.first_refresh = true;
 
 	var thisObject = this;
 
@@ -269,6 +271,10 @@ function flowplus(instance) {
 	/* Main function */
 	this.refresh = function(onload)
 	{
+		/* Ignore refresh until the first onload is done */
+		if (this.first_refresh && !onload) return;
+		this.first_refresh = false;
+		
 		/* Cache document objects in global variables */
 		this.flowplus_div = document.getElementById(this.ifp_flowplusdiv);
 		this.imgs_div = document.getElementById(this.ifp_imagesdiv);

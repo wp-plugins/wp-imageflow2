@@ -1,7 +1,7 @@
 === WP Flow Plus ===
 Contributors: wp-flow-plus
 Requires at least: 3.0.1
-Tested up to: 4.1
+Tested up to: 4.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -138,7 +138,11 @@ As a quick test, perform the following steps:
 
 == Changelog ==
 
-Version 2.2.2 ( April 20, 2015)
+Version 2.2.3 (May 10, 2015)
+
+* Fix issue with loading using Firefox on an Android device
+ 
+Version 2.2.2 (April 20, 2015)
 
 * Fix RAND orderby option that stopped working due to changes in WP core
 
