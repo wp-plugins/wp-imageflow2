@@ -1,69 +1,104 @@
+/*
+ ** WP Flow Plus CSS Styles
+*/
+
 .wpif2_images img { 
-	position:absolute; 
-	top:0px;
-	border:none;
+	border: none;
 	color: #ffffff;
+	/*width: 100%;*/
 }
 .clear{
-	clear:both;
+	clear: both;
 }
 .wpif2_images{
-	position:relative;
-	visibility:hidden;
+	position: relative;
+	visibility: hidden;
 	color: #ffffff;
 }
+.wpif2_image_block { 
+	position: absolute; 
+	top: 0px;
+	line-height: 0;
+	overflow: hidden;
+}
+.wpif2_reflection { 
+	position: relative; 
+	overflow: hidden;
+	background: #000;
+}
+.wpif2_reflection img {
+	-webkit-transform: scaleY(-1);
+	-moz-transform: scaleY(-1);
+	-ms-transform: scaleY(-1);
+	-o-transform: scaleY(-1);
+	transform: scaleY(-1);
+	opacity: 0.30;
+	margin-top: -1px;
+	width: 100%;
+}
+.wpif2_overlay { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;
+	background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,1) 75%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(75%,rgba(0,0,0,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 75%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 75%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 75%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 75%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
+} 
 .wpif2_loading{
-	visibility:hidden;
-	margin-top:50px;
+	visibility: hidden;
+	margin-top: 50px;
 	padding-top: 30px;
-	text-align:center;
-	width:100%;
+	text-align: center;
+	width: 100%;
 	color: #ffffff;
 }
 .wpif2_loading img{
-	margin-top:10px;
-	position:relative; 
-	border:none;
+	margin-top: 10px;
+	position: relative; 
+	border: none;
 }
 .wpif2_captions{
-	font-weight:bold;
-	position:relative; 
-	text-align:center;
-	z-index:10000;
+	font-weight: bold;
+	position: relative; 
+	text-align: center;
+	z-index: 10000;
 }
 .wpif2_scrollbar{
-	visibility:hidden;
-	position:relative; 
-	border-bottom:1px solid #b3b3b3;
-	z-index:10001;
+	visibility: hidden;
+	position: relative; 
+	border-bottom: 1px solid #b3b3b3;
+	z-index: 10001;
 }
 .wpif2_scrollbar.black {
 	border-bottom-color: #000;
 }
 .wpif2_slider{
-	position:absolute;
-	margin-top:-7px !important;
-	margin-left:-7px;
-	z-index:10002;
-	background-image:url(../img/slider.png);
-	background-repeat:no-repeat;
-	width:14px;
-	height:14px;	
+	position: absolute;
+	margin-top: -7px !important;
+	margin-left: -7px;
+	z-index: 10002;
+	background-image: url(../img/slider.png);
+	background-repeat: no-repeat;
+	width: 14px;
+	height: 14px;	
 }
 .wpif2_scrollbar.black .wpif2_slider {
-	background-image:url(../img/sliderblack.png);
+	background-image: url(../img/sliderblack.png);
 }	
-.wpif2_imageflow{
+.wpif2_flowplus{
 	width: 520px; 
-	text-align:left;
-	background-color:#000;
+	text-align: left;
+	background-color: #000;
 	color: #ffffff;
+	overflow: hidden;
+	position: relative; /* Makes IE7 hide overflow */
 }
-.wpif2_imageflow_noscript {
+.wpif2_flowplus_noscript {
 	padding: 0;
 	margin: 0;
 }
-.wpif2_imageflow_noscript img {
+.wpif2_flowplus_noscript img {
 	padding: 0 5px 10px 5px;
 }
 #wpif2_overlay
@@ -78,7 +113,7 @@
 	/* Set the overlay so it appears above the page content */
 	z-index: 20000;
 
-	visibility:hidden;
+	visibility: hidden;
 }
 
 #wpif2_topbox
@@ -93,14 +128,23 @@
 	background-color: #FFFFFF;
 	text-align: center;
 
-	/*Must use a z-index greater than the screen overlay*/
+	/* Must use a z-index greater than the screen overlay */
 	z-index: 20001;
 
-	visibility:hidden;
+	visibility: hidden;
+	
+	transition: opacity .25s ease-in-out;
+   -moz-transition: opacity .25s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;
+}
+
+#wpif2_topboxprev, #wpif2_topboxnext {
+-webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
+-webkit-tap-highlight-color: transparent;
 }
 
 #wpif2_topboxprev {
-	position:absolute;
+	position: absolute;
 	top: 0;
 	left: 0;
 	width: 49%;
@@ -112,7 +156,7 @@
 	outline-width: medium;
 }
 #wpif2_topboxnext {
-	position:absolute;
+	position: absolute;
 	top: 0;
 	right: 0;
 	width: 49%;
@@ -135,9 +179,9 @@ a#wpif2_topboxclose:hover, a#wpif2_overlayclose:hover {
 }
 
 #changelog{
-	width:349px;
-	border-right:solid 1px #666;
-	float:left;
+	width: 349px;
+	border-right: solid 1px #666;
+	float: left;
 	margin-top: 15px;
 }
 #changelog div{

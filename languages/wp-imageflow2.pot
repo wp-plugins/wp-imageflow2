@@ -1,0 +1,323 @@
+# Copyright (C) 2015 WP Flow Plus
+# This file is distributed under the same license as the WP Flow Plus package.
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Flow Plus 2.2.0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-imageflow2\n"
+"POT-Creation-Date: 2015-03-18 16:20:43+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: views/admin-settings-promo.php:11
+msgid "Make a minimum donation"
+msgstr ""
+
+#: views/admin-settings-promo.php:11
+msgid ""
+"to this plugin and you will receive bonus add-ons and technical support for "
+"the WP Flow Plus gallery"
+msgstr ""
+
+#: views/admin-settings-promo.php:13
+msgid "CSS arrow styles"
+msgstr ""
+
+#: views/admin-settings-promo.php:14
+msgid "Featured Post Gallery integration"
+msgstr ""
+
+#: views/admin-settings-promo.php:15
+msgid "NextGen Gallery integration"
+msgstr ""
+
+#: views/admin-settings-promo.php:16
+msgid "Shortcode generator attached to your edit window"
+msgstr ""
+
+#: views/admin-settings-tab-format.php:14
+msgid "Background color"
+msgstr ""
+
+#: views/admin-settings-tab-format.php:18
+msgid ""
+"Hex value or \"transparent\". Do not use transparent with CSS reflections."
+msgstr ""
+
+#: views/admin-settings-tab-format.php:23
+msgid "Text color"
+msgstr ""
+
+#: views/admin-settings-tab-format.php:27
+msgid "Disable captions"
+msgstr ""
+
+#: views/admin-settings-tab-format.php:33
+msgid "Slider color"
+msgstr ""
+
+#: views/admin-settings-tab-format.php:37
+msgid ">White"
+msgstr ""
+
+#: views/admin-settings-tab-format.php:38
+msgid ">Black"
+msgstr ""
+
+#: views/admin-settings-tab-format.php:40
+msgid "Disable slider"
+msgstr ""
+
+#: views/admin-settings-tab-format.php:46
+msgid "Container width CSS"
+msgstr ""
+
+#: views/admin-settings-tab-format.php:54
+msgid "Container aspect ratio"
+msgstr ""
+
+#: views/admin-settings-tab-format.php:58
+msgid "Default 1.9. Higher numbers result in shorter height and vice versa."
+msgstr ""
+
+#: views/admin-settings-tab-format.php:63
+msgid "Carousel image size"
+msgstr ""
+
+#: views/admin-settings-tab-format.php:74
+msgid "Applies to images taken from the Media Library only."
+msgstr ""
+
+#: views/admin-settings-tab-format.php:79
+#: views/admin-settings-tab-general.php:129
+msgid "Save Changes"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:11
+msgid "Options for all Galleries"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:12
+msgid ""
+"The images in the carousel will by default link to a Lightbox enlargement of "
+"the image. Alternatively, you may specify\n"
+"a URL to link to each image from the Media Library. This link address should "
+"be configured in the image uploader/editor of the Media Library."
+msgstr ""
+
+#: views/admin-settings-tab-general.php:17
+msgid "Open URL links in same window"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:21
+msgid "The default is to open links in a new window"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:26
+msgid "Choose a reflection script"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:30
+msgid "CSS reflections, supported by all modern browsers (including IE8+)."
+msgstr ""
+
+#: views/admin-settings-tab-general.php:33
+msgid "V2 (requires GD)."
+msgstr ""
+
+#: views/admin-settings-tab-general.php:36
+msgid ""
+"V3. Recommended only if you need transparent PNGs, GD version 2.0.28 "
+"strongly recommended."
+msgstr ""
+
+#: views/admin-settings-tab-general.php:39
+msgid "Disable reflections"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:44
+msgid "Strict Mode"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:48
+msgid ""
+"Check this box if your server is strict and serves a 404 error on reflected "
+"images"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:53
+msgid "Enable auto rotation"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:57
+msgid "This may be overridden in the shortcode"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:62
+msgid "Auto rotation pause"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:70
+msgid "Galleries Based on Folders"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:71
+msgid "Click to toggle detailed help"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:74
+msgid ""
+">You can upload a collection of images to a folder and have WP Flow Plus "
+"read the folder and gather the images, without the need to upload through "
+"the Wordpress image uploader. Using this method provides fewer features in "
+"the gallery since there are no titles, links, or descriptions stored with "
+"the images. This is provided as a quick and easy way to display an image "
+"carousel."
+msgstr ""
+
+#: views/admin-settings-tab-general.php:75
+msgid "The folder structure should resemble the following"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:88
+msgid ""
+"With this structure you would enter \"wp-content/galleries/\" as the folder "
+"path below"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:94
+msgid "Folder Path"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:97
+msgid ""
+"This should be the path to galleries from homepage root path, or full url "
+"including http://."
+msgstr ""
+
+#: views/admin-settings-tab-general.php:99
+msgid "e.g."
+msgstr ""
+
+#: views/admin-settings-tab-general.php:100
+msgid "Ending slash, but NO starting slash"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:105
+msgid "These folder galleries were found:"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:135
+msgid "Deprecated"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:136
+msgid ""
+"NOTE: The following option is deprecated and will be removed in the future"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:140
+msgid "Image Link in Description"
+msgstr ""
+
+#: views/admin-settings-tab-general.php:143
+msgid ""
+"Check this box to have images from the Media Library use the description "
+"field as an external link from the image thumbnail. <em><b>This option is "
+"now deprecated, instead use the new image link field in the Wordpress image "
+"editor to specify a link from the carousel"
+msgstr ""
+
+#: views/admin-settings.php:12
+msgid "WP Flow Plus Settings"
+msgstr ""
+
+#: wp-imageflow2.php:203
+msgid "Loading Images"
+msgstr ""
+
+#: wp-imageflow2.php:376
+msgid "WP Flow Plus Link"
+msgstr ""
+
+#: wp-imageflow2.php:379
+msgid "To be used with carousel added via [wp-flowplus] shortcode."
+msgstr ""
+
+#: wp-imageflow2.php:517
+msgid "Settings"
+msgstr ""
+
+#: wp-imageflow2.php:523
+msgid "WP Flow Plus Options"
+msgstr ""
+
+#. #-#-#-#-#  plugin.pot (WP Flow Plus 2.2.0)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#. #-#-#-#-#  plugin.pot (WP Flow Plus 2.2.0)  #-#-#-#-#
+#. Author of the plugin/theme
+#: wp-imageflow2.php:523
+msgid "WP Flow Plus"
+msgstr ""
+
+#: wp-imageflow2.php:535
+msgid "Sorry, but you have no permission to change settings."
+msgstr ""
+
+#: wp-imageflow2.php:557
+msgid "General"
+msgstr ""
+
+#: wp-imageflow2.php:558
+msgid "Format"
+msgstr ""
+
+#: wp-imageflow2.php:559
+msgid "Help"
+msgstr ""
+
+#: wp-imageflow2.php:605
+msgid "Invalid background color, not saved."
+msgstr ""
+
+#: wp-imageflow2.php:617
+msgid "Invalid text color, not saved."
+msgstr ""
+
+#: wp-imageflow2.php:638
+msgid "Invalid slider color, not saved."
+msgstr ""
+
+#: wp-imageflow2.php:760
+msgid "Settings were saved."
+msgstr ""
+
+#: wp-imageflow2.php:764
+msgid "The above setting was not saved."
+msgstr ""
+
+#: wp-imageflow2.php:766
+msgid "The above settings were not saved."
+msgstr ""
+
+#: wp-imageflow2.php:768
+msgid " Other settings were successfully saved."
+msgstr ""
+
+#: wp-imageflow2.php:773
+msgid "WP Flow Plus requires at least WordPress 2.8.4"
+msgstr ""
+
+#. #-#-#-#-#  plugin.pot (WP Flow Plus 2.2.0)  #-#-#-#-#
+#. Plugin URI of the plugin/theme
+#. #-#-#-#-#  plugin.pot (WP Flow Plus 2.2.0)  #-#-#-#-#
+#. Author URI of the plugin/theme
+msgid "http://www.wpflowplus.com"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Flow style carousel with Lightbox popups"
+msgstr ""

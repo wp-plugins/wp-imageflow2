@@ -1,0 +1,332 @@
+# Copyright (C) 2014 WP Flow Plus
+# This file is distributed under the same license as the WP Flow Plus package.
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Flow Plus 2.0.2\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-imageflow2\n"
+"POT-Creation-Date: 2014-06-13 14:34:12+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-07-08 14:34+0100\n"
+"Last-Translator: jelena kovacevic <jecajeca260@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: Poedit 1.5.5\n"
+
+#: wp-imageflow2.php:166
+msgid "Loading Images"
+msgstr "Cargando Imágenes"
+
+#: wp-imageflow2.php:474
+msgid "WP Flow Plus Link"
+msgstr "Enlace a WP Flow Plus"
+
+#: wp-imageflow2.php:477
+msgid "To be used with carousel added via [wp-flowplus] shortcode."
+msgstr ""
+"Para ser utilizado con carrusel se añadió a través del código corto de [wp-"
+"flowplus]."
+
+#: wp-imageflow2.php:494
+msgid "Settings"
+msgstr "Configuraciones"
+
+#: wp-imageflow2.php:500
+msgid "WP Flow Plus requires at least WordPress 2.8.4"
+msgstr "WP Flow Plus requiere una versión de WordPress 2.8.4 o superior"
+
+#: wp-imageflow2.php:504
+msgid "WP Flow Plus Options"
+msgstr "Opciones de WP Flow Plus"
+
+#. #-#-#-#-#  plugin.pot (WP Flow Plus 2.0.2)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: wp-imageflow2.php:504
+msgid "WP Flow Plus"
+msgstr "WP Flow Plus"
+
+#: wp-imageflow2.php:512
+msgid "Sorry, but you have no permission to change settings."
+msgstr "Lo sentimos, pero no tiene permiso para cambiar la configuración."
+
+#: wp-imageflow2.php:525
+msgid "Invalid background color, not saved."
+msgstr "Color de fondo no válido, no se ha guardado."
+
+#: wp-imageflow2.php:534
+msgid "Invalid text color, not saved."
+msgstr "Color del texto no válido, no se ha guardado."
+
+#: wp-imageflow2.php:552
+msgid "Invalid slider color, not saved."
+msgstr "Color slider no válido, no se guardó."
+
+#: wp-imageflow2.php:632
+msgid "Settings were saved."
+msgstr "Se salvó la configuración."
+
+#: wp-imageflow2.php:641
+msgid "WP Flow Plus Settings"
+msgstr "Configuraciones de WP Flow Plus "
+
+#: wp-imageflow2.php:643
+msgid "Formatting"
+msgstr "Formateando"
+
+#: wp-imageflow2.php:648
+msgid "Background color"
+msgstr "Color de Fondo"
+
+#: wp-imageflow2.php:652
+msgid ""
+"Hex value or \"transparent\". Do not use transparent with CSS reflections."
+msgstr ""
+"Valor hexadecimal o \"transparente\". No utilice transparente con reflejos "
+"CSS."
+
+#: wp-imageflow2.php:657
+msgid "Text color"
+msgstr "Color de Texto"
+
+#: wp-imageflow2.php:661
+msgid "Disable captions"
+msgstr "Desactivar subtítulos"
+
+#: wp-imageflow2.php:667
+msgid "Slider color"
+msgstr "Color del Slider"
+
+#: wp-imageflow2.php:671
+msgid ">White"
+msgstr ">Blanco"
+
+#: wp-imageflow2.php:672
+msgid ">Black"
+msgstr ">Negro"
+
+#: wp-imageflow2.php:674
+msgid "Disable slider"
+msgstr "Desabilitar slider"
+
+#: wp-imageflow2.php:680
+msgid "Container width CSS"
+msgstr "CSS del ancho del Contenedor"
+
+#: wp-imageflow2.php:688
+msgid "Container aspect ratio"
+msgstr "Radio de aspecto de contenedor"
+
+#: wp-imageflow2.php:692
+msgid "Default 1.9. Higher numbers result in shorter height and vice versa."
+msgstr ""
+"Por defecto 1.9. Los números más altos dan lugar a menor altura y viceversa."
+
+#: wp-imageflow2.php:697
+msgid "Carousel image size"
+msgstr "Tamaño de la imagen del carrusel"
+
+#: wp-imageflow2.php:708
+msgid "Applies to images taken from the Media Library only."
+msgstr ""
+"Se aplica a las imágenes tomadas solamente de la biblioteca multimedia."
+
+#: wp-imageflow2.php:713
+msgid "Behaviour"
+msgstr "Comportamiento"
+
+#: wp-imageflow2.php:714
+msgid ""
+"The images in the carousel will by default link to a Lightbox enlargement of "
+"the image. Alternatively, you may specify\r\n"
+"a URL to link to each image from the Media Library. This link address should "
+"be configured in the image uploader/editor of the Media Library."
+msgstr ""
+"Las imágenes en el carrusel por defecto se enlazarán al alargado LightBox de "
+"la imagen. Alternativamente, usted puede especificar \r\n"
+"una URL para enlazar cada imagen desde la Librería de Media. Esta dirección "
+"del enlace debería ser configurada en el editor/cargador de imagen de la "
+"Librería de Media."
+
+#: wp-imageflow2.php:719
+msgid "Open URL links in same window"
+msgstr "Abrir enlaces de URL en la misma ventana"
+
+#: wp-imageflow2.php:723
+msgid "The default is to open links in a new window"
+msgstr "El valor predeterminado es abrir enlaces en una nueva ventana"
+
+#: wp-imageflow2.php:728
+msgid "Choose a reflection script"
+msgstr "Elija un script de reflexión"
+
+#: wp-imageflow2.php:732
+msgid "CSS reflections, supported by all modern browsers (including IE8+)."
+msgstr ""
+"Reflexiones de estilo CSS, soporta todos los navegadores modernos "
+"(incluyendo IE8+)."
+
+#: wp-imageflow2.php:735
+msgid "V2 (requires GD)."
+msgstr "V2 (requiere GD)."
+
+#: wp-imageflow2.php:738
+msgid ""
+"V3. Recommended only if you need transparent PNGs, GD version 2.0.28 "
+"strongly recommended."
+msgstr ""
+"V3. Recomendado sólo si necesita PNGs transparentes, versión GD 2.0.28 "
+"Recomendado."
+
+#: wp-imageflow2.php:741
+msgid "Disable reflections"
+msgstr "Desactivar reflexiones"
+
+#: wp-imageflow2.php:746
+msgid "Strict Mode"
+msgstr "Modo estricto"
+
+#: wp-imageflow2.php:750
+msgid ""
+"Check this box if your server is strict and serves a 404 error on reflected "
+"images"
+msgstr ""
+"Marque esta casilla si el servidor es estricto y muestra un error 404 en las "
+"imágenes reflejadas"
+
+#: wp-imageflow2.php:755
+msgid "Enable auto rotation"
+msgstr "Habilitar auto rotación"
+
+#: wp-imageflow2.php:759
+msgid "This may be overridden in the shortcode"
+msgstr "Esto puede suprimirse en el código corto"
+
+#: wp-imageflow2.php:764
+msgid "Auto rotation pause"
+msgstr "Pausar auto rotación"
+
+#: wp-imageflow2.php:772
+msgid "Galleries Based on Folders"
+msgstr "Galerías Basadas en Carpetas"
+
+#: wp-imageflow2.php:773
+msgid "Click to toggle detailed help"
+msgstr "Haga clic para alternar la ayuda detallada"
+
+#: wp-imageflow2.php:776
+msgid ""
+">You can upload a collection of images to a folder and have WP Flow Plus "
+"read the folder and gather the images, without the need to upload through "
+"the Wordpress image uploader. Using this method provides fewer features in "
+"the gallery since there are no titles, links, or descriptions stored with "
+"the images. This is provided as a quick and easy way to display an image "
+"carousel."
+msgstr ""
+">Puede cargar una colección de imágenes a una carpeta y hacer que WP Flow "
+"Plus lea la carpeta y recoja las imágenes, sin necesidad de cargarlas a "
+"través del cargador de imágenes de Wordpress. Usando este método existen "
+"menos funciones en la galería ya que no existen títulos, enlaces, o "
+"descripciones almacenadas con las imágenes. Esto se proporciona como una "
+"forma rápida y fácil para mostrar un carrusel de imágenes."
+
+#: wp-imageflow2.php:777
+msgid "The folder structure should resemble the following"
+msgstr "La estructura de carpetas debe ser similar a la siguiente"
+
+#: wp-imageflow2.php:790
+msgid ""
+"With this structure you would enter \"wp-content/galleries/\" as the folder "
+"path below"
+msgstr ""
+"Con esta estructura introduzca \"wp-content/galleries/\" como la ruta de la "
+"carpeta a continuación"
+
+#: wp-imageflow2.php:796
+msgid "Folder Path"
+msgstr "Ruta de la carpeta"
+
+#: wp-imageflow2.php:799
+msgid ""
+"This should be the path to galleries from homepage root path, or full url "
+"including http://."
+msgstr ""
+"Este debe ser el camino a las galerías de la ruta raíz página de inicio o "
+"url completa incluyendo http://."
+
+#: wp-imageflow2.php:801
+msgid "e.g."
+msgstr "e.g."
+
+#: wp-imageflow2.php:802
+msgid "Ending slash, but NO starting slash"
+msgstr "Slash final, pero SIN slash de inicio"
+
+#: wp-imageflow2.php:807
+msgid "These folder galleries were found:"
+msgstr "Se encontraron estas galerías de carpetas:"
+
+#: wp-imageflow2.php:831
+msgid "Save Changes"
+msgstr "Salvar los Cambios"
+
+#: wp-imageflow2.php:834
+msgid "Make a minimum donation"
+msgstr "Hacer una donación mínima"
+
+#: wp-imageflow2.php:834
+msgid ""
+"to this plugin and you will receive bonus add-ons and technical support for "
+"the WP Flow Plus gallery"
+msgstr ""
+"a este plugin y recibirá bonus, complementos y apoyo técnico para la galería "
+"WP Flow Plus"
+
+#: wp-imageflow2.php:836
+msgid "NextGen Gallery support"
+msgstr "Apoyo de NextGen Gallery"
+
+#: wp-imageflow2.php:837
+msgid "Shortcode generator attached to your edit windows"
+msgstr "Generador de código corto unido a sus ventanas de edición"
+
+#: wp-imageflow2.php:841
+msgid "Deprecated"
+msgstr "Deprecado"
+
+#: wp-imageflow2.php:842
+msgid ""
+"NOTE: The following option is deprecated and will be removed in the future"
+msgstr "NOTA: La siguiente opción está deprecada y se eliminará en el futuro"
+
+#: wp-imageflow2.php:846
+msgid "Image Link in Description"
+msgstr "Enlace a la imagen en la descripción"
+
+#: wp-imageflow2.php:849
+msgid ""
+"Check this box to have images from the Media Library use the description "
+"field as an external link from the image thumbnail. <em><b>This option is "
+"now deprecated, instead use the new image link field in the Wordpress image "
+"editor to specify a link from the carousel"
+msgstr ""
+"Marque esta casilla para que las imágenes de la Librería de Media utilicen "
+"el campo de descripción como un enlace externo de la miniatura de la imagen. "
+"<em><b> Esta opción ahora está deprecada, en su lugar utilice el nuevo campo "
+"de enlace de imagen en el editor de imágenes de Wordpress para especificar "
+"un enlace desde el carrusel"
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.sunnythemes.com/plugins/wp-flow-plus"
+msgstr "http://www.sunnythemes.com/plugins/wp-flow-plus"
+
+#. Description of the plugin/theme
+msgid "Flow style carousel with Lightbox popups"
+msgstr "Carrusel de estilo fluyente"
+
+#. Author of the plugin/theme
+msgid "Sunny Themes"
+msgstr "Temas Sunny "
+
+#. Author URI of the plugin/theme
+msgid "http://www.sunnythemes.com"
+msgstr "http://www.sunnythemes.com"
