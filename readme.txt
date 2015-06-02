@@ -38,9 +38,10 @@ This is a light script that uses the basic JQuery library. It will display a sim
 * Display with or without reflections
 * Gallery based on images from the Media Library or a simple folder of images
 
-**BONUS FEATURES AVAILABLE WITH MINIMUM $10 DONATION**
+**BONUS FEATURES AVAILABLE WITH DONATION**
 
-* Lightbox arrow options (NEW)
+* Circular continuous carousel (COMING SOON!)
+* Lightbox arrow options
 * Featured post support
 * Shortcode generator
 * NextGen gallery support
