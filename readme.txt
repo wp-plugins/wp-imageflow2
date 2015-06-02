@@ -40,7 +40,7 @@ This is a light script that uses the basic JQuery library. It will display a sim
 
 **BONUS FEATURES AVAILABLE WITH DONATION**
 
-* Circular continuous carousel (COMING SOON!)
+* Circular continuous carousel (NEW!)
 * Lightbox arrow options
 * Featured post support
 * Shortcode generator
