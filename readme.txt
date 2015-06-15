@@ -1,5 +1,6 @@
 === WP Flow Plus ===
 Contributors: wp-flow-plus
+Donate link: http://wpflowplus.com
 Requires at least: 3.0.1
 Tested up to: 4.2
 Stable tag: trunk
@@ -41,6 +42,7 @@ This is a light script that uses the basic JQuery library. It will display a sim
 **BONUS FEATURES AVAILABLE WITH DONATION**
 
 * Circular continuous carousel (NEW!)
+* Configure the number of images in the carousel (NEW!)
 * Lightbox arrow options
 * Featured post support
 * Shortcode generator
@@ -138,6 +140,10 @@ As a quick test, perform the following steps:
 4. Add an image link
 
 == Changelog ==
+
+Version 2.2.4 (June 15, 2015)
+
+* Force rotation pause to integer value
 
 Version 2.2.3 (May 10, 2015)
 

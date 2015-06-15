@@ -3,7 +3,7 @@
 Plugin Name: WP Flow Plus
 Plugin URI: http://www.wpflowplus.com
 Description: Flow style carousel with Lightbox popups
-Version: 2.2.3
+Version: 2.2.4
 Author: WP Flow Plus
 Author URI: http://www.wpflowplus.com
 
@@ -728,7 +728,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#00' . substr(
 		** Accept the pause value
 		*/
 		if (isset($_POST['wpimageflow2_pause'])) {
-			$options['pause'] = $_POST['wpimageflow2_pause'];
+			$pause = intval($_POST['wpimageflow2_pause']);
+			if ( (string) $pause == $_POST['wpimageflow2_pause']) {
+				$options['pause'] = $pause;
+			} else {
+				$error_count++;
+				$errors .= "<p>".__('Invalid Auto rotation pause, must be an integer. Not saved.','wp-flow-plus')."</p>";	
+			}
 		}
 		
 		/*
